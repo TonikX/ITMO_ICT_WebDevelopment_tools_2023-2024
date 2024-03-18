@@ -1,0 +1,15 @@
+site_name: My API Documentation
+site_description: Documentation for my API built with FastAPI
+
+
+dev_addr: 127.0.0.1:8010
+
+nav:
+  - Home: index.md
+  - Users: users.md
+  - Profiles: profiles.md
+  - Reviews: reviews.md
+  - Trips: trips.md
+
+theme:
+  name: mkdocs
