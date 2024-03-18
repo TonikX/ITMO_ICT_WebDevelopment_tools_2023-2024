@@ -1,0 +1,34 @@
+name: ci
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+      - name: Setup a local virtual environment (if no poetry.toml file)
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+        working-directory: ./students/k33392/Stukalov_Artem/lab/report
+      - uses: actions/cache@v3
+        name: Define a cache for the virtual environment based on the dependencies lock file
+        with:
+          path: ./students/k33392/Stukalov_Artem/lab/report/.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+      - name: Install the project dependencies
+        run: poetry install
+        working-directory: ./students/k33392/Stukalov_Artem/lab/report
+      - name: Run the automated tests (for example)
+        run: poetry run mkdocs gh-deploy --force
+        working-directory: ./students/k33392/Stukalov_Artem/lab/report
