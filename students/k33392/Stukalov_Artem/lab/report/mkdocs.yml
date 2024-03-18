@@ -1,0 +1,45 @@
+site_name: 'Лабораторные работы'
+theme:
+  name: material
+  features:
+    - navigation.indexes
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github-alt
+  palette:
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Темная тема
+    - media: '(prefers-color-scheme: dark)'
+      primary: black
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Светлая тема
+  language: ru
+repo_url: https://github.com/TUTOR03/ITMO_ICT_WebDevelopment_2023-2024
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: '../'
+  - pymdownx.superfences
+  - pymdownx.keys
+plugins:
+  - glightbox:
+      auto_caption: true
+nav:
+  - '№2: Реализация серверного приложения FastAPI':
+      - lab2/configuration.md
+      - lab2/models.md
+      - lab2/services.md
+      - lab2/routes.md
