@@ -1,0 +1,12 @@
+site_name: Лабораторные Прониной Александры
+theme:
+  name: material
+  palette:
+    scheme: default
+    primary: deep purple
+    accent: teal
+  language: ru
+repo_url: https://github.com/7Alexandra8/ITMO_ICT_WebDevelopment_tools_2023-2024
+nav:
+  - "№1":
+      -index.md
