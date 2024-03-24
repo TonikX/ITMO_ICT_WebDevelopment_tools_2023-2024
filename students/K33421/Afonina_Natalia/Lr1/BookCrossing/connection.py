@@ -1,6 +1,11 @@
 from sqlmodel import SQLModel, Session, create_engine
 
-db_url = 'postgresql://postgres:qwerty@localhost:5432/bookcrossing_db'
+# db_url = 'postgresql://postgres:qwerty@localhost:5432/bookcrossing_db'
+import os
+from dotenv import load_dotenv
+load_dotenv()
+db_url = os.getenv('DB_ADMIN')
+
 engine = create_engine(db_url, echo=True)
 
 
