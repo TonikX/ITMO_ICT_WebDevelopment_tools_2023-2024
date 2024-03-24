@@ -16,6 +16,7 @@ class SkillWarriorLink(SQLModel, table=True):
     warrior_id: Optional[int] = Field(
         default=None, foreign_key="warrior.id", primary_key=True
     )
+    level: int | None
 
 class Skill(SkillDefault, table=True):
     id: int = Field(default=None, primary_key=True)
