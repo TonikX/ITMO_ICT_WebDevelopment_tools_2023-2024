@@ -1,16 +1,18 @@
 import datetime
-from typing import Optional
+from enum import Enum
+from typing import Optional, List
 
 from pydantic import validator
 from sqlmodel import SQLModel, Field, Relationship
 
 
 class User(SQLModel, table=True):
-    id: Optional[int] = Field(primary_key=True)
+    id: int = Field(primary_key=True)
     username: str = Field(index=True)
     password: str
     email: str
-    created_at: datetime.datetime = datetime.datetime.now()
+    balance: Optional["Balance"] = Relationship(back_populates="user")
+    created_at: datetime.datetime = Field(default=datetime.datetime.now())
 
 
 class UserInput(SQLModel):
