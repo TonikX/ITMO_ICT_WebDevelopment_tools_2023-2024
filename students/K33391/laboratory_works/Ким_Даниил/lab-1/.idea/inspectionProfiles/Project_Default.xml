@@ -1,0 +1,22 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N803" />
+          <option value="N806" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="students.K33391.practical_works.Ким_Даниил.simple_django_web_project.django_project_Kim.project_first_app.models.CarOwner.DoesNotExist" />
+          <option value="students.K33391.practical_works.Ким_Даниил.simple_django_web_project.django_project_Kim.project_first_app.models.Car.objects" />
+          <option value="students.K33391.practical_works.Ким_Даниил.simple_django_web_project.django_project_Kim.project_first_app.models.Car.DoesNotExist" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
