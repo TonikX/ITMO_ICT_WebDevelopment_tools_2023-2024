@@ -1,7 +1,8 @@
 from enum import Enum
 from typing import Optional, List
 
-from pydantic import BaseModel
+# from pydantic import BaseModel
+from sqlmodel import SQLModel, Field, Relationship
 
 
 class Genre(str, Enum):
@@ -12,15 +13,42 @@ class Genre(str, Enum):
     ScienceFiction = "science-fiction"
 
 
-class Author(BaseModel):
-    id: int
+class Author(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
     name: str
-    bio: Optional[str]
+    bio: Optional[str] = ""
+
+    books: List["Book"] = Relationship(back_populates="author")
 
 
-# Модель данных для профиля пользователя
-class UserProfile(BaseModel):
-    id: int
+class ExchangeRequestLink(SQLModel, table=True):
+    __tablename__ = "exchange_request_link"
+
+    exchange_request_id: int = Field(default=None, foreign_key="exchange_request.id", primary_key=True)
+    user_id: int = Field(default=None, foreign_key="user_profile.id", primary_key=True)
+    book_id: int = Field(default=None, foreign_key="book.id", primary_key=True)
+
+
+class ExchangeRequest(SQLModel, table=True):
+    __tablename__ = "exchange_request"
+
+    id: int = Field(primary_key=True)
+    books_offered: List["Book"] = Relationship(
+        back_populates="exchange_requests_offered",
+        link_model=ExchangeRequestLink
+    )
+    books_requested: List["Book"] = Relationship(
+        back_populates="exchange_requests_requested",
+        link_model=ExchangeRequestLink
+    )
+    accepted: bool
+    users: List["UserProfile"] = Relationship(
+        back_populates="exchange_requests",
+        link_model=ExchangeRequestLink
+    )
+
+
+class UserDefault(SQLModel):
     username: str
     firstname: Optional[str]
     lastname: Optional[str]
@@ -29,45 +57,50 @@ class UserProfile(BaseModel):
     bio: Optional[str]
 
 
-# Модель данных для книги
-class Book(BaseModel):
-    id: int
+class UserProfile(UserDefault, table=True):
+    __tablename__ = "user_profile"
+
+    id: int = Field(default=None, primary_key=True)
+    exchange_requests: List["ExchangeRequest"] = Relationship(
+        back_populates="users",
+        link_model=ExchangeRequestLink
+    )
+    library: Optional["UserLibrary"] = Relationship(back_populates="user_profile")
+
+
+class BookDefault(SQLModel):
     title: str
-    author_id: Author
+    author_id: int = Field(foreign_key="author.id")
     genre: Genre
-    bio: Optional[str]
+    bio: Optional[str] = ""
 
 
-# Модель данных для библиотеки пользователя
-class UserLibrary(BaseModel):
-    id: int
-    user_id: UserProfile
-    books: List[Book] = []  # Книги в библиотеке пользователя
+class UserLibrary(SQLModel, table=True):
+    __tablename__ = "user_library"
+
+    id: int = Field(primary_key=True)
+    user_id: int = Field(foreign_key="user_profile.id")
+    book_id: int = Field(foreign_key="book.id")
+    user_profile: UserProfile = Relationship(back_populates="library")
+    books: Optional[List["Book"]] = Relationship(back_populates="user_library")
 
 
-# Модель данных для запроса на обмен
-class ExchangeRequest(BaseModel):
-    id: int
-    requester_id: str  # Юзернэйм пользователя, предложившего обмен
-    recipient_id: str  # Юзернэйм пользователя, получившего запрос на обмен
-    book_offered_id: List[int] = []  # Список ID книг, предложенных для обмена
-    book_requested_id: List[int] = []  # Список ID книг, запрошенных для обмена
-    accepted: bool  # Статус запроса (принят или отклонен)
+class Book(BookDefault, table=True):
+    __tablename__ = "book"
+
+    id: int = Field(default=None, primary_key=True)
+    exchange_requests_offered: List["ExchangeRequest"] = Relationship(
+        back_populates="books_offered",
+        link_model=ExchangeRequestLink
+    )
+    exchange_requests_requested: List["ExchangeRequest"] = Relationship(
+        back_populates="books_requested",
+        link_model=ExchangeRequestLink
+    )
+    # user_library_id: int = Field(default=None, foreign_key="user_library.id")
+    user_library: UserLibrary = Relationship(back_populates="books")
+    author: Optional[Author] = Relationship(back_populates="books")
 
 
-# Модель данных для отзывов о пользователе
-class UserReview(BaseModel):
-    id: int
-    reviewer_id: UserProfile  # Пользователь, оставивший отзыв
-    reviewed_id: UserProfile  # Пользователь, оцененный в отзыве
-    rating: int  # Оценка пользователя
-    review_text: Optional[str]  # Текст отзыва
-
-
-# Модель данных для отзывов о книге
-class BookReview(BaseModel):
-    id: int
-    book_id: Book  # Ссылка на книгу, о которой оставлен отзыв
-    reviewer_id: UserProfile  # Ссылка на профиль пользователя, оставившего отзыв
-    rating: int  # Оценка книги
-    review_text: Optional[str]  # Текст отзыва
+class BooksAuthor(BookDefault):
+    author: Optional[Author] = None
