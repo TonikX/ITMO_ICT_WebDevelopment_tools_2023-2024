@@ -22,6 +22,11 @@ class UserBase(SQLModel):
     language: str
 
 
+class UserLogin(SQLModel):
+    email: str = Field(unique=True)
+    password: str
+
+
 class UserPasswordUpdate(SQLModel):
     old_password: str
     new_password: str

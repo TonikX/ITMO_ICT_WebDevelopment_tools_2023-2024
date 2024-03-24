@@ -21,6 +21,7 @@ from .trip import (
 from .user import (
     User,
     UserBase,
+    UserLogin,
     UserPassword,
     UserPasswordCreate,
     UserPasswordUpdate,
