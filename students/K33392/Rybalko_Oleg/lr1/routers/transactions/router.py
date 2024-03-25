@@ -8,13 +8,14 @@ from conn import get_session
 from dependencies import verify_jwt
 from models import Transaction
 
-from .models import DeletedTransactionResponse, TransactionRead
+from .models import DeletedTransactionResponse, TransactionRead, TransactionCreate
 
 router = APIRouter(prefix="/transactions", dependencies=[Depends(verify_jwt)])
 
 
+
 @router.post("/", response_model=Transaction)
-def create_transaction(transaction: Transaction, session: Session = Depends(get_session)) -> Transaction:
+def create_transaction(transaction: TransactionCreate, session: Session = Depends(get_session)) -> Transaction:
     transaction = Transaction.model_validate(transaction)
     session.add(transaction)
     session.commit()

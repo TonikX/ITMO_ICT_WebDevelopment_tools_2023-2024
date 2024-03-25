@@ -18,3 +18,11 @@ class TransactionRead(BaseModel):
     category_id: int
     timestamp: datetime
     user: UserRead
+
+class TransactionCreate(BaseModel):
+    transaction_id: int
+    user_id: int
+    amount: float
+    transaction_type: str
+    category_id: int
+    timestamp: datetime
