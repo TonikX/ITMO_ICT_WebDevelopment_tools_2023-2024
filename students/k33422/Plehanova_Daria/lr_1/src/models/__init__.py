@@ -16,7 +16,8 @@ from .token import (
 )
 from .trip import (
     Trip,
-    TripBase
+    TripBase,
+    TripBasePartial
 )
 from .user import (
     User,

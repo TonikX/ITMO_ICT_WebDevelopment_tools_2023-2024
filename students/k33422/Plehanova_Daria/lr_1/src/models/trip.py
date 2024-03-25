@@ -13,6 +13,14 @@ class TripBase(SQLModel):
     description: str | None
 
 
+class TripBasePartial(SQLModel):
+    start_location: str | None = None
+    end_location: str | None = None
+    start_date: datetime | None = None
+    end_date: datetime | None = None
+    description: str | None = None
+
+
 class Trip(TripBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key='user.id')

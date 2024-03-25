@@ -132,5 +132,5 @@ async def auth_user_check_self_info(
         'subject': payload.get('sub'),
         'expire': payload.get('exp'),
         'logged_in_at': payload.get('iat'),
-        'user_data': UserBase(**user.dict()),
+        'user_data': UserBase(**user.model_dump()),
     }
