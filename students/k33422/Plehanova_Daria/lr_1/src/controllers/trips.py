@@ -2,12 +2,12 @@ from datetime import datetime
 from typing import Annotated
 
 from fastapi import Depends, APIRouter, HTTPException, status
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import select
 
 from src.controllers.auth import get_current_auth_user
 from src.db.helper import helper
-from src.models import Trip, User, TripBase, TripBasePartial
+from src.models import Trip, User, TripBase, TripBasePartial, FavoriuteTrip, TripDetail, UserBaseId
 
 router = APIRouter(prefix="/trips")
 
@@ -38,7 +38,7 @@ async def create_trip(
     return trip
 
 
-@router.get('/{trip_id}/', response_model=Trip)
+@router.get('/{trip_id}/', response_model=TripDetail)
 async def get_trip(
         trip_id: int,
         user: Annotated[User, Depends(get_current_auth_user)],
@@ -52,7 +52,14 @@ async def get_trip(
             detail=f"Trip {trip_id} not found!",
         )
 
-    return trip
+    r = await session.execute(
+        select(User)
+        .join(FavoriuteTrip, User.id == FavoriuteTrip.user_id)
+        .join(Trip, Trip.id == FavoriuteTrip.trip_id)
+        .where(Trip.id == trip_id)
+    )
+
+    return TripDetail(**trip.model_dump(), liked_by=[UserBaseId(**i.model_dump()) for i in r.scalars().all()])
 
 
 @router.patch('/{trip_id}/', response_model=Trip)

@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlmodel import SQLModel, Field, Relationship
 
 from .favorite_trip import FavoriuteTrip
+from .user import UserBaseId
 
 
 class TripBase(SQLModel):
@@ -31,3 +32,8 @@ class Trip(TripBase, table=True):
         back_populates='favorite_trips',
         link_model=FavoriuteTrip
     )
+
+
+class TripDetail(TripBase):
+    id: int | None
+    liked_by: list[UserBaseId] = []

@@ -22,6 +22,9 @@ class UserBase(SQLModel):
     language: str
 
 
+class UserBaseId(UserBase):
+    id: int | None
+
 class UserLogin(SQLModel):
     email: str = Field(unique=True)
     password: str

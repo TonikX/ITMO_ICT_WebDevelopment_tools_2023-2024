@@ -17,11 +17,13 @@ from .token import (
 from .trip import (
     Trip,
     TripBase,
+    TripDetail,
     TripBasePartial
 )
 from .user import (
     User,
     UserBase,
+    UserBaseId,
     UserLogin,
     UserPassword,
     UserPasswordCreate,
