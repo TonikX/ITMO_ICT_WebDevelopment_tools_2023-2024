@@ -24,6 +24,7 @@ from .user import (
     User,
     UserBase,
     UserBaseId,
+    UserBaseCompanion,
     UserLogin,
     UserPassword,
     UserPasswordCreate,

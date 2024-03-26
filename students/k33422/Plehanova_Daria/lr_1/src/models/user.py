@@ -25,6 +25,11 @@ class UserBase(SQLModel):
 class UserBaseId(UserBase):
     id: int | None
 
+
+class UserBaseCompanion(UserBaseId):
+    companion_id: int
+    status: str
+
 class UserLogin(SQLModel):
     email: str = Field(unique=True)
     password: str
@@ -57,4 +62,8 @@ class User(UserPassword, table=True):
     created_trips: list['Trip'] = Relationship(
         back_populates='user',
         sa_relationship_kwargs={"cascade": "all, delete"},
+    )
+    trip_requests: list['Trip'] = Relationship(
+        back_populates='companions',
+        sa_relationship_kwargs={"cascade": "all, delete", "lazy": "selectin"}
     )

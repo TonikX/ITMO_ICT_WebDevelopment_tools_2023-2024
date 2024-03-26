@@ -3,30 +3,48 @@ from typing import Annotated
 
 from fastapi import Depends, APIRouter, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import select
+from sqlmodel import select, exists, or_
 
 from src.controllers.auth import get_current_auth_user
 from src.db.helper import helper
-from src.models import Trip, User, TripBase, TripBasePartial, FavoriuteTrip, TripDetail, UserBaseId
+from src.models import Trip, User, TripBase, TripBasePartial, FavoriuteTrip, TripDetail, UserBaseId, Companion, \
+    UserBaseCompanion, Status
 
 router = APIRouter(prefix="/trips")
 
 
-@router.get('/', response_model=list[Trip])
+@router.get('/', response_model=Annotated[list[Trip], Depends()])
 async def get_trips(
         session: Annotated[AsyncSession, Depends(helper.scoped_session_dependency)],
-        is_actual: bool = True
+        search: str | None = None,
+        start_location: str | None = None,
+        end_location: str | None = None,
+        is_actual: bool = None
 ):
     statement = select(Trip)
     if is_actual:
         # noinspection PyTypeChecker
         statement = statement.where(Trip.start_date > datetime.utcnow())
 
+    if search:
+        statement = statement.where(
+            or_(
+                Trip.description.ilike(f"%{search}%"),
+                Trip.end_location.ilike(f"%{search}%")
+            )
+        )
+
+    if start_location:
+        statement = statement.where(Trip.start_location.ilike(start_location))
+
+    if end_location:
+        statement = statement.where(Trip.end_location.ilike(end_location))
+
     res = await session.execute(statement)
     return res.scalars().all()
 
 
-@router.post('/', response_model=Trip)
+@router.post('/', response_model=Annotated[Trip, Depends()])
 async def create_trip(
         scheme: Annotated[TripBase, Depends()],
         user: Annotated[User, Depends(get_current_auth_user)],
@@ -38,7 +56,7 @@ async def create_trip(
     return trip
 
 
-@router.get('/{trip_id}/', response_model=TripDetail)
+@router.get('/{trip_id}/', response_model=Annotated[TripDetail, Depends()])
 async def get_trip(
         trip_id: int,
         user: Annotated[User, Depends(get_current_auth_user)],
@@ -62,7 +80,7 @@ async def get_trip(
     return TripDetail(**trip.model_dump(), liked_by=[UserBaseId(**i.model_dump()) for i in r.scalars().all()])
 
 
-@router.patch('/{trip_id}/', response_model=Trip)
+@router.patch('/{trip_id}/', response_model=Annotated[Trip, Depends()])
 async def update_trip(
         trip_id: int,
         scheme: Annotated[TripBasePartial, Depends()],
@@ -112,3 +130,71 @@ async def delete_trip(
 
     await session.delete(trip)
     await session.commit()
+
+
+@router.get('/{trip_id}/companions/', response_model=Annotated[list[UserBaseCompanion], Depends()])
+async def get_companions(
+        trip_id: int,
+        user: Annotated[User, Depends(get_current_auth_user)],
+        session: Annotated[AsyncSession, Depends(helper.scoped_session_dependency)],
+        status: Status = None,
+):
+    trip = await session.get(Trip, trip_id)
+
+    if trip is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Trip {trip_id} not found!",
+        )
+
+    s = (
+        select(User, Companion)
+        .join(Companion, User.id == Companion.user_id)
+        .join(Trip, Companion.trip_id == Trip.id)
+        .where(Trip.id == trip_id)
+    )
+
+    if status is not None:
+        s = s.where(s.c.status == status)
+
+    q = await session.execute(s)
+
+    return [UserBaseCompanion(**i[0].model_dump(), status=i[1].status, companion_id=i[1].id) for i in q.all()]
+
+
+@router.post('/{trip_id}/companions/', response_model=Annotated[UserBaseCompanion, Depends()])
+async def create_companion(
+        trip_id: int,
+        user: Annotated[User, Depends(get_current_auth_user)],
+        session: Annotated[AsyncSession, Depends(helper.scoped_session_dependency)]
+):
+    trip = await session.get(Trip, trip_id)
+
+    if trip is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Trip {trip_id} not found!",
+        )
+
+    if trip.user_id == user.id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="You are an owner"
+        )
+
+    s = await session.execute(
+        select(exists().where(Companion.user_id == user.id).where(Companion.trip_id == trip_id))
+    )
+    r = s.scalar()
+
+    if r:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="You are already a companion for this trip"
+        )
+
+    companion = Companion(trip_id=trip_id, user_id=user.id)
+    session.add(companion)
+    await session.commit()
+    companion = companion.model_dump()
+    return UserBaseCompanion(**user.model_dump(), status=companion.get('status'), companion_id=companion.get('id'))
