@@ -1,0 +1,30 @@
+site_name: Лабораторные работы
+
+theme:
+  name: material
+  palette:
+    primary: orange
+  icon:
+    repo: fontawesome/brands/git-alt
+
+repo_url: https://github.com/DaniilMaximov/ITMO_ICT_WebDevelopment_tools_2023-2024
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.keys
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+nav:
+  - "№1: FastAPI":
+      - lab-1/index.md
