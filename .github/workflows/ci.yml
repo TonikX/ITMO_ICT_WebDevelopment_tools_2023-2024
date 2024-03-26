@@ -23,3 +23,4 @@ jobs:
       - run: pip install mkdocs-material mkdocs-glightbox
       - run: mkdocs gh-deploy --force
         working-directory: ./students/K33421/Daniil_Maximov
+
