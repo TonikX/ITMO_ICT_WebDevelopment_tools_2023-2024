@@ -12,7 +12,11 @@ from .favorite_trip import (
 )
 from .review import (
     Review,
-    ReviewBase
+    ReviewBase,
+    ReviewBaseId,
+    ReviewBaseList,
+    ReviewBaseDetail,
+    ReviewScheme,
 )
 from .token import (
     Token

@@ -22,6 +22,16 @@ class UserBase(SQLModel):
     language: str
 
 
+class UserBaseUpdate(SQLModel):
+    first_name: str | None = None
+    last_name: str | None = None
+    gender: Gender | None = None
+    birth_date: date | None = None
+    description: str | None = None
+    county: str | None = None
+    language: str | None = None
+
+
 class UserBaseId(UserBase):
     id: int | None
 

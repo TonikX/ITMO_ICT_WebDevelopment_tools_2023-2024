@@ -8,7 +8,7 @@ from sqlmodel import select, exists, or_
 from src.controllers.auth import get_current_auth_user
 from src.db.helper import helper
 from src.models import Trip, User, TripBase, TripBasePartial, FavoriuteTrip, TripDetail, UserBaseId, Companion, \
-    Status, CompanionBaseId, CompanionBaseDetail
+    Status, CompanionBaseId, CompanionBaseDetail, Review, ReviewBaseList, ReviewBaseDetail, ReviewScheme
 
 router = APIRouter(prefix="/trips")
 
@@ -267,7 +267,7 @@ async def update_companion(
     return CompanionBaseDetail(**companion.model_dump(), user=user.model_dump())
 
 
-@router.get("/{trip_id}/reviews/")
+@router.get("/{trip_id}/reviews/", response_model=Annotated[list[ReviewBaseList], Depends()])
 async def get_reviews(
         trip_id: int,
         user: Annotated[User, Depends(get_current_auth_user)],
@@ -281,21 +281,63 @@ async def get_reviews(
             detail=f"Trip {trip_id} not found!",
         )
 
+    q = await session.execute(
+        select(Review).where(Review.trip_id == trip_id)
+    )
+
+    return [ReviewBaseList(**i.model_dump()) for i in q.scalars().all()]
 
 
-@router.post("/{trip_id}/reviews/")
+@router.post("/{trip_id}/reviews/", response_model=Annotated[ReviewBaseDetail, Depends()])
 async def create_reviews(
-
-): ...
-
-
-@router.get("/{trip_id}/reviews/{review_id}/")
-async def get_review(
-
+        trip_id: int,
+        scheme: Annotated[ReviewScheme, Depends()],
+        user: Annotated[User, Depends(get_current_auth_user)],
+        session: Annotated[AsyncSession, Depends(helper.scoped_session_dependency)]
 ):
+    trip = await session.get(Trip, trip_id)
+
+    if trip is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Trip {trip_id} not found!",
+        )
+
+    if trip.user_id == user.id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="You are an owner"
+        )
+
+    review = Review(**scheme.model_dump(), user_id=user.id, trip_id=trip_id)
+    print(review)
+
+    session.add(review)
+    await session.commit()
+    return ReviewBaseDetail(**review.model_dump(), user=user.model_dump())
 
 
-@router.delete("/{trip_id}/reviews/{review_id}/")
-async def delete_review(
+@router.get("/{trip_id}/reviews/{review_id}/", response_model=Annotated[ReviewBaseDetail, Depends()])
+async def get_review(
+        trip_id: int,
+        review_id: int,
+        user: Annotated[User, Depends(get_current_auth_user)],
+        session: Annotated[AsyncSession, Depends(helper.scoped_session_dependency)]
+):
+    trip = await session.get(Trip, trip_id)
 
-): ...
+    if trip is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Trip {trip_id} not found!",
+        )
+
+    review = await session.get(Review, review_id)
+
+    if review is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Review {review_id} not found!",
+        )
+
+    return ReviewBaseDetail(**review.model_dump(), user=user.model_dump())

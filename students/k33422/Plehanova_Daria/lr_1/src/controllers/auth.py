@@ -8,6 +8,7 @@ from sqlmodel import select
 
 from src.db.helper import helper
 from src.models import User, Token, UserLogin, UserBase, UserPasswordCreate, UserPasswordUpdate
+from src.models.user import UserBaseUpdate
 from src.services import auth
 
 auth_scheme = HTTPBearer()
@@ -134,3 +135,18 @@ async def auth_user_check_self_info(
         'logged_in_at': payload.get('iat'),
         'user_data': UserBase(**user.model_dump()),
     }
+
+
+@router.patch('/me/', response_model=Annotated[UserBase, Depends()])
+async def auth_user_check_self_info(
+        scheme: Annotated[UserBaseUpdate, Depends()],
+        user: Annotated[User, Depends(get_current_auth_user)],
+        session: Annotated[AsyncSession, Depends(helper.scoped_session_dependency)]
+):
+    for name, value in scheme.model_dump(exclude_none=True).items():
+        setattr(user, name, value)
+
+    print(user)
+
+    await session.commit()
+    return user
