@@ -8,7 +8,7 @@ from sqlmodel import select, exists, or_
 from src.controllers.auth import get_current_auth_user
 from src.db.helper import helper
 from src.models import Trip, User, TripBase, TripBasePartial, FavoriuteTrip, TripDetail, UserBaseId, Companion, \
-    UserBaseCompanion, Status
+    Status, CompanionBaseId, CompanionBaseDetail
 
 router = APIRouter(prefix="/trips")
 
@@ -95,7 +95,7 @@ async def update_trip(
             detail=f"Trip {trip_id} not found!",
         )
 
-    if trip.user.id != user.id:
+    if trip.user_id != user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You are not an owner"
@@ -122,7 +122,7 @@ async def delete_trip(
             detail=f"Trip {trip_id} not found!",
         )
 
-    if trip.user.id != user.id:
+    if trip.user_id != user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You are not an owner"
@@ -132,7 +132,7 @@ async def delete_trip(
     await session.commit()
 
 
-@router.get('/{trip_id}/companions/', response_model=Annotated[list[UserBaseCompanion], Depends()])
+@router.get('/{trip_id}/companions/', response_model=Annotated[list[CompanionBaseId], Depends()])
 async def get_companions(
         trip_id: int,
         user: Annotated[User, Depends(get_current_auth_user)],
@@ -159,10 +159,10 @@ async def get_companions(
 
     q = await session.execute(s)
 
-    return [UserBaseCompanion(**i[0].model_dump(), status=i[1].status, companion_id=i[1].id) for i in q.all()]
+    return [CompanionBaseDetail(**companion.model_dump(), user=user.model_dump()) for user, companion in q.all()]
 
 
-@router.post('/{trip_id}/companions/', response_model=Annotated[UserBaseCompanion, Depends()])
+@router.post('/{trip_id}/companions/', response_model=Annotated[CompanionBaseDetail, Depends()])
 async def create_companion(
         trip_id: int,
         user: Annotated[User, Depends(get_current_auth_user)],
@@ -196,5 +196,106 @@ async def create_companion(
     companion = Companion(trip_id=trip_id, user_id=user.id)
     session.add(companion)
     await session.commit()
-    companion = companion.model_dump()
-    return UserBaseCompanion(**user.model_dump(), status=companion.get('status'), companion_id=companion.get('id'))
+
+    return CompanionBaseDetail(**companion.model_dump(), user=user.model_dump())
+
+
+@router.get('/{trip_id}/companions/{companion_id}/', response_model=Annotated[CompanionBaseDetail, Depends()])
+async def get_companion(
+        trip_id: int,
+        companion_id: int,
+        user: Annotated[User, Depends(get_current_auth_user)],
+        session: Annotated[AsyncSession, Depends(helper.scoped_session_dependency)]
+):
+    trip = await session.get(Trip, trip_id)
+
+    if trip is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Trip {trip_id} not found!",
+        )
+
+    companion = await session.get(Companion, companion_id)
+
+    if companion is None or companion.trip_id != trip_id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Companion {companion_id} not found!",
+        )
+
+    user = await session.get(User, companion.user_id)
+
+    return CompanionBaseDetail(**companion.model_dump(), user=user.model_dump())
+
+
+@router.patch('/{trip_id}/companions/{companion_id}/', response_model=Annotated[CompanionBaseDetail, Depends()])
+async def update_companion(
+        trip_id: int,
+        companion_id: int,
+        user: Annotated[User, Depends(get_current_auth_user)],
+        session: Annotated[AsyncSession, Depends(helper.scoped_session_dependency)],
+        status_: Status = None,
+):
+    trip = await session.get(Trip, trip_id)
+
+    if trip is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Trip {trip_id} not found!",
+        )
+
+    if trip.user_id != user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You are not an owner"
+        )
+
+    companion = await session.get(Companion, companion_id)
+
+    if companion is None or companion.trip_id != trip_id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Companion {companion_id} not found!",
+        )
+
+    user = await session.get(User, companion.user_id)
+
+    if status_ is not None:
+        companion.status = status_
+
+    await session.commit()
+    return CompanionBaseDetail(**companion.model_dump(), user=user.model_dump())
+
+
+@router.get("/{trip_id}/reviews/")
+async def get_reviews(
+        trip_id: int,
+        user: Annotated[User, Depends(get_current_auth_user)],
+        session: Annotated[AsyncSession, Depends(helper.scoped_session_dependency)]
+):
+    trip = await session.get(Trip, trip_id)
+
+    if trip is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Trip {trip_id} not found!",
+        )
+
+
+
+@router.post("/{trip_id}/reviews/")
+async def create_reviews(
+
+): ...
+
+
+@router.get("/{trip_id}/reviews/{review_id}/")
+async def get_review(
+
+):
+
+
+@router.delete("/{trip_id}/reviews/{review_id}/")
+async def delete_review(
+
+): ...

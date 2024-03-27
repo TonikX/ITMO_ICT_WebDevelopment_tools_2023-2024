@@ -1,6 +1,9 @@
 from .companion import (
     Companion,
     CompanionBase,
+    StatusScheme,
+    CompanionBaseId,
+    CompanionBaseDetail,
     Status
 )
 from .favorite_trip import (
