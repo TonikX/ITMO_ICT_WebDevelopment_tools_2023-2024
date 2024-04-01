@@ -1,11 +1,12 @@
 from enum import Enum
 from typing import Optional, List
-
+from sqlalchemy import Column, Integer, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 # from pydantic import BaseModel
 from sqlmodel import SQLModel, Field, Relationship
 
 
-class Genre(str, Enum):
+class BookGenre(str, Enum):
     Fiction = "fiction"
     NonFiction = "non-fiction"
     Mystery = "mystery"
@@ -13,38 +14,49 @@ class Genre(str, Enum):
     ScienceFiction = "science-fiction"
 
 
-class Author(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
-    name: str
-    bio: Optional[str] = ""
-    country: Optional[str] = ""
-    books: List["Book"] = Relationship(back_populates="author")
+class AuthorBookLink(SQLModel, table=True):
+    __tablename__ = "author_book_link"
 
-
-class ExchangeRequestLink(SQLModel, table=True):
-    __tablename__ = "exchange_request_link"
-
-    exchange_request_id: int = Field(default=None, foreign_key="exchange_request.id", primary_key=True)
-    user_id: int = Field(default=None, foreign_key="user_profile.id", primary_key=True)
+    author_id: int = Field(default=None, foreign_key="author.id", primary_key=True)
     book_id: int = Field(default=None, foreign_key="book.id", primary_key=True)
+
+
+class AuthorDefault(SQLModel):
+    name: str
+    bio: Optional[str]
+    country: Optional[str] = ""
+
+
+class Author(AuthorDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+    books: List["Book"] = Relationship(back_populates="authors", link_model=AuthorBookLink)
+
+
+# class ExchangeRequestLink(SQLModel, table=True):
+#     __tablename__ = "exchange_request_link"
+#
+#     exchange_request_id: int = Field(default=None, foreign_key="exchange_request.id", primary_key=True)
+#     sender_id: int = Field(default=None, foreign_key="user_profile.id", primary_key=True)
+#     receiver_id: int = Field(default=None, foreign_key="user_profile.id", primary_key=True)
+#     offered_book_id: int = Field(default=None, foreign_key="book.id", primary_key=True)
+#     requested_book_id: int = Field(default=None, foreign_key="book.id", primary_key=True)
 
 
 class ExchangeRequest(SQLModel, table=True):
     __tablename__ = "exchange_request"
 
     id: int = Field(primary_key=True)
-    books_offered: List["Book"] = Relationship(
-        back_populates="exchange_requests_offered",
-        link_model=ExchangeRequestLink
-    )
-    books_requested: List["Book"] = Relationship(
-        back_populates="exchange_requests_requested",
-        link_model=ExchangeRequestLink
-    )
     accepted: bool
-    users: List["UserProfile"] = Relationship(
-        back_populates="exchange_requests",
-        link_model=ExchangeRequestLink
+    sender_id: int = Field(default=None, foreign_key="user_profile.id")
+    receiver_id: int = Field(default=None, foreign_key="user_profile.id")
+
+    sender: Optional["UserProfile"] = Relationship(
+        back_populates="sent_requests",
+        sa_relationship_kwargs={"foreign_keys": "ExchangeRequest.sender_id"}
+    )
+    receiver: Optional["UserProfile"] = Relationship(
+        back_populates="received_requests",
+        sa_relationship_kwargs={"foreign_keys": "ExchangeRequest.receiver_id"}
     )
 
 
@@ -61,17 +73,25 @@ class UserProfile(UserDefault, table=True):
     __tablename__ = "user_profile"
 
     id: int = Field(default=None, primary_key=True)
-    exchange_requests: List["ExchangeRequest"] = Relationship(
-        back_populates="users",
-        link_model=ExchangeRequestLink
+    # exchange_requests: List["ExchangeRequest"] = Relationship(
+    #     back_populates="users",
+    #     link_model=ExchangeRequestLink
+    # )
+    sent_requests: Optional[List["ExchangeRequest"]] = Relationship(
+        back_populates="sender",
+        sa_relationship_kwargs={"foreign_keys": "ExchangeRequest.sender_id"}
     )
-    library: Optional["UserLibrary"] = Relationship(back_populates="user_profile")
+    received_requests: Optional[List["ExchangeRequest"]] = Relationship(
+        back_populates="receiver",
+        sa_relationship_kwargs={"foreign_keys": "ExchangeRequest.receiver_id"}
+    )
+    # library: Optional["UserLibrary"] = Relationship(back_populates="user_profile")
 
 
 class BookDefault(SQLModel):
     title: str
-    author_id: int = Field(foreign_key="author.id")
-    genre: Genre
+    # author_id: int = Field(foreign_key="author.id")
+    genre: BookGenre
     bio: Optional[str] = ""
 
 
@@ -81,26 +101,23 @@ class UserLibrary(SQLModel, table=True):
     id: int = Field(primary_key=True)
     user_id: int = Field(foreign_key="user_profile.id")
     book_id: int = Field(foreign_key="book.id")
-    user_profile: UserProfile = Relationship(back_populates="library")
-    books: Optional[List["Book"]] = Relationship(back_populates="user_library")
+    # user_profile: UserProfile = Relationship(back_populates="library")
+    books_library: Optional[List["Book"]] = Relationship(back_populates="user_library")
 
 
 class Book(BookDefault, table=True):
     __tablename__ = "book"
 
     id: int = Field(default=None, primary_key=True)
-    exchange_requests_offered: List["ExchangeRequest"] = Relationship(
-        back_populates="books_offered",
-        link_model=ExchangeRequestLink
-    )
-    exchange_requests_requested: List["ExchangeRequest"] = Relationship(
-        back_populates="books_requested",
-        link_model=ExchangeRequestLink
-    )
     # user_library_id: int = Field(default=None, foreign_key="user_library.id")
-    user_library: UserLibrary = Relationship(back_populates="books")
-    author: Optional[Author] = Relationship(back_populates="books")
+    user_library: UserLibrary = Relationship(back_populates="books_library")
+    authors: Optional[List["Author"]] = Relationship(back_populates="books", link_model=AuthorBookLink)
 
 
 class BooksAuthor(BookDefault):
     author: Optional[Author] = None
+
+
+class BookWithAuthors(SQLModel):
+    book: BookDefault
+    author_ids: List[int]
