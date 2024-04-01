@@ -5,10 +5,18 @@ from sqlmodel import Session
 
 from endpoints.user_endpoints import auth_handler
 from models.main_models import Balance, Target, Transactions, TargetCreate, TargetUpdate, TransactionsCreate, Category, \
-    TransactionsUpdate
+    TransactionsUpdate, UserBalance, TargetResponse
 from db.db import session
 
 main_router = APIRouter()
+
+
+@main_router.get("/balances/{balance_id}", response_model=UserBalance)
+def get_balance(balance_id: int):
+    balance = session.get(Balance, balance_id)
+    if not balance:
+        raise HTTPException(status_code=404, detail="Balance not found")
+    return balance
 
 
 @main_router.post("/balances/{balance_id}/targets/", response_model=Target)
@@ -50,7 +58,7 @@ def delete_target_for_balance(balance_id: int, target_id: int, user=Depends(auth
     return {"message": "Target deleted"}
 
 
-@main_router.get("/balances/{balance_id}/targets/", response_model=List[Target])
+@main_router.get("/balances/{balance_id}/targets/", response_model=List[TargetResponse])
 def get_targets_for_balance(balance_id: int):
     targets = session.query(Target).filter(Target.balance_id == balance_id).all()
     if not targets:

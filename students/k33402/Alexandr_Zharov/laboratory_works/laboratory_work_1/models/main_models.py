@@ -21,14 +21,13 @@ class TransactionsType(str, Enum):
     INCOME = "income"
     EXPENSES = "expenses"
 
-
-class Target(SQLModel, table=True):
-    id: int = Field(primary_key=True)
+class TargetDeafult(SQLModel):
     category: Category = Category.OTHER
     value: int = 0
     balance_id: int = Field(foreign_key="balance.id")
+class Target(TargetDeafult, table=True):
+    id: int = Field(primary_key=True)
     balance: Optional["Balance"] = Relationship(back_populates="targets")
-
 
 class Transactions(SQLModel, table=True):
     id: int = Field(primary_key=True)
@@ -38,15 +37,24 @@ class Transactions(SQLModel, table=True):
     balance_id: int = Field(foreign_key="balance.id")
     balance: Optional["Balance"] = Relationship(back_populates="transactions")
 
-
-class Balance(SQLModel, table=True):
-    id: int = Field(primary_key=True)
+class BalanceDeafult(SQLModel):
     balance: int = 0
     user_id: Optional[int] = Field(foreign_key="user.id")
+
+class Balance(BalanceDeafult, table=True):
+    id: int = Field(primary_key=True)
     user: Optional[User] = Relationship(back_populates="balance")
     transactions: List[Transactions] = Relationship(back_populates="balance")
     targets: List[Target] = Relationship(back_populates="balance")
 
+
+class UserBalance(BalanceDeafult):
+    transactions: List[Transactions] = None
+    targets: List[Target] = None
+
+
+class TargetResponse(TargetDeafult):
+    balance: Optional[Balance] = None
 
 class TargetCreate(SQLModel):
     category: Category
@@ -68,3 +76,5 @@ class TransactionsUpdate(SQLModel):
     category: Category
     type: TransactionsType
     value: int
+
+

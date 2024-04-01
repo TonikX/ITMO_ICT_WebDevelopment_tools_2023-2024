@@ -5,14 +5,21 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from passlib.context import CryptContext
 import jwt
 from starlette import status
+from dotenv import load_dotenv
 
 from repos.user_repos import find_user
+
+import os
+
+load_dotenv()
+
+secret_key = os.getenv("SECRET_KEY")
 
 
 class AuthHandler:
     security = HTTPBearer()
     pwd_context = CryptContext(schemes=['bcrypt'])
-    secret = 'supersecret'
+    secret = secret_key
 
     def get_password_hash(self, password):
         return self.pwd_context.hash(password)

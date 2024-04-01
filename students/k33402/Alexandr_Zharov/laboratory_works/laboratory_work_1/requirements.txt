@@ -6,3 +6,4 @@ pyJWT~=2.8.0
 bcrypt
 passlib~=1.7.4
 pydantic~=2.6.3
+python-dotenv

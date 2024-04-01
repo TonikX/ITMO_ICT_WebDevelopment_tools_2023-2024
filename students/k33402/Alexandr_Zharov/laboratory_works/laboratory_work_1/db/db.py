@@ -1,6 +1,10 @@
 from sqlmodel import create_engine, Session
+import os
+from dotenv import load_dotenv
 
-eng = r'A:\Studies\Веб\ITMO_ICT_WebDevelopment_tools_2023-2024\students\k33402\Alexandr_Zharov\laboratory_work_1\database.db'
-sqlite_url = f'sqlite:///{eng}'
-engine = create_engine(sqlite_url, echo=True)
+load_dotenv()
+postgres_url = os.getenv('DB_URL')
+
+db_url = postgres_url
+engine = create_engine(db_url, echo=True)
 session = Session(bind=engine)

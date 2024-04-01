@@ -26,6 +26,10 @@
    d. Хэширование паролей
    e. Дополнительные АПИ-методы для получения информации о пользователе, списка пользователей и смене пароля
 
+#### Ссылка на практики
+
+https://github.com/SashaZharov/ITMO_ICT_WebDevelopment_tools_2023-2024/tree/main/students/k33402/Alexandr_Zharov/practical_works/practical_work_1
+
 #### Ход Выполнения:
 
 Для работы будет использоваться следующий стек:
