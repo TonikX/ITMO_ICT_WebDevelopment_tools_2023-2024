@@ -96,32 +96,34 @@ def delete_author(author_id: int, session=Depends(get_session)):
     return {"ok": True}
 
 
-@app.get("/book_list")
-def books_list(session=Depends(get_session)) -> List[Book]:
-    return session.exec(select(Book)).all()
+@app.get("/book_list", response_model=List[BookWithAuthors])
+def get_books(session=Depends(get_session)):
+    books = session.exec(select(Book)).all()
+
+    # Для каждой книги получаем связанных авторов и их идентификаторы
+    books_with_authors = []
+    for book in books:
+        author_links = session.exec(select(AuthorBookLink).where(AuthorBookLink.book_id == book.id)).all()
+        author_ids = [link.author_id for link in author_links]
+        books_with_authors.append(BookWithAuthors(book=book, author_ids=author_ids))
+
+    return books_with_authors
 
 
-@app.get("/book/{book_id}", response_model=BooksAuthor)
-def get_book(book_id: int, session=Depends(get_session)) -> Book:
-    # book = session.exec(select(Book).where(Book.id == book_id)).first()
-    book = session.get(Book, book_id)
-    if book:
-        return book
-    else:
+@app.get("/book/{book_id}")
+def get_book(book_id: int, session=Depends(get_session)) -> BookWithAuthors:
+    query = select(Book).where(Book.id == book_id)
+    book = session.exec(query).first()
+    if not book:
         raise HTTPException(status_code=404, detail="Book not found")
+    author_links = session.exec(select(AuthorBookLink).where(AuthorBookLink.book_id == book_id)).all()
+    author_ids = [link.author_id for link in author_links]
 
+    return BookWithAuthors(book=book, author_ids=author_ids)
 
-# @app.post("/book")
-# def create_book(book: BookDefault, session=Depends(get_session)) -> TypedDict('Response', {"status": int,
-#                                                                                            "data": Book}):
-#     validated_book = Book(**book.dict())
-#     session.add(validated_book)
-#     session.commit()
-#     session.refresh(validated_book)
-#     return {"status": 200, "data": validated_book}
 
 @app.post("/book", response_model=Book)
-def create_book(book_data: BookWithAuthors, session = Depends(get_session)) -> Book:
+def create_book(book_data: BookWithAuthors, session=Depends(get_session)) -> Book:
     # Создаем книгу из данных запроса
     book = Book(**book_data.book.dict())
     session.add(book)
@@ -137,7 +139,6 @@ def create_book(book_data: BookWithAuthors, session = Depends(get_session)) -> B
     return book
 
 
-
 @app.get("/user/{user_id}/library")
 def get_user_library(user_id: int, session=Depends(get_session)):
     user = session.get(UserProfile, user_id)
@@ -148,19 +149,16 @@ def get_user_library(user_id: int, session=Depends(get_session)):
     if not user_library:
         return {"message": "User library is empty"}
 
-    library_books = []
-    for user_book in user_library:
-        book_id = user_book.book_id
-        book = session.get(Book, book_id)
+    # Для каждой книги получаем связанных авторов и их идентификаторы
+    library_with_authors = []
+    for entry in user_library:
+        book = session.get(Book, entry.book_id)
         if book:
-            author_id = book.author_id
-            author = session.get(Author, author_id)
-            if author:
-                book_dict = book.dict()
-                book_dict["author_info"] = author.dict()
-                library_books.append({"book_id": book_id, "book_info": book_dict})
+            author_links = session.exec(select(AuthorBookLink).where(AuthorBookLink.book_id == book.id)).all()
+            author_ids = [link.author_id for link in author_links]
+            library_with_authors.append(BookWithAuthors(book=book, author_ids=author_ids))
 
-    return {"user": user, "library": library_books}
+    return {"user": user, "library": library_with_authors}
 
 
 @app.post("/user/{user_id}/add_book_to_library/{book_id}")
@@ -177,21 +175,6 @@ def add_book_to_library(user_id: int, book_id: int, session=Depends(get_session)
     session.add(user_library)
     session.commit()
     return {"message": "Book added to user's library successfully"}
-
-
-@app.get("/books_for_exchange")
-def get_books_for_exchange(session=Depends(get_session)):
-    # Fetch all user libraries with books
-    user_libraries = session.exec(select(UserLibrary).options(selectinload(UserLibrary.books))).all()
-
-    books_for_exchange = []
-    for user_library in user_libraries:
-        user = user_library.user_profile
-        book = user_library.books
-        if user and book:
-            books_for_exchange.append({"user": user, "book": book})
-
-    return books_for_exchange
 
 
 @app.post("/user/{sender_id}/send_exchange_request/{receiver_id}")
@@ -219,8 +202,8 @@ def send_exchange_request(sender_id: int, receiver_id: int, offered_book_id: int
 
     # Создаем новый запрос на обмен
     exchange_request = ExchangeRequest(
-        books_offered=[offered_book],
-        books_requested=[requested_book],
+        books_offered=offered_book,
+        books_requested=requested_book,
         accepted=False,
         sender_id=sender_id,
         receiver_id=receiver_id
@@ -228,36 +211,28 @@ def send_exchange_request(sender_id: int, receiver_id: int, offered_book_id: int
     session.add(exchange_request)
     session.commit()
 
-    # Создание связи между запросом на обмен и пользователями
-    exchange_request_link = ExchangeRequestLink(
-        exchange_request_id=exchange_request.id,
-        user_id=sender_id,
-        book_id=offered_book_id
-    )
-    session.add(exchange_request_link)
-    session.commit()
-
     return {"message": "Exchange request sent successfully"}
 
 
-@app.put("/exchange_request/{request_id}/accept")
-def accept_exchange_request(request_id: int, session=Depends(get_session)):
+@app.put("/exchange_request/{request_id}/{action}")
+def respond_to_exchange_request(request_id: int, action: str, session=Depends(get_session)):
+    # Проверяем действие: accept или reject
+    if action not in ["accept", "reject"]:
+        raise HTTPException(status_code=400, detail="Invalid action. Use 'accept' or 'reject'")
+
     exchange_request = session.get(ExchangeRequest, request_id)
     if not exchange_request:
         raise HTTPException(status_code=404, detail="Exchange request not found")
-    exchange_request.accepted = True
-    session.commit()
-    return {"message": "Exchange request accepted successfully"}
 
+    if action == "accept":
+        exchange_request.accepted = True
+        message = "Exchange request accepted successfully"
+    else:
+        exchange_request.accepted = False
+        message = "Exchange request rejected successfully"
 
-@app.put("/exchange_request/{request_id}/reject")
-def reject_exchange_request(request_id: int, session=Depends(get_session)):
-    exchange_request = session.get(ExchangeRequest, request_id)
-    if not exchange_request:
-        raise HTTPException(status_code=404, detail="Exchange request not found")
-    exchange_request.accepted = False
     session.commit()
-    return {"message": "Exchange request rejected successfully"}
+    return {"message": message}
 
 # @app.put("/book/{book_id}")
 # def update_book(book_id: int, book_update: Book):

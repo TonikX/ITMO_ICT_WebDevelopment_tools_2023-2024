@@ -91,7 +91,7 @@ class UserProfile(UserDefault, table=True):
 class BookDefault(SQLModel):
     title: str
     # author_id: int = Field(foreign_key="author.id")
-    genre: BookGenre
+    genre: Optional[BookGenre]
     bio: Optional[str] = ""
 
 
