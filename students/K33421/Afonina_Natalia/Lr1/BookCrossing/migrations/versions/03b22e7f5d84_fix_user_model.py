@@ -1,8 +1,8 @@
-"""fix genre
+"""fix user model
 
-Revision ID: ec9d28f4ff23
-Revises: 7d6840eab56d
-Create Date: 2024-04-01 21:46:46.183211
+Revision ID: 03b22e7f5d84
+Revises: e339e44273b0
+Create Date: 2024-04-03 17:34:54.597742
 
 """
 from typing import Sequence, Union
@@ -13,8 +13,8 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'ec9d28f4ff23'
-down_revision: Union[str, None] = '7d6840eab56d'
+revision: str = '03b22e7f5d84'
+down_revision: Union[str, None] = 'e339e44273b0'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

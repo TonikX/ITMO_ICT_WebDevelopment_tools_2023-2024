@@ -5,8 +5,15 @@ from models import *
 from sqlmodel import *
 from typing_extensions import TypedDict
 from sqlalchemy.orm import selectinload
+from auth import Authorization
+import hashlib
+import datetime
+import jwt
+from fastapi import Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 app = FastAPI()
+auth = Authorization()
 
 
 @app.on_event("startup")
@@ -14,16 +21,81 @@ def on_startup():
     init_db()
 
 
+@app.post("/register")
+def register(username: str, password: str, firstname: str = None, lastname: str = None,
+             age: int = None, location: str = None, bio: str = None, session=Depends(get_session)):
+    # Проверяем, существует ли пользователь уже
+    existing_user = session.exec(select(UserProfile).where(UserProfile.username == username)).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="User already exists")
+
+    # Хэшируем пароль
+    hashed_password = auth.get_password_hash(password)
+
+    # Создаем запись пользователя в базе данных
+    new_user = UserProfile(username=username, firstname=firstname, lastname=lastname,
+                           age=age, location=location, bio=bio, password_hash=hashed_password)
+    session.add(new_user)
+    session.commit()
+
+    # Создаем JWT токен
+    token = auth.encode_token(new_user.id)
+
+    # Возвращаем результат
+    return {"message": "User registered successfully", "token": token}
+
+
+@app.post("/login")
+def login(username: str, password: str, auth: Authorization = Depends(), session=Depends(get_session)):
+    try:
+        # Аутентификация пользователя
+        user = auth.authenticate_user(username, password, session)
+        # Если аутентификация прошла успешно, создаем JWT токен
+        token = auth.encode_token(user.id)
+        # Возвращаем токен
+        return {"token": token}
+    except HTTPException as e:
+        # В случае ошибки аутентификации, возбуждаем исключение с кодом и сообщением из HTTPException
+        raise e
+
+
+@app.put("/change_password/{username}")
+def change_password(username: str, old_password: str, new_password: str, auth: Authorization = Depends(),
+                    session=Depends(get_session)):
+    try:
+        # Аутентификация пользователя для смены пароля
+        user = auth.authenticate_user(username, old_password, session)
+
+        # Хэшируем новый пароль
+        hashed_new_password = auth.get_password_hash(new_password)
+
+        # Обновляем пароль пользователя в базе данных
+        user.password_hash = hashed_new_password
+        session.commit()
+
+        return {"message": "Password changed successfully"}
+    except HTTPException as e:
+        # В случае ошибки аутентификации, возбуждаем исключение с кодом и сообщением из HTTPException
+        raise e
+
 @app.get("/users_list")
 def users_list(session=Depends(get_session)) -> List[UserProfile]:
     return session.exec(select(UserProfile)).all()
 
 
 @app.get("/user/{user_id}")
-def get_user(user_id: int, session=Depends(get_session)) -> UserProfile:
-    user = session.exec(select(UserProfile).where(UserProfile.id == user_id)).first()
+def get_user(username: str, session=Depends(get_session)) -> UserProfile:
+    user = session.exec(select(UserProfile).where(UserProfile.username == username)).first()
     if user:
-        return user
+        return {
+            "id": user.id,
+            "username": user.username,
+            "firstname": user.firstname,
+            "lastname": user.lastname,
+            "age": user.age,
+            "location": user.location,
+            "bio": user.bio
+        }
     else:
         raise HTTPException(status_code=404, detail="User not found")
 

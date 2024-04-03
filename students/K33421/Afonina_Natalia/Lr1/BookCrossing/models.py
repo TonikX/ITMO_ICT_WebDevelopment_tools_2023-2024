@@ -1,12 +1,12 @@
 from enum import Enum
-from typing import Optional, List
+from typing import Optional, List, Union
 from sqlalchemy import Column, Integer, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 # from pydantic import BaseModel
 from sqlmodel import SQLModel, Field, Relationship
 
 
-class BookGenre(str, Enum):
+class BookGenres(str, Enum):
     Fiction = "fiction"
     NonFiction = "non-fiction"
     Mystery = "mystery"
@@ -77,6 +77,7 @@ class UserProfile(UserDefault, table=True):
     #     back_populates="users",
     #     link_model=ExchangeRequestLink
     # )
+    password_hash: str = Field(default=None)
     sent_requests: Optional[List["ExchangeRequest"]] = Relationship(
         back_populates="sender",
         sa_relationship_kwargs={"foreign_keys": "ExchangeRequest.sender_id"}
@@ -91,7 +92,7 @@ class UserProfile(UserDefault, table=True):
 class BookDefault(SQLModel):
     title: str
     # author_id: int = Field(foreign_key="author.id")
-    genre: Optional[BookGenre]
+    genre: Optional[BookGenres]
     bio: Optional[str] = ""
 
 
@@ -121,3 +122,12 @@ class BooksAuthor(BookDefault):
 class BookWithAuthors(SQLModel):
     book: BookDefault
     author_ids: List[int]
+
+
+class Token(SQLModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(SQLModel):
+    username: Union[str, None] = None
