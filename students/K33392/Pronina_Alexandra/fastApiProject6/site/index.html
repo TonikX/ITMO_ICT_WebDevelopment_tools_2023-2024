@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>Лабораторные Прониной Александры</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body class="homepage">
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href=".">Лабораторные Прониной Александры</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem active">
+                                <a href="." class="nav-link">№1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="pr1/" class="nav-link">Пр_1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="pr2/" class="nav-link">Пр_2</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="pr3/" class="nav-link">Пр_3</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="pr1/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/7Alexandra8/ITMO_ICT_WebDevelopment_tools_2023-2024/edit/master/docs/index.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#api" class="nav-link">Пользовательское API</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#_1" class="nav-link">Регистрация нового пользователя</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_2" class="nav-link">Аутентификация пользователя</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_3" class="nav-link">Получение информации о текущем пользователе</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_4" class="nav-link">Получение списка пользователей</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_5" class="nav-link">Изменение пароля текущего пользователя</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#_6" class="nav-link">Вспомогательные функции работы с пользователями</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#id" class="nav-link">Получение пользователя по ID</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_7" class="nav-link">Получение пользователя по адресу электронной почты</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_8" class="nav-link">Аутентификация пользователя</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_9" class="nav-link">Создание нового пользователя</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_10" class="nav-link">Проверка пароля</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#_11" class="nav-link">Подключение к базе данных</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#_12" class="nav-link">Инициализация базы данных</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#sqlalchemy" class="nav-link">Получение сессии SQLAlchemy</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<hr />
+<h1 id="api">Пользовательское API</h1>
+<p>Это веб-API предоставляет ряд эндпоинтов для работы с пользователями(api.py).</p>
+<h2 id="_1">Регистрация нового пользователя</h2>
+<h3 id="post-register"><code>POST /register/</code></h3>
+<p>Регистрирует нового пользователя и добавляет его в базу данных.</p>
+<p><strong>Параметры запроса:</strong>
+- <code>user</code>: Объект, описывающий нового пользователя. Должен содержать следующие поля:
+  - <code>email</code>: Электронная почта нового пользователя.
+  - <code>password</code>: Пароль нового пользователя.</p>
+<p><strong>Пример запроса:</strong></p>
+<pre><code class="language-json">{
+  &quot;user&quot;: {
+    &quot;email&quot;: &quot;example@example.com&quot;,
+    &quot;password&quot;: &quot;examplepassword&quot;
+  }
+}
+</code></pre>
+<h2 id="_2">Аутентификация пользователя</h2>
+<h3 id="post-login"><code>POST /login/</code></h3>
+<p>Аутентифицирует пользователя и генерирует JWT-токен для дальнейшего доступа к API.</p>
+<p><strong>Параметры запроса:</strong>
+- <code>user_credentials</code>: Объект, содержащий учетные данные пользователя. Должен содержать следующие поля:
+  - <code>email</code>: Электронная почта пользователя.
+  - <code>password</code>: Пароль пользователя.</p>
+<p><strong>Пример запроса:</strong></p>
+<pre><code class="language-json">{
+  &quot;email&quot;: &quot;example@example.com&quot;,
+  &quot;password&quot;: &quot;examplepassword&quot;
+}
+</code></pre>
+<h2 id="_3">Получение информации о текущем пользователе</h2>
+<h3 id="get-user"><code>GET /user/</code></h3>
+<p>Получает информацию о текущем аутентифицированном пользователе.</p>
+<p><strong>Требуемые заголовки:</strong>
+- <code>Authorization</code>: JWT-токен, полученный при аутентификации пользователя.</p>
+<h2 id="_4">Получение списка пользователей</h2>
+<h3 id="get-users"><code>GET /users/</code></h3>
+<p>Получает список пользователей из базы данных.</p>
+<p><strong>Параметры запроса:</strong>
+- <code>skip</code> (необязательный): Целое число, определяющее количество пропускаемых пользователей.
+- <code>limit</code> (необязательный): Целое число, определяющее максимальное количество пользователей, которые следует вернуть.</p>
+<p><strong>Пример запроса:</strong></p>
+<pre><code>/users/?skip=0&amp;limit=10
+</code></pre>
+<h2 id="_5">Изменение пароля текущего пользователя</h2>
+<h3 id="put-userchange-password"><code>PUT /user/change-password/</code></h3>
+<p>Изменяет пароль текущего пользователя.</p>
+<p><strong>Требуемые заголовки:</strong>
+- <code>Authorization</code>: JWT-токен, полученный при аутентификации пользователя.</p>
+<p><strong>Параметры запроса:</strong>
+- <code>new_password</code>: Объект, содержащий новый пароль пользователя. Должен содержать следующие поля:
+  - <code>password</code>: Новый пароль пользователя.</p>
+<p><strong>Пример запроса:</strong></p>
+<pre><code class="language-json">{
+  &quot;password&quot;: &quot;newpassword&quot;
+}
+</code></pre>
+<hr />
+<hr />
+<h1 id="_6">Вспомогательные функции работы с пользователями</h1>
+<p>Эти функции предназначены для работы с пользователями в базе данных и для аутентификации.</p>
+<h2 id="id">Получение пользователя по ID</h2>
+<h3 id="def-get_userdb-session-user_id-int-modelsuser"><code>def get_user(db: Session, user_id: int) -&gt; models.User</code></h3>
+<p>Получает пользователя из базы данных по его уникальному идентификатору.</p>
+<p><strong>Параметры:</strong>
+- <code>db</code>: Сессия базы данных SQLAlchemy.
+- <code>user_id</code>: Уникальный идентификатор пользователя.</p>
+<h2 id="_7">Получение пользователя по адресу электронной почты</h2>
+<h3 id="def-get_user_by_emaildb-session-email-str-modelsuser"><code>def get_user_by_email(db: Session, email: str) -&gt; models.User</code></h3>
+<p>Получает пользователя из базы данных по его адресу электронной почты.</p>
+<p><strong>Параметры:</strong>
+- <code>db</code>: Сессия базы данных SQLAlchemy.
+- <code>email</code>: Адрес электронной почты пользователя.</p>
+<h2 id="_8">Аутентификация пользователя</h2>
+<h3 id="def-authenticate_userdb-session-email-str-password-str-unionmodelsuser-bool"><code>def authenticate_user(db: Session, email: str, password: str) -&gt; Union[models.User, bool]</code></h3>
+<p>Аутентифицирует пользователя по его адресу электронной почты и паролю.</p>
+<p><strong>Параметры:</strong>
+- <code>db</code>: Сессия базы данных SQLAlchemy.
+- <code>email</code>: Адрес электронной почты пользователя.
+- <code>password</code>: Пароль пользователя.</p>
+<h2 id="_9">Создание нового пользователя</h2>
+<h3 id="def-create_userdb-session-user-schemasusercreate-modelsuser"><code>def create_user(db: Session, user: schemas.UserCreate) -&gt; models.User</code></h3>
+<p>Создает нового пользователя и добавляет его в базу данных.</p>
+<p><strong>Параметры:</strong>
+- <code>db</code>: Сессия базы данных SQLAlchemy.
+- <code>user</code>: Объект, описывающий нового пользователя. Должен содержать следующие поля:
+  - <code>email</code>: Электронная почта нового пользователя.
+  - <code>password</code>: Пароль нового пользователя.</p>
+<h2 id="_10">Проверка пароля</h2>
+<h3 id="def-verify_passwordplain_password-str-hashed_password-str-bool"><code>def verify_password(plain_password: str, hashed_password: str) -&gt; bool</code></h3>
+<p>Проверяет, совпадает ли предоставленный пароль с хэшированным паролем пользователя.</p>
+<p><strong>Параметры:</strong>
+- <code>plain_password</code>: Пароль в текстовом формате, который нужно проверить.
+- <code>hashed_password</code>: Хэшированный пароль, с которым нужно сравнить предоставленный пароль.</p>
+<hr />
+<p>Для функций, отвечающих за подключение к базе данных и инициализацию сессии SQLAlchemy:</p>
+<hr />
+<h1 id="_11">Подключение к базе данных</h1>
+<p>Эти функции обеспечивают подключение к базе данных и инициализацию сессии SQLAlchemy для работы с ней.</p>
+<h2 id="_12">Инициализация базы данных</h2>
+<h3 id="def-init_db-none"><code>def init_db() -&gt; None</code></h3>
+<p>Инициализирует базу данных, создавая все необходимые таблицы на основе определений моделей.</p>
+<h2 id="sqlalchemy">Получение сессии SQLAlchemy</h2>
+<h3 id="def-get_session-session"><code>def get_session() -&gt; Session</code></h3>
+<p>Возвращает сессию SQLAlchemy для работы с базой данных. Эта сессия автоматически закрывается после использования.</p>
+<hr />
+<p>API для управления пользователями
+Это веб-API предоставляет возможности для регистрации пользователей, аутентификации, управления пользователями и смены пароля.</p>
+<p>Эндпоинты
+Регистрация нового пользователя
+Метод: POST
+Путь: /register/
+Описание: Регистрирует нового пользователя с предоставленными учетными данными.
+Аутентификация пользователя
+Метод: POST
+Путь: /login/
+Описание: Аутентифицирует пользователя по предоставленным учетным данным и генерирует JWT-токен для доступа.
+Получение информации о текущем пользователе
+Метод: GET
+Путь: /user/
+Описание: Возвращает информацию о текущем аутентифицированном пользователе.
+Получение списка пользователей
+Метод: GET
+Путь: /users/
+Описание: Возвращает список пользователей с возможностью пагинации.
+Смена пароля текущего пользователя
+Метод: PUT
+Путь: /user/change-password/
+Описание: Позволяет текущему пользователю изменить свой пароль.
+Запуск приложения
+Для инициализации базы данных при запуске приложения используется событие startup.</p>
+<p>Изменения:
+Файл содержит реализацию API для веб-приложения с использованием FastAPI. Он обеспечивает взаимодействие с базой данных, обработку запросов от клиентов и выполнение необходимой бизнес-логики. Были добавлены ещё несколько эндпоинтов по теме</p>
+<p>Зависимости:</p>
+<p>fastapi: Веб-фреймворк для создания API.
+sqlalchemy: Библиотека для работы с базами данных.
+passlib: Библиотека для хеширования паролей.
+dotenv: Библиотека для загрузки переменных окружения из файла .env.</p>
+<p>Структура:</p>
+<p>Импорты: Импорт всех необходимых модулей и классов.
+Настройка переменных окружения: Загрузка переменных окружения из файла .env, включая адрес базы данных.
+Объявление маршрутов: Определение различных маршрутов для обработки запросов от клиентов.
+Функции обработки запросов: Определение функций, которые обрабатывают запросы от клиентов и взаимодействуют с базой данных.
+Функции для работы с базой данных: Определение функций, которые выполняют операции с базой данных (например, создание пользователя, создание поездки и т. д.).
+Вспомогательные функции: Определение вспомогательных функций, таких как хеширование паролей и проверка аутентификации пользователя.
+Документирование функций: Каждая функция сопровождается комментариями, описывающими ее назначение, входные параметры и возвращаемые значения.</p>
+<p>Добавлена загрузка переменных окружения из файла .env с помощью библиотеки dotenv.
+Вместо явного указания адреса базы данных в коде теперь используется переменная окружения DATABASE_URL.
+Эти изменения повышают безопасность приложения, так как конфиденциальные данные, такие как адрес базы данных, теперь хранятся в защищенном файле .env.</p>
+<p>crud.py</p>
+<p>Этот файл содержит функции, которые обеспечивают взаимодействие с базой данных. Он реализует операции CRUD (Create, Read, Update, Delete) для различных сущностей вашего приложения, таких как пользователи и поездки. Был объединен с security.py, чтобы избежать кольцевания</p>
+<p>Зависимости:</p>
+<p>sqlalchemy: Библиотека для работы с базами данных.
+Структура файла:</p>
+<p>Импорты: Импорт всех необходимых модулей и классов.
+Функции CRUD: Определение функций, которые выполняют операции CRUD для различных сущностей вашего приложения.
+Документирование функций: Каждая функция сопровождается комментариями, описывающими ее назначение, входные параметры и возвращаемые значения.
+Изменения:</p>
+<p>Внесены изменения для использования переменных окружения вместо явного указания адреса базы данных в коде.
+Каждая функция теперь принимает объект сессии SQLAlchemy в качестве параметра для взаимодействия с базой данных.
+Эти изменения повышают безопасность приложения и упрощают его поддержку и масштабирование.</p>
+<p>models.py</p>
+<p>Этот файл содержит определения моделей данных с использованием SQLModel для вашего приложения. Он описывает структуру и отношения между различными сущностями, такими как пользователи, поездки, отзывы и т. д.</p>
+<p>Зависимости:</p>
+<p>sqlmodel: Библиотека для работы с моделями данных в стиле SQL с поддержкой отношений.
+Структура файла:</p>
+<p>Импорты: Импорт всех необходимых модулей и классов.
+Определение моделей: Определение классов-моделей для каждой сущности в вашем приложении.
+Документирование моделей: Каждая модель сопровождается комментариями, описывающими ее поля и отношения с другими моделями.
+Изменения:</p>
+<p>Добавлено поле password в модель User для хранения пароля пользователя.
+Использованы внешние ключи для установки связей между различными сущностями.
+В каждой модели определены соответствующие отношения с другими моделями для обеспечения связности данных.
+Эти изменения обеспечивают более гибкую и структурированную организацию данных в вашем приложении, что способствует улучшению его масштабируемости и поддерживаемости.</p>
+<p>Вот документация к файлу, который вы предоставили:</p>
+<p>schemas.py</p>
+<p>Этот файл содержит определения схем данных с использованием Pydantic для вашего веб-приложения. Он описывает структуру данных для различных сущностей, таких как пользователи, поездки и т. д., а также схемы для аутентификации и авторизации.</p>
+<p>Зависимости:</p>
+<p>pydantic: Библиотека для валидации и сериализации данных в Python.
+Структура файла:</p>
+<p>Импорты: Импорт всех необходимых модулей и классов из Pydantic.
+Определение базовых схем: Определение базовых схем данных для пользователей, поездок и других сущностей.
+Определение схем для создания и обновления данных: Определение схем для создания или обновления пользователей, поездок и т. д.
+Конфигурация схем: Установка конфигурации для схем, такая как orm_mode, чтобы обеспечить корректное преобразование моделей SQLAlchemy в схемы Pydantic.
+Дополнительные схемы: Определение дополнительных схем, таких как схемы для аутентификации, авторизации и токенов.
+Изменения:</p>
+<p>Внесены изменения в схемы для соответствия новым требованиям и структуре данных вашего приложения.
+Установлена конфигурация orm_mode, чтобы обеспечить корректное преобразование моделей SQLAlchemy в схемы Pydantic.
+Добавлены новые схемы, такие как OAuth2PasswordRequestForm для работы с OAuth2 и TokenData для представления информации о токене.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="js/jquery-3.6.0.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js"></script>
+        <script src="search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.5.3
+Build Date UTC : 2024-04-15 13:34:40.002998+00:00
+-->

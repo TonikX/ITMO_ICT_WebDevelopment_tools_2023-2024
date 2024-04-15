@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Пр_2 - Лабораторные Прониной Александры</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Лабораторные Прониной Александры</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">№1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../pr1/" class="nav-link">Пр_1</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Пр_2</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../pr3/" class="nav-link">Пр_3</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../pr1/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../pr3/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/7Alexandra8/ITMO_ICT_WebDevelopment_tools_2023-2024/edit/master/docs/pr2.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#sqlmodel-orm" class="nav-link">SQLModel и ORM</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#sqlmodel" class="nav-link">Установка SQLModel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_1" class="nav-link">Подключение к БД и инициализация</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_2" class="nav-link">Создание моделей</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_3" class="nav-link">Использование моделей</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_4" class="nav-link">Запросы</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_5" class="nav-link">Заключение</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="sqlmodel-orm">SQLModel и ORM</h1>
+<h2 id="sqlmodel">Установка SQLModel</h2>
+<p>Для начала необходимо было установить библиотеку SQLModel. Выполните следующую команду в вашем виртуальном окружении:</p>
+<pre><code class="language-bash">pip install sqlmodel
+</code></pre>
+<p>Кроме того, для работы с базой данных PostgreSQL потребуется драйвер psycopg2-binary. Установите его с помощью следующей команды:</p>
+<pre><code class="language-bash">pip install psycopg2-binary
+</code></pre>
+<h2 id="_1">Подключение к БД и инициализация</h2>
+<p>Для подключения к базе данных и создания сессий используется файл <code>connection.py</code>. Пример подключения к PostgreSQL:</p>
+<pre><code class="language-python">from sqlmodel import SQLModel, Session, create_engine
+
+# Строка подключения к БД
+db_url = 'postgresql://username:password@localhost/db_name'
+engine = create_engine(db_url, echo=True)
+
+# Функция инициализации БД
+def init_db():
+    SQLModel.metadata.create_all(engine)
+
+# Функция для получения сессии
+def get_session():
+    with Session(engine) as session:
+        yield session
+</code></pre>
+<h2 id="_2">Создание моделей</h2>
+<p>Модели данных описываются с использованием SQLModel и аннотаций Python. Пример модели:</p>
+<pre><code class="language-python">from sqlmodel import SQLModel, Field
+
+class User(SQLModel, table=True):
+    id: int = Field(primary_key=True, index=True)
+    username: str = Field(index=True)
+    email: str = Field(index=True, unique=True)
+</code></pre>
+<h2 id="_3">Использование моделей</h2>
+<p>После создания моделей можно выполнять CRUD-операции с базой данных. Пример использования:</p>
+<pre><code class="language-python">from sqlmodel import select
+from connection import get_session
+from models import User
+
+# Создание пользователя
+def create_user(user_data: dict):
+    with get_session() as session:
+        user = User(**user_data)
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+        return user
+
+# Получение пользователя по ID
+def get_user(user_id: int):
+    with get_session() as session:
+        user = session.get(User, user_id)
+        return user
+
+# Обновление пользователя
+def update_user(user_id: int, user_data: dict):
+    with get_session() as session:
+        user = session.get(User, user_id)
+        for key, value in user_data.items():
+            setattr(user, key, value)
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+        return user
+
+# Удаление пользователя
+def delete_user(user_id: int):
+    with get_session() as session:
+        user = session.get(User, user_id)
+        session.delete(user)
+        session.commit()
+</code></pre>
+<h2 id="_4">Запросы</h2>
+<p>После реализации таблиц необходимо обновить все ранее созданные эндпоинты. Так как теперь вместо виртуальной базы данных будет использоваться настоящая, то необходимо понять логику взаимодействия с ORM.</p>
+<p>Ранее, в файле <code>connection.py</code> был создан генератор для получения объекта сессий в БД. Такой объект позволяет выполнять запросы к базе данных через специальные методы библиотек SQLModel и SQLAlchemy.</p>
+<p>Для того чтобы получать подобный объект внутри разрабатываемых API-функций необходимо в них указывать параметр <code>session</code> с изначальным значением в виде класса <code>Depends</code> с аргументом в виде ссылки на генератор <code>get_session</code>:</p>
+<pre><code class="language-python">session=Depends(get_session)
+Класс Depends отвечает за выполнение внедрения зависимостей в приложениях FastAPI. Класс Depends принимает функцию в качестве аргумента и передается в качестве аргумента функции в маршруте, требуя, чтобы условие зависимости было выполнено до инициализации любой операции внутри тела API-метода. Подробнее о том, как можно работать с зависимостями описано в официальной документации.
+
+Создание объектов
+Для реализации POST-запроса, записывающего новый объект воина в БД, необходимо:
+
+Создать новую модель для POST-запросов к объекту.
+Обновить изначально разработанный эндпоинт, добавляющий запись воина во временную БД.
+Ввиду того, что при создании нового объекта некоторые поля не всегда надо указывать (таким полем может быть, например, первичный ключ), возникает необходимость в добавлении новых моделей, обрабатывающих запросы. Подобные модели, по факту, являются аналогами Pydantic-объектов, сериализирующие данные в ту и другую сторону и в БД не реализуются.
+
+За реализацию конкретной модели в БД отвечает аргумент table=True, при описании класса.
+
+Для модели воина, таким образом, можно реализовать еще одну базовую модель WarriorDefault, не имеющую id и ссылок на многие-ко многим. Также от такой модели можно отнаследоваться основной моделью, реализующейся в базе данных вместо указания в поле наследования SQLModel. В таком случае достаточно дописать недостающие поля.
+</code></pre>
+<pre><code class="language-python">
+class WarriorDefault(SQLModel):
+    race: RaceType
+    name: str
+    level: int
+    profession_id: Optional[int] = Field(default=None, foreign_key=&quot;profession.id&quot;)
+
+class Warrior(WarriorDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+    profession: Optional[Profession] = Relationship(back_populates=&quot;warriors_prof&quot;)
+    skills: Optional[List[Skill]] = Relationship(back_populates=&quot;warriors&quot;, link_model=SkillWarriorLink)
+</code></pre>
+<p>Используя классы WarriorDefault и Warrior, можно переписать POST-запрос /warrior для новой логики:</p>
+<pre><code class="language-python">@app.post(&quot;/warrior&quot;)
+def warriors_create(warrior: WarriorDefault, session=Depends(get_session)) -&gt; TypedDict('Response', {&quot;status&quot;: int,
+                                                                                                     &quot;data&quot;: Warrior}):
+    warrior = Warrior.model_validate(warrior)
+    session.add(warrior)
+    session.commit()
+    session.refresh(warrior)
+    return {&quot;status&quot;: 200, &quot;data&quot;: warrior}
+</code></pre>
+<h2 id="_5">Заключение</h2>
+<p>SQLModel предоставляет удобные средства для работы с базами данных в FastAPI. Используйте его для создания эффективных и масштабируемых веб-приложений.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
