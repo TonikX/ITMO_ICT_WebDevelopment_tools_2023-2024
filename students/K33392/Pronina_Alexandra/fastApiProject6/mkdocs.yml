@@ -1,0 +1,10 @@
+site_name: Лабораторные Прониной Александры
+
+repo_url: https://github.com/7Alexandra8/ITMO_ICT_WebDevelopment_tools_2023-2024
+nav:
+  - "№1": index.md
+  - Пр_1: pr1.md
+  - Пр_2: pr2.md
+  - Пр_3: pr3.md
+
+
