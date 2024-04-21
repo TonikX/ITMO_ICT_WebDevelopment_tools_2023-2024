@@ -61,6 +61,13 @@ class Balance(BalanceDeafult, table=True):
     targets: List[Target] = Relationship(back_populates="balance")
     subscriptions: List[Subscription] = Relationship(back_populates="balance")
 
+class BalanceWithNest(BalanceDeafult):
+    user: Optional[User] = None
+    targets: List["TargetRead"] = []
+    transactions: List["Transactions"] = []
+    subscriptions: List["Subscription"] = []
+
+
 class TargetCreate(SQLModel):
     category: Category
     value: int
@@ -68,6 +75,9 @@ class TargetCreate(SQLModel):
 class TargetUpdate(SQLModel):
     category: Category
     value: int
+
+class TargetRead(TargetUpdate):
+    id: int
 
 class TransactionsCreate(SQLModel):
     category: Category

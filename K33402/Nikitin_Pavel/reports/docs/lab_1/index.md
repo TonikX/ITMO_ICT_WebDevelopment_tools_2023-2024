@@ -26,6 +26,10 @@
    d. Хэширование паролей
    e. Дополнительные АПИ-методы для получения информации о пользователе, списка пользователей и смене пароля
 
+#### Ссылка на практики
+
+[https://github.com/pavel-nikitin-2022/ITMO_ICT_WebDevelopment_tools_2023-2024/tree/main/K33402/Nikitin_Pavel/practical_works](https://github.com/pavel-nikitin-2022/ITMO_ICT_WebDevelopment_tools_2023-2024/tree/main/K33402/Nikitin_Pavel/practical_works)
+
 #### Ход Работы:
 
 Для начала определим структуру проекта, были выделены несколько сущностей:

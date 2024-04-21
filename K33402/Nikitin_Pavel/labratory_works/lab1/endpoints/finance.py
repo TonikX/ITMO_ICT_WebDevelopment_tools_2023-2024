@@ -1,20 +1,21 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 
+from database import get_session, Session
+
 from auth import AuthHandler
-from models.finance import Balance, Subscription, SubscriptionCreate, Target, Transactions, TargetCreate, TargetUpdate, TransactionsCreate, Category, TransactionsUpdate
+from models.finance import Balance, BalanceWithNest, Subscription, SubscriptionCreate, Target, Transactions, TargetCreate, TargetUpdate, TransactionsCreate, Category, TransactionsUpdate
 from repositories.finance import find_balance, find_subscription, select_all_targets, find_target, find_transaction, select_all_transactions
 from database import session
 
 main_router = APIRouter()
 auth_handler = AuthHandler()
 
-@main_router.get("/balances/{balance_id}", response_model=Balance)
-def get_balance(balance_id: int):
-    balance = find_balance(balance_id)
-    print(balance)
+@main_router.get("/balances/{balance_id}", response_model=BalanceWithNest)
+def get_balance(balance_id: int, db: Session = Depends(get_session)):
+    balance = db.get(Balance, balance_id)
     if not balance:
-        raise HTTPException(status_code=404, detail="Balance not found")
+      raise HTTPException(status_code=404, detail="Balance not found")
     return balance
 
 @main_router.post("/balances/{balance_id}/targets/", response_model=Target)

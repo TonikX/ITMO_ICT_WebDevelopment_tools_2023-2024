@@ -1,6 +1,7 @@
 from sqlmodel import select
 from database import engine, Session
 from models.finance import Balance, Target, Transactions, Subscription
+from sqlalchemy.orm import selectinload
 
 def select_all_balances():
     with Session(engine) as session:
@@ -10,8 +11,7 @@ def select_all_balances():
 
 def find_balance(balance_id):
     with Session(bind=engine) as session:
-      statement = select(Balance).where(Balance.id == balance_id)
-      return session.exec(statement).first()
+      return session.get(Balance, balance_id)
 
 def select_all_targets(balance_id: int):
     with Session(engine) as session:
