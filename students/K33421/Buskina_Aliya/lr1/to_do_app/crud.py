@@ -1,17 +1,11 @@
 from datetime import date
+from typing import List
 
 from sqlalchemy.orm import Session
 import models
+import schemas
+#from auth import auth
 
-def create_user(db: Session, username: str, hashed_password: str, is_active: bool = True):
-    db_user = models.User(username=username, hashed_password=hashed_password, is_active=is_active)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
-
-def get_user(db: Session, user_id: int):
-    return db.query(models.User).filter(models.User.id == user_id).first()
 
 def update_user(db: Session, user_id: int, username: str, hashed_password: str, is_active: bool = True):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
@@ -70,3 +64,44 @@ def delete_task(db: Session, task_id: int):
         db.delete(task)
         db.commit()
     return task
+
+def get_user_tasks(db: Session, user_id: int):
+    return db.query(models.Task).filter(models.Task.user_id == user_id).all()
+
+def get_user_by_task_id(db: Session, task_id: int):
+    task = db.query(models.Task).filter(models.Task.id == task_id).first()
+    if not task:
+        return None
+    return task.owner
+
+def get_tasks_with_time_logs(db: Session, task_id: int):
+    task = db.query(models.Task).filter(models.Task.id == task_id).first()
+    if not task:
+        return None
+    return [{"task": task, "time_logs": task.time_logs}]
+
+def add_time_log(db: Session, task_id: int, time_spent_minutes: int, date_logged: date):
+    time_log = models.TimeLog(task_id=task_id, time_spent_minutes=time_spent_minutes, date_logged=date_logged)
+    db.add(time_log)
+    db.commit()
+    db.refresh(time_log)
+    return time_log
+
+def get_time_logs_for_task(db: Session, task_id: int):
+    return db.query(models.TimeLog).filter(models.TimeLog.task_id == task_id).all()
+
+
+def get_user_tasks_with_time_logs(db: Session, user_id: int) -> List[schemas.TaskWithTimeLogs]:
+    # Получаем все задачи пользователя
+    user_tasks = db.query(models.Task).filter(models.Task.user_id == user_id).all()
+
+    tasks_with_time_logs = []
+    # Для каждой задачи получаем время, проведенное на ней
+    for task in user_tasks:
+        time_logs = db.query(models.TimeLog).filter(models.TimeLog.task_id == task.id).all()
+        tasks_with_time_logs.append({
+            "task": task,
+            "time_logs": time_logs
+        })
+
+    return tasks_with_time_logs

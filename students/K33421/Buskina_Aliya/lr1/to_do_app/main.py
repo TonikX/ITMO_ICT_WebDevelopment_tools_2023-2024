@@ -1,8 +1,19 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from connection import *
-import routes
+from routes.task_routes import router as task_router
+from routes.user_routes import router as user_router
+from auth.auth import auth_backend
+from auth.database import User
+from auth.manager import get_user_manager
+from auth.schemas import UserRead, UserCreate
+from fastapi_users import fastapi_users, FastAPIUsers
 
-app = FastAPI()
+
+app = FastAPI(
+    title="ToDone",
+    description="API для менеджера задач",
+    version="1.0.0"
+)
 
 @app.on_event("startup")
 def on_startup():
@@ -10,4 +21,27 @@ def on_startup():
     init_db()
     print("Database initialized.")
 
-app.include_router(routes.router)
+user_tags_metadata = {"Operations related to users"}
+task_tags_metadata = {"Operations related to tasks"}
+
+app.include_router(user_router, tags=[user_tags_metadata])
+app.include_router(task_router, tags=[task_tags_metadata])
+
+fastapi_users = FastAPIUsers[User, int](
+    get_user_manager,
+    [auth_backend],
+)
+
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix="/auth/jwt",
+    tags=["auth"],
+)
+
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
+
+

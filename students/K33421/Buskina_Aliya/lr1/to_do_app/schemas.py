@@ -21,8 +21,13 @@ class UserUpdate(BaseModel):
     hashed_password: Optional[str] = None
     is_active: Optional[bool] = None
 
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
 class UserList(BaseModel):
     users: List[UserRead]
+
 
 class TaskBase(BaseModel):
     title: str
@@ -49,4 +54,30 @@ class Task(TaskBase):
 class TaskList(BaseModel):
     tasks: List[Task]
 
+class TimeLog(BaseModel):
+    id: int
+    task_id: int
+    time_spent_minutes: int
+    date_logged: date
 
+    class Config:
+        orm_mode = True
+
+class TaskWithTimeLogs(BaseModel):
+    task: Task
+    time_logs: List[TimeLog]
+
+class TaskWithTimeLogsList(BaseModel):
+    tasks: List[TaskWithTimeLogs]
+
+class TaskWithTimeLogs(BaseModel):
+    id: int
+    title: str
+    description: str
+    deadline: date
+    priority: int
+    user_id: int
+    time_logs: List[TimeLog]
+
+    class Config:
+        orm_mode = True

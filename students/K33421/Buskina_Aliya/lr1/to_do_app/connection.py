@@ -1,6 +1,7 @@
 from sqlmodel import SQLModel, Session, create_engine
+from config import DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME
 
-db_url = 'postgresql://postgres:Aliya2103@localhost/todo'
+db_url = f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 engine = create_engine(db_url, echo=True)
 
 

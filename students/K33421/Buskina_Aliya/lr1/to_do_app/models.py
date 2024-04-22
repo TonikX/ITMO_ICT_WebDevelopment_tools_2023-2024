@@ -5,9 +5,12 @@ from typing import List, Optional
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str = Field(index=True)
+    email: str = Field(index=True)
     hashed_password: str
-    password: Optional[str] = Field(default=None, exclude=True)
     is_active: bool = Field(default=True)
+    registered_at: Optional[datetime] = Field(default=None)
+    is_superuser: Optional[bool] = Field(default=False, nullable=True)
+    is_verified: bool = Field(default=False)
     tasks: List["Task"] = Relationship(back_populates="owner")
 
 class TaskCategory(SQLModel, table=True):

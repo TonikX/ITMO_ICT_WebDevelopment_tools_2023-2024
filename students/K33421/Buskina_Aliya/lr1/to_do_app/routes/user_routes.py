@@ -1,12 +1,29 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.exceptions import RequestValidationError
+import jwt
 from sqlalchemy.orm import Session
-import models, crud
+import crud, schemas
+#from auth import auth
 from connection import get_session
 from schemas import *
+#import auth.auth
 
 router = APIRouter()
 
-@router.post("/users/", response_model=UserRead)  # Указываем, что возвращаемая модель - UserRead
+
+@router.post("/users/",
+             response_model=UserRead,
+             status_code=status.HTTP_201_CREATED,
+             tags=["Users"],  # Теги для организации в документации
+             summary="Create a new user",  # Краткое описание метода
+             description="Create a new user with the provided data.",
+             responses={  # Примеры ответов
+                 201: {"description": "User created successfully"},
+                 400: {"description": "Invalid data provided"},
+                 409: {"description": "User with this username already exists"},
+                 500: {"description": "Internal server error"},
+             }
+             )
 def create_user(user_data: UserCreate, db: Session = Depends(get_session)):
     return crud.create_user(db=db, **user_data.dict())  # Распаковываем данные из схемы UserCreate
 
@@ -30,32 +47,9 @@ def read_users(db: Session = Depends(get_session)):
     users = crud.get_all_users(db)
     return {"users": users}
 
-@router.post("/tasks/", response_model=Task)
-def create_task(task_data: TaskCreate, db: Session = Depends(get_session)):
-    return crud.create_task(db=db, **task_data.dict())
-
-@router.get("/tasks/{task_id}", response_model=Task)
-def read_task(task_id: int, db: Session = Depends(get_session)):
-    db_task = crud.get_task(db, task_id=task_id)
-    if db_task is None:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return db_task
-
-@router.get("/tasks/", response_model=TaskList)
-def read_all_tasks(db: Session = Depends(get_session)):
-    tasks = crud.get_all_tasks(db)
-    return {"tasks": tasks}
-
-@router.put("/tasks/{task_id}", response_model=Task)
-def update_task(task_id: int, task_data: TaskUpdate, db: Session = Depends(get_session)):
-    db_task = crud.get_task(db, task_id=task_id)
-    if db_task is None:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return crud.update_task(db=db, task_id=task_id, **task_data.dict(exclude_unset=True))
-
-@router.delete("/tasks/{task_id}", response_model=Task)
-def delete_task(task_id: int, db: Session = Depends(get_session)):
-    db_task = crud.get_task(db, task_id=task_id)
-    if db_task is None:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return crud.delete_task(db=db, task_id=task_id)
+@router.get("/user/{user_id}/tasks-with-time-logs", response_model=TaskWithTimeLogsList)
+def read_user_tasks_with_time_logs(user_id: int, db: Session = Depends(get_session)):
+    tasks_with_time_logs = crud.get_user_tasks_with_time_logs(db, user_id)
+    if not tasks_with_time_logs:
+        raise HTTPException(status_code=404, detail="User has no tasks")
+    return {"tasks": tasks_with_time_logs}
