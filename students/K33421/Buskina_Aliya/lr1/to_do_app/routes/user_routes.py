@@ -24,15 +24,15 @@ router = APIRouter()
                  500: {"description": "Internal server error"},
              }
              )
-def create_user(user_data: UserCreate, db: Session = Depends(get_session)):
-    return crud.create_user(db=db, **user_data.dict())  # Распаковываем данные из схемы UserCreate
+#def create_user(user_data: UserCreate, db: Session = Depends(get_session)):
+    #return crud.create_user(db=db, **user_data.dict())  # Распаковываем данные из схемы UserCreate
 
 @router.get("/users/{user_id}", response_model=UserRead)  # Указываем, что возвращаемая модель - UserRead
 def read_user(user_id: int, db: Session = Depends(get_session)):
-    db_user = crud.get_user(db, user_id=user_id)
-    if db_user is None:
+   db_user = crud.get_user(db, user_id=user_id)
+   if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return db_user
+   return db_user
 
 @router.put("/users/{user_id}", response_model=UserRead)  # Указываем, что возвращаемая модель - UserRead
 def update_user(user_id: int, user_data: UserUpdate, db: Session = Depends(get_session)):
