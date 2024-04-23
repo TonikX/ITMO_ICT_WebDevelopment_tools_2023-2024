@@ -6,9 +6,6 @@ import asyncio
 class AsyncSumCalculator(AbstractBaseSumCalculator):
     def __str__(self):
         return "AsyncSumCalculator"
-
-    def __repr__(self):
-        return "AsyncSumCalculator"
     
     async def calculate_range_sum(self, start_end):
         start, end = start_end

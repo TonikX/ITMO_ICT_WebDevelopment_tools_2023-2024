@@ -6,9 +6,6 @@ import multiprocessing
 class MultiprocessingSumCalculator(AbstractBaseSumCalculator):
     def __str__(self):
         return "MultiprocessingSumCalculator"
-
-    def __repr__(self):
-        return "MultiprocessingSumCalculator"
     
     def calculate_range_sum(self, start_end):
         start, end = start_end

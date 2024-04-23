@@ -33,9 +33,9 @@ class BaseSumCalculator(ABC):
         """
         if self.n_splits > self.number:
             raise AssertionError("Number of splits cannot exceed the number itself.")
-        chunk_size: int = self.number // self.n_splits
-        tasks: List[Tuple[int, int]] = []
-        start: int = 1
+        chunk_size = self.number // self.n_splits
+        tasks = []
+        start = 1
         for _ in range(self.n_splits):
             end: int = start + chunk_size - 1 if start + chunk_size - 1 <= self.number - chunk_size else self.number
             tasks.append((start, end))
@@ -43,20 +43,20 @@ class BaseSumCalculator(ABC):
         return tasks
 
     async def calculate_sum(self) -> int:
-        total_sum: int = 0
+        total_sum = 0
         for start, end in self.tasks:
             total_sum += await self.calculate_range_sum(start, end)
         return total_sum
 
     def run_one_experiment(self, is_async: bool = False) -> Tuple[int, float]:
-        start_time: float = time.time()
-        calculated_sum: int = asyncio.run(self.calculate_sum()) if is_async else self.calculate_sum()
-        end_time: float = time.time()
-        execution_time: float = end_time - start_time
+        start_time = time.time()
+        calculated_sum = asyncio.run(self.calculate_sum()) if is_async else self.calculate_sum()
+        end_time = time.time()
+        execution_time = end_time - start_time
         return calculated_sum, execution_time
 
     def run_experiments(self, num_iterations: int = 20, is_async: bool = False, verbose = True) -> float:
-        times: List[float] = []
+        times = []
 
         for _ in tqdm(range(num_iterations)):
             _, execution_time = self.run_one_experiment(is_async=is_async)
@@ -72,13 +72,9 @@ class AbstractBaseSumCalculator(BaseSumCalculator):
     @abstractmethod
     def __str__(self) -> str:
         pass
-
-    @abstractmethod
-    def __repr__(self) -> str:
-        pass
     
     @abstractmethod
-    async def calculate_range_sum(self, start: int, end: int) -> int:
+    def calculate_range_sum(self, start: int, end: int) -> int:
         pass
 
     @abstractmethod

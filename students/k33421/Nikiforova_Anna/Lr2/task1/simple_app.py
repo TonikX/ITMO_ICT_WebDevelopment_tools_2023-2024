@@ -5,9 +5,6 @@ import time
 class SimpleSumCalculator(AbstractBaseSumCalculator):
     def __str__(self):
         return "SimpleSumCalculator"
-
-    def __repr__(self):
-        return "SimpleSumCalculator"
     
     def calculate_range_sum(self, start_end):
         start, end = start_end

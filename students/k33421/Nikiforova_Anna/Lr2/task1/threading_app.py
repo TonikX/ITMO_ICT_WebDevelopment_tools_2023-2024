@@ -6,9 +6,6 @@ import threading
 class ThreadingSumCalculator(AbstractBaseSumCalculator):
     def __str__(self):
         return "ThreadingSumCalculator"
-
-    def __repr__(self):
-        return "ThreadingSumCalculator"
     
     def calculate_range_sum(self, start_end):
         start, end = start_end
