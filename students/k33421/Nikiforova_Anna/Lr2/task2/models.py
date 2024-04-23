@@ -59,7 +59,7 @@ class Ingredient(Base):
     name = Column(LowercasedString)
     unit = Column(String)
     unit_value = Column(FloatStringValidator, nullable=True)
-    parts = Column(FloatStringValidator, nullable=True)
+    parts = Column(NullableStringValidator, nullable=True)
     coctails = relationship("Coctail", secondary=ingredient_coctail_link, back_populates="ingredients")
 
 
