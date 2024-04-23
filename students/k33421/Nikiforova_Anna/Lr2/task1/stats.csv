@@ -1,0 +1,13 @@
+,calculator,median_time,num_experiments,number,n_splits,time_to_sleep
+0,SimpleSumCalculator,0.30484163761138916,20,1000000,10,0.0
+1,SimpleSumCalculator,1.5640826225280762,20,100,10,0.001
+2,SimpleSumCalculator,0.15529751777648926,20,10,5,0.001
+3,ThreadingSumCalculator,4.135361909866333,20,1000000,10,0.0
+4,ThreadingSumCalculator,0.1549999713897705,20,100,10,0.001
+5,ThreadingSumCalculator,0.03099346160888672,20,10,5,0.001
+6,MultiprocessingSumCalculator,2.1910656690597534,20,1000000,10,0.0
+7,MultiprocessingSumCalculator,2.3107842206954956,20,100,10,0.001
+8,MultiprocessingSumCalculator,1.2990378141403198,20,10,5,0.001
+9,AsyncSumCalculator,3.923051953315735,20,1000000,10,0.0
+10,AsyncSumCalculator,0.1552039384841919,20,100,10,0.001
+11,AsyncSumCalculator,0.031123995780944824,20,10,5,0.001
