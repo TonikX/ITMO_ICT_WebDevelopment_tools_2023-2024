@@ -41,10 +41,13 @@ ingredient_coctail_link = Table(
     Base.metadata,
     Column("ingredient_id", Integer, ForeignKey("ingredient.id"), primary_key=True),
     Column("coctail_id", Integer, ForeignKey("coctail.id"), primary_key=True),
+    Column("unit", String), 
+    Column("unit_value", FloatStringValidator),
+    Column("parts", NullableStringValidator) 
 )
 
 
-properties_coctail_link = Table(
+property_coctail_link = Table(
     "properties_coctail",
     Base.metadata,
     Column("properties_id", Integer, ForeignKey("property.id"), primary_key=True),
@@ -57,9 +60,6 @@ class Ingredient(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(LowercasedString)
-    unit = Column(String)
-    unit_value = Column(FloatStringValidator, nullable=True)
-    parts = Column(NullableStringValidator, nullable=True)
     coctails = relationship("Coctail", secondary=ingredient_coctail_link, back_populates="ingredients")
 
 
@@ -71,7 +71,7 @@ class Property(Base):
     class_name = Column(String)
     name = Column(String)
     value = Column(NullableStringValidator, nullable=True)
-    coctails = relationship("Coctail", secondary=properties_coctail_link, back_populates="properties")
+    coctails = relationship("Coctail", secondary=property_coctail_link, back_populates="properties")
 
 
 class Coctail(Base):
@@ -83,8 +83,9 @@ class Coctail(Base):
     detail_text = Column(String)
     steps = Column(String)
     price = Column(FloatStringValidator, nullable=True)
+    properties = relationship("Property", secondary=property_coctail_link, back_populates="coctails")
     ingredients = relationship("Ingredient", secondary=ingredient_coctail_link, back_populates="coctails")
-    properties = relationship("Property", secondary=properties_coctail_link, back_populates="coctails")
+
 
 
 def init_db(drop=True) -> None:

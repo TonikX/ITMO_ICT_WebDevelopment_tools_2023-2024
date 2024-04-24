@@ -1,10 +1,10 @@
 from base import AbstractBaseScrapper, urls
 from database import AsyncSession
-from models import Coctail, Ingredient, Property
+from models import Coctail, Ingredient, Property, ingredient_coctail_link
 import httpx
 import time
 import asyncio
-from sqlalchemy import select
+from sqlalchemy import select, func
 import os
 
 
@@ -25,57 +25,50 @@ class AsyncScrapper(AbstractBaseScrapper):
     async def save_data(self, raw_data: dict) -> None:
         async with AsyncSession() as session:
             for coctail_data in raw_data["ITEMS"]:
-                # Extract coctail data and keep only valid fields
                 coctail_dict = {
                     "id": int(coctail_data.get("ID")),
                     "name": coctail_data.get("NAME"),
                     "name_ru": coctail_data.get("NAME_RU"),
-                    "detail_text": coctail_data.get("DETAIL_TEXT", "").replace("<p>", "").replace("<\\/p>", "").replace("\t", ""),
+                    "detail_text": coctail_data.get("DETAIL_TEXT", "").replace("<p>", "").replace("<\\/p>", "").replace(
+                        "\t", ""),
                     "steps": "\n".join(coctail_data.get("STEPS", "")),
                     "price": coctail_data.get("PRICE")
                 }
-                
-                # If this coctail already exists, we do not have to add it again
+
                 statement = select(Coctail).where(Coctail.id == coctail_dict.get("id"))
                 existing_coctail = (await session.execute(statement)).scalar()
                 if existing_coctail:
                     continue
-                
-                # Extract ingredient data and keep only valid fields
+
                 ingredient_data = coctail_data.get("INGREDIENTS", [])
-                
-                # Extract property data and keep only valid fields
+                ingredient_coctail_links = []
+
                 property_data = coctail_data.get("PROPERTIES", [])
 
-                # Convert ingredient data into SQLAlchemy objects
-                ingredients = []
                 for ingredient_data_entry in ingredient_data:
-                    # Check if ingredient already exists based on all available fields except for id
-                    statement = select(Ingredient).where(
-                        (Ingredient.name == ingredient_data_entry.get("NAME")) &
-                        (Ingredient.unit == ingredient_data_entry.get("UNIT")) &
-                        (Ingredient.unit_value == ingredient_data_entry.get("UNIT_VALUE")) &
-                        (Ingredient.parts == ingredient_data_entry.get("PARTS"))
-                    )
+                    statement = select(Ingredient).where(Ingredient.name == ingredient_data_entry.get("NAME"))
                     existing_ingredient = (await session.execute(statement)).scalar()
                     
                     if not existing_ingredient:
                         ingredient = Ingredient(
-                            name=ingredient_data_entry.get("NAME"),
-                            unit=ingredient_data_entry.get("UNIT"),
-                            unit_value=ingredient_data_entry.get("UNIT_VALUE"),
-                            parts=ingredient_data_entry.get("PARTS")
+                            name=ingredient_data_entry.get("NAME")
                         )
                         session.add(ingredient)
+                        await session.flush()  # Flush to generate the ID
                     else:
                         ingredient = existing_ingredient
 
-                    ingredients.append(ingredient)
+                    ingredient_coctail_link_entry = {
+                        "ingredient_id": ingredient.id,
+                        "coctail_id": coctail_dict["id"],
+                        "unit": ingredient_data_entry.get("UNIT"),
+                        "unit_value": ingredient_data_entry.get("UNIT_VALUE"),
+                        "parts": ingredient_data_entry.get("PARTS")
+                    }
+                    ingredient_coctail_links.append(ingredient_coctail_link_entry)
 
-                # Convert property data into SQLAlchemy objects
                 properties = []
                 for property_key, property_value in property_data.items():
-                    # Check if property already exists based on all available fields except for id
                     statement = select(Property).where(
                         (Property.property_name == property_key) &
                         (Property.class_name == property_value.get("CLASS_NAME")) &
@@ -97,15 +90,18 @@ class AsyncScrapper(AbstractBaseScrapper):
 
                     properties.append(property)
 
-                # Update the coctail_dict with converted ingredients and properties
-                coctail_dict["ingredients"] = ingredients
                 coctail_dict["properties"] = properties
 
-                # Create the Coctail object
                 coctail = Coctail(**coctail_dict)
                 session.add(coctail)
+                await session.flush()
 
-            # Commit changes after all coctails, ingredients, and properties are added
+                # Insert multiple rows into ingredient_coctail_link
+                await session.execute(
+                    ingredient_coctail_link.insert(),
+                    [ic_link_entry for ic_link_entry in ingredient_coctail_links]
+                )
+
             await session.commit()
             
     async def process_url(self, url: str) -> None:
