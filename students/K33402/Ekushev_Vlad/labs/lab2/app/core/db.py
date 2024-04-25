@@ -1,4 +1,4 @@
-from sqlmodel import create_engine, SQLModel
+from sqlmodel import Session, create_engine, SQLModel
 from app.core.config import settings
 
 engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
@@ -6,3 +6,8 @@ engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
 
 def init_db() -> None:
     SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
