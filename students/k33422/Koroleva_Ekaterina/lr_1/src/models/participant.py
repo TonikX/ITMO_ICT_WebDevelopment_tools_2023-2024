@@ -30,5 +30,5 @@ class Participant(Base):
     trip_id: Mapped[int] = mapped_column(ForeignKey('trips.id', ondelete='CASCADE'))
     status: Mapped[Status] = mapped_column(SQLEnum(Status), default=Status.PENDING)
 
-    profile: Mapped['Profile'] = relationship(back_populates='profiles_details')
-    trip: Mapped['Trip'] = relationship(back_populates='trips_details')
+    profile: Mapped['Profile'] = relationship(back_populates='trips_details')
+    trip: Mapped['Trip'] = relationship(back_populates='profiles_details')

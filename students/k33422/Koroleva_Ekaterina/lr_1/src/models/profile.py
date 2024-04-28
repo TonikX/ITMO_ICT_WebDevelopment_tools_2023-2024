@@ -36,6 +36,6 @@ class Profile(Base):
 
     user: Mapped['User'] = relationship(back_populates='profile')
     trips: Mapped[list['Trip']] = relationship(
-        secondary='participants', back_populates='profiles'
+        secondary='participants', back_populates='participants'
     )
     trips_details: Mapped[list['Participant']] = relationship(back_populates='profile')
