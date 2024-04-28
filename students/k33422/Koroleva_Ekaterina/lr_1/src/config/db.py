@@ -10,7 +10,10 @@ class Settings(BaseSettings):
     port: int
     name: str
 
+    echo: bool
+
     model_config = SettingsConfigDict(
+        extra='ignore',
         env_file='.env',
         env_prefix='db_',
     )
