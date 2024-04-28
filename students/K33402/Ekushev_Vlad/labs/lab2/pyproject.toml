@@ -6,9 +6,9 @@ authors = ["jarvis394 <tarnatovski@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.12"
 fastapi = "^0.110.0"
-sqlmodel = "^0.0.16"
+sqlmodel = "^0.0.18"
 alembic = "^1.13.1"
 uvicorn = "^0.29.0"
 pydantic = "^2.6.4"
@@ -21,6 +21,7 @@ passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 slugify = "^0.0.1"
 python-multipart = "^0.0.9"
+email-validator = "^2.1.1"
 
 
 [tool.poetry.group.dev.dependencies]
