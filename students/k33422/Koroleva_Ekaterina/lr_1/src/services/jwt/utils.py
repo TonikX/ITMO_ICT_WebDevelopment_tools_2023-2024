@@ -3,7 +3,8 @@ from datetime import datetime, timedelta
 
 from .schemes import JWT, Payload
 from src.config import jwt_settings
-from src.services.auth.schemes import UserBase
+
+from ..auth import UserBase
 
 __all__ = ['encode', 'decode', 'create_jwt']
 
@@ -44,7 +45,10 @@ def decode(
     )
 
 
-def create_jwt(user: UserBase) -> JWT:
+def create_jwt(user: UserBase | dict) -> JWT:
+    if isinstance(user, dict):
+        user = UserBase.model_validate(user)
+
     now = datetime.utcnow()
     exp = now + timedelta(minutes=jwt_settings.expire_minutes)
 

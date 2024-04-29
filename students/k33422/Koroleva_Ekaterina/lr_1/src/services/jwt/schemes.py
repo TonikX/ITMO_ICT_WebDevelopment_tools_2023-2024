@@ -2,15 +2,14 @@ from datetime import datetime
 
 from pydantic import BaseModel, EmailStr, ConfigDict
 
+from src.core.pydantic.mixins import SolidMixin
 
-class JWT(BaseModel):
+__all__ = ['JWT', 'Payload']
+
+
+class JWT(BaseModel, SolidMixin):
     access: str
     refresh: str | None = None
-
-    model_config = ConfigDict(
-        frozen=True,
-        strict=True,
-    )
 
     def __str__(self):
         return f'Bearer {self.access}'

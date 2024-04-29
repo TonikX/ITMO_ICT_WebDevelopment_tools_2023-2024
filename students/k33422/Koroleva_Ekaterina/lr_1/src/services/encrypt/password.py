@@ -5,18 +5,18 @@ __all__ = ['hash_password', 'validate_password']
 
 def hash_password(
         password: str
-) -> bytes:
+) -> str:
     return bcrypt.hashpw(
         password.encode(),
         bcrypt.gensalt()
-    )
+    ).decode()
 
 
 def validate_password(
         password: str,
-        hashed_password: bytes
+        hashed_password: str
 ) -> bool:
     return bcrypt.checkpw(
         password.encode(),
-        hashed_password
+        hashed_password.encode()
     )
