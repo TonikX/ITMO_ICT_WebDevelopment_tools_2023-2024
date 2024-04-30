@@ -26,10 +26,21 @@ git clone https://github.com/KorolevaEkaterina334740/ITMO_ICT_WebDevelopment_too
 
 ## Шаг 3: Переход в директорию проекта
 
-Перейдите в директорию проекта, выполнив команду:
+1. Перейдите в корневую директорию проекта:
+```bash
+cd ./ITMO_ICT_WebDevelopment_tools_2023-2024/
+```
+
+2. Смените ветку (Если не мерджнута)
+```bash
+git switch lr_1
+git branch
+```
+
+3. Перейдите в директорию проекта, выполнив команду:
 
 ```bash
-cd ./ITMO_ICT_WebDevelopment_tools_2023-2024/students/k33422/Koroleva_Ekaterina/lr_1/
+cd ./students/k33422/Koroleva_Ekaterina/lr_1/
 ```
 
 ## Шаг 4: Установка указанной версии Python
