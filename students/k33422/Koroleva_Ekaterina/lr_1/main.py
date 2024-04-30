@@ -1,8 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 
-from src.config import app_settings
 from src.api import v1_router
+from src.config import app_settings
 
 app = FastAPI(
     title=app_settings.title,

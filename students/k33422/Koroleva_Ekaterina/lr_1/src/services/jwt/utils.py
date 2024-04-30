@@ -5,7 +5,7 @@ import jwt
 from src.config import jwt_settings
 from src.models import User
 from .schemes import JWT, Payload
-from ..auth import UserBase
+from ..auth.schemes import UserBase
 
 __all__ = ['encode', 'decode', 'create_jwt']
 

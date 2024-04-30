@@ -1,5 +1,5 @@
 from .base import *
-from .user import *
+from .participant import *
 from .profile import *
 from .trip import *
-from .participant import *
+from .user import *

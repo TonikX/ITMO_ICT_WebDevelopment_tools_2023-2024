@@ -1,5 +1,5 @@
-from src.models import User
 from src.db import db_helper
+from src.models import User
 from ..core.repository import BaseRepository
 
 

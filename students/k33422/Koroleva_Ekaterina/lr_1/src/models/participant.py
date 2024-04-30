@@ -1,10 +1,10 @@
 from enum import Enum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, UniqueConstraint, Enum as SQLEnum
+from sqlalchemy import Enum as SQLEnum, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from .base import Base
 
+from .base import Base
 
 __all__ = ['Status', 'Participant']
 

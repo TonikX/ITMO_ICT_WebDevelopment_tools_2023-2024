@@ -2,10 +2,10 @@ from datetime import date
 from enum import Enum
 from typing import TYPE_CHECKING
 
+from sqlalchemy import Enum as SQLEnum, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, Text, ForeignKey, Enum as SQLEnum
-from .base import Base
 
+from .base import Base
 
 __all__ = ['Gender', 'Profile']
 

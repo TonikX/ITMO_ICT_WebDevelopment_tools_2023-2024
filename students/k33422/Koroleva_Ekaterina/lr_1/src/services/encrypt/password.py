@@ -4,7 +4,7 @@ __all__ = ['hash_password', 'validate_password']
 
 
 def hash_password(
-        password: str
+    password: str
 ) -> str:
     return bcrypt.hashpw(
         password.encode(),
@@ -13,8 +13,8 @@ def hash_password(
 
 
 def validate_password(
-        password: str,
-        hashed_password: str
+    password: str,
+    hashed_password: str
 ) -> bool:
     return bcrypt.checkpw(
         password.encode(),

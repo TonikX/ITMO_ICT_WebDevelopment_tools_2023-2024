@@ -20,8 +20,8 @@ async def login(
     user = await repository.get_one(email=credentials.email)
 
     if not (
-            user and
-            validate_password(credentials.password, user.hashed_password)
+        user and
+        validate_password(credentials.password, user.hashed_password)
     ):
         raise HTTPException(
             status.HTTP_401_UNAUTHORIZED,

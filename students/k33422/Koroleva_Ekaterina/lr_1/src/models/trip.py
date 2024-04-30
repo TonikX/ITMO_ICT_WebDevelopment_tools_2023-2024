@@ -1,10 +1,10 @@
 from datetime import date
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, Text, ForeignKey, CheckConstraint
+from sqlalchemy import CheckConstraint, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from .base import Base
 
+from .base import Base
 
 __all__ = ['Trip']
 
