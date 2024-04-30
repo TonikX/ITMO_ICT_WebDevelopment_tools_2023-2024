@@ -3,6 +3,7 @@ from sqlalchemy.orm import selectinload
 
 from src.db import db_helper
 from src.models import Profile, User
+from src.services.pagination import PaginationParams
 from ..core.repository import BaseRepository, change_model
 
 
@@ -10,13 +11,11 @@ class UsersRepository(BaseRepository):
     @change_model(User)
     async def get_many_users(
         self,
-        limit: int = 100,
-        offset: int = 0,
+        pag_params: PaginationParams,
         **filters
     ) -> list[User]:
         return await self.get_many(
-            limit=limit,
-            offset=offset,
+            pag_params=pag_params,
             **filters
         )
 

@@ -37,9 +37,9 @@ class ProfileUpdate(BaseModel, SolidMixin):
     middle_name: str
     birth_date: date
     gender: Gender
-    bio: str = ''
+    bio: str
     country: str
-    city: str | None = None
+    city: str | None
     language: str
 
 

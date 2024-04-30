@@ -4,6 +4,7 @@ from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.v1.core.types import ModelType
+from src.services.pagination import PaginationParams
 
 
 class BaseRepository:
@@ -62,17 +63,16 @@ class BaseRepository:
 
     async def get_many(
         self,
-        limit: int = 100,
-        offset: int = 0,
+        pag_params: PaginationParams,
         **filters
     ) -> list[ModelType]:
+        statement = (
+            select(self.model)
+            .filter_by(**filters)
+            .limit(pag_params.limit)
+            .offset(pag_params.offset)
+        )
         async with self.session_factory() as session:
-            statement = (
-                select(self.model)
-                .filter_by(**filters)
-                .limit(limit)
-                .offset(offset)
-            )
             result = await session.execute(statement)
             return result.scalars().all()
 

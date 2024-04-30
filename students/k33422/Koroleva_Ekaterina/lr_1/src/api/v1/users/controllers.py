@@ -6,13 +6,13 @@ from fastapi import (
     Depends,
     HTTPException,
     Path,
-    Query,
     status as http_status,
 )
 
 from src.core.pydantic.schemes import Message
 from src.models import Profile, User
 from src.services.auth.dependencies import get_user, get_user_profile
+from src.services.pagination import get_pagination_params, PaginationParams
 from .repository import repository
 from .schemes import (
     ProfileCreate,
@@ -101,12 +101,10 @@ async def delete_me(
 @router.get('/', response_model=Annotated[list[UserMultiPublic], Depends()])
 async def get_users(
     user: Annotated[User, Depends(get_user)],
-    limit: Annotated[int | None, Query()] = 100,
-    offset: Annotated[int | None, Query()] = 0
+    pag_params: Annotated[PaginationParams, Depends(get_pagination_params)]
 ):
     return await repository.get_many_users(
-        limit=limit,
-        offset=offset,
+        pag_params=pag_params
     )
 
 
