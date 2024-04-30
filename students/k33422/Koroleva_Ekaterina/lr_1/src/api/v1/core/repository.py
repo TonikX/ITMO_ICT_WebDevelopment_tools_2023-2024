@@ -1,6 +1,6 @@
 import typing as tp
 
-from sqlalchemy import select, delete, update
+from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.v1.core.types import ModelType
@@ -62,15 +62,36 @@ class BaseRepository:
 
     async def get_many(
         self,
-        order: str = 'id',
         limit: int = 100,
-        offset: int = 0
+        offset: int = 0,
+        **filters
     ) -> list[ModelType]:
         async with self.session_factory() as session:
-            statement = select(self.model).order_by(*order).limit(limit).offset(offset)
+            statement = (
+                select(self.model)
+                .filter_by(**filters)
+                .limit(limit)
+                .offset(offset)
+            )
             result = await session.execute(statement)
             return result.scalars().all()
 
     async def exists(self, **filters) -> bool:
         result = await self.get_one(**filters)
         return result is not None
+
+
+def change_model(
+    model: ModelType
+):
+    def decorator(method):
+        async def wrapper(self, *args, **kwargs):
+            static_model = self.model
+            self.model = model
+            result = await method(self, *args, **kwargs)
+            self.model = static_model
+            return result
+
+        return wrapper
+
+    return decorator

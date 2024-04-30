@@ -1,24 +1,21 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import (APIRouter, Body, Depends, HTTPException, status)
 
 from src.core.pydantic.schemes import Message
-from src.services.auth import UserBase, get_user
-from src.services.encrypt import validate_password, hash_password
+from src.models import User
+from src.services.auth import get_user
+from src.services.encrypt import hash_password, validate_password
 from src.services.jwt import create_jwt, JWT
 from .repository import repository
-from .schemes import (
-    UserCredentials,
-    UserPrivate,
-    PasswordChange
-)
+from .schemes import (PasswordChange, UserCredentials, UserPrivate)
 
 router = APIRouter(prefix='/auth', tags=['Auth'])
 
 
 @router.post('/login/', response_model=Annotated[JWT, Depends()])
 async def login(
-    credentials: Annotated[UserCredentials, Depends()]
+    credentials: Annotated[UserCredentials, Body()]
 ):
     user = await repository.get_one(email=credentials.email)
 
@@ -36,7 +33,7 @@ async def login(
 
 @router.post('/register/', response_model=Annotated[UserPrivate, Depends()])
 async def register(
-    credentials: Annotated[UserCredentials, Depends()]
+    credentials: Annotated[UserCredentials, Body()]
 ):
     is_exists = await repository.exists(email=credentials.email)
 
@@ -56,8 +53,8 @@ async def register(
 
 @router.post('/change-password/', response_model=Annotated[Message, Depends()])
 async def change_password(
-    data: Annotated[PasswordChange, Depends()],
-    user: Annotated[UserBase, Depends(get_user)]
+    data: Annotated[PasswordChange, Body()],
+    user: Annotated[User, Depends(get_user)]
 ):
     if not validate_password(
         data.old_password,
@@ -71,7 +68,8 @@ async def change_password(
     await repository.update(
         dict(
             hashed_password=hash_password(data.new_password)
-        )
+        ),
+        id=user.id
     )
 
     return Message(msg='Success')

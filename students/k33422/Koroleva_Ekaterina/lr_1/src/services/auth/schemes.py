@@ -1,9 +1,11 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, EmailStr
+
+from src.core.pydantic.mixins import SolidUnionMixin
 
 __all__ = ['UserBase']
 
 
-class UserBase(BaseModel):
+class UserBase(BaseModel, SolidUnionMixin):
     """Strict readonly"""
 
     id: int
@@ -11,9 +13,3 @@ class UserBase(BaseModel):
     hashed_password: str | bytes
     is_active: bool = True
     is_superuser: bool = False
-
-    model_config = ConfigDict(
-        frozen=True,
-        strict=True,
-        from_attributes=True
-    )

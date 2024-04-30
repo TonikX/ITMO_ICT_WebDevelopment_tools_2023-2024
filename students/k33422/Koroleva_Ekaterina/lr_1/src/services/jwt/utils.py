@@ -1,9 +1,10 @@
-import jwt
 from datetime import datetime, timedelta
 
-from .schemes import JWT, Payload
-from src.config import jwt_settings
+import jwt
 
+from src.config import jwt_settings
+from src.models import User
+from .schemes import JWT, Payload
 from ..auth import UserBase
 
 __all__ = ['encode', 'decode', 'create_jwt']
@@ -45,7 +46,9 @@ def decode(
     )
 
 
-def create_jwt(user: UserBase | dict) -> JWT:
+def create_jwt(
+    user: User | UserBase | dict
+) -> JWT:
     if isinstance(user, dict):
         user = UserBase.model_validate(user)
 

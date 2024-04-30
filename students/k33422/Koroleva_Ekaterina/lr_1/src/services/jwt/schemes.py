@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, EmailStr
 
-from src.core.pydantic.mixins import SolidMixin
+from src.core.pydantic.mixins import SolidMixin, UnionMixin
 
 __all__ = ['JWT', 'Payload']
 
@@ -15,14 +15,10 @@ class JWT(BaseModel, SolidMixin):
         return f'Bearer {self.access}'
 
 
-class Payload(BaseModel):
+class Payload(BaseModel, UnionMixin):
     sub: str
     exp: datetime
     iat: datetime
 
     email: EmailStr
     is_superuser: bool = False
-
-    model_config = ConfigDict(
-        from_attributes=True
-    )
