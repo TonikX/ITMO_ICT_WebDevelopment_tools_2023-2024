@@ -1,0 +1,24 @@
+runners/simple.py loops = 10 target_sum = 100000000 split_count = 1
+real: 2.995
+user: 2.98
+------------------------------
+
+runners/threaded.py loops = 10 target_sum = 100000000 split_count = 20
+real: 4.005
+user: 3.975
+------------------------------
+
+runners/threaded_pool.py loops = 10 target_sum = 100000000 split_count = 20
+real: 3.955
+user: 3.935
+------------------------------
+
+runners/multiprocess.py loops = 10 target_sum = 100000000 split_count = 20
+real: 0.42
+user: 6.074999999999999
+------------------------------
+
+runners/async.py loops = 10 target_sum = 100000000 split_count = 20
+real: 3.3
+user: 3.29
+------------------------------
