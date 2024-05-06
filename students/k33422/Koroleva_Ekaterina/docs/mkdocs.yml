@@ -1,0 +1,23 @@
+site_name: Документация
+
+theme:
+  name: 'material'
+
+nav:
+  - Главная: index.md
+  - Лабораторная работа №1:
+      - Описание задания:
+        - Тематика: 'lr_1/description/theme.md'
+        - Цели: 'lr_1/description/objectives.md'
+      - Обзор функционала:
+          - Создание профилей: 'lr_1/features/profiles.md'
+          - Создание поездок: 'lr_1/features/trips.md'
+          - Поиск попутчиков: 'lr_1/features/find.md'
+          - Управление поездками: 'lr_1/features/manage.md'
+      - База данных:
+          - Схема: 'lr_1/database/schema.md'
+      - Функционал на 15 баллов:
+          - Авторизация и регистрация: 'lr_1/advanced_features/auth.md'
+          - Генерация JWT-токенов: 'lr_1/advanced_features/jwt.md'
+          - Хеширование паролей: 'lr_1/advanced_features/hash.md'
+          - Доп. эндпоинты для работы с пользователем: 'lr_1/advanced_features/user.md'
