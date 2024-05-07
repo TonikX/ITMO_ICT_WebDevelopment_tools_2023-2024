@@ -36,6 +36,11 @@ class TripDetailed(TripDefault):
     steps: Optional[List["StepDetailed"]] = None
 
 
+from models.stay_models import Stay
+from models.transition_models import Transition
 from models.step_models import Step, StepDetailed
 from models.usertriplink_models import UserTripLink, UserTripLinkUsers
 Trip.model_rebuild(_types_namespace={"Step": Step, "UserTripLink": UserTripLink})
+TripDetailed.model_rebuild(_types_namespace={"UserTripLinkUsers": UserTripLinkUsers, 
+                                             "StepDetailed": StepDetailed, 
+                                             "Stay": Stay, "Transition": Transition})
