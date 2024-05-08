@@ -21,6 +21,7 @@ class User(Base):
 
 class UserProfile(Base):
     __tablename__ = "user_profiles"
+    d
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
