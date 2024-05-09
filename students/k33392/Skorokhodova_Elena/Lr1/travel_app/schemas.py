@@ -25,9 +25,9 @@ class Trip(Base):
     __tablename__ = "trips"
 
     id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
     owner_id = Column(Integer, ForeignKey("users.id"))
     departure_location = Column(String)
-    destination = Column(String)
     start_date = Column(DateTime)
     end_date = Column(DateTime)
     duration = Column(Integer)
