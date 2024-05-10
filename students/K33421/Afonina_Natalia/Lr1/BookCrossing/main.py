@@ -100,14 +100,14 @@ def get_user(username: str, session=Depends(get_session)) -> UserProfile:
         raise HTTPException(status_code=404, detail="User not found")
 
 
-@app.post("/user")
-def create_user(user: UserDefault, session=Depends(get_session)) -> TypedDict('Response', {"status": int,
-                                                                                           "data": UserProfile}):
-    validated_user = UserProfile.model_validate(user)
-    session.add(validated_user)
-    session.commit()
-    session.refresh(validated_user)
-    return {"status": 200, "data": validated_user}
+# @app.post("/user")
+# def create_user(user: UserDefault, session=Depends(get_session)) -> TypedDict('Response', {"status": int,
+#                                                                                            "data": UserProfile}):
+#     validated_user = UserProfile.model_validate(user)
+#     session.add(validated_user)
+#     session.commit()
+#     session.refresh(validated_user)
+#     return {"status": 200, "data": validated_user}
 
 
 @app.delete("/user/user{user_id}")
