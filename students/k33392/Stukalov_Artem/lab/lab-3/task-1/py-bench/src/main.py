@@ -2,12 +2,13 @@ from .bench import BenchRunner
 from pathlib import Path
 import os
 
-TARGET = 100_000_000
+TARGET = 10_000_000
 LOOPS = 10
 
 
 def start():
     cpu_count = os.cpu_count() or 1
+    cpu_count = 5
     runner = BenchRunner(
         tests=[
             {

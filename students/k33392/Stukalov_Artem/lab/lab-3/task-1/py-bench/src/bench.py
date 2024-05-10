@@ -5,7 +5,6 @@ import statistics
 import subprocess
 
 
-
 class BecnhParams(TypedDict):
     target_sum: int
     split_count: int

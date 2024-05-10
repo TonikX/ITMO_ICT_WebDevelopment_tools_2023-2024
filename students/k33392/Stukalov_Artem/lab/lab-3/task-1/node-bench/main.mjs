@@ -22,8 +22,8 @@ const splitRanges = (start, end, count) => {
   return res
 }
 
-const TARGET = 100_000_000
-const SPLIT_COUNT = 20
+const TARGET = 10_000_000
+const SPLIT_COUNT = 5
 
 async function main() {
   const ranges = splitRanges(1, TARGET, SPLIT_COUNT)
