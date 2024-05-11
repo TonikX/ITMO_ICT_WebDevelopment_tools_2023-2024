@@ -38,8 +38,11 @@ plugins:
   - glightbox:
       auto_caption: true
 nav:
-  - '№2: Реализация серверного приложения FastAPI':
+  - '№1: Реализация серверного приложения FastAPI':
       - lab2/configuration.md
       - lab2/models.md
       - lab2/services.md
       - lab2/routes.md
+  - '№2: Потоки. Процессы. Асинхронность':
+      - lab3/task-1.md
+      - lab3/task-2.md
