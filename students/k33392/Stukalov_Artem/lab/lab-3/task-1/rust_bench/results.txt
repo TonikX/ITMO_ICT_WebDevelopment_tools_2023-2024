@@ -1,0 +1,4 @@
+rust_bench target_sum = 100000000 split_count = 20
+
+real: 0.005
+user: 0.002
