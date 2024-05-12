@@ -18,6 +18,10 @@ class AbstractParser(ABC):
     async def aio_parse(self) -> list[Transaction]:
         ...
     
+    @abstractmethod
+    def _parse(self, soup: BeautifulSoup):
+        ...
+    
 class BaseParser(AbstractParser):
     base_url: str
 
@@ -29,18 +33,17 @@ class BaseParser(AbstractParser):
             async with client.get(self.base_url) as resp:
                 return BeautifulSoup(await resp.read(), "html.parser")
 
+    def parse(self) -> list[Transaction]:
+        return self._parse(self.get_soup())
+    
+    async def aio_parse(self) -> list[Transaction]:
+        return self._parse(await self.aio_get_soup())
 
 class BlockchainComParser(BaseParser):
     def __init__(self):
         self.base_url = "https://www.blockchain.com/explorer/mempool/btc"
-
-    def parse(self) -> list[Transaction]:
-        return self.__parse(self.get_soup())
     
-    async def aio_parse(self) -> list[Transaction]:
-        return self.__parse(await self.aio_get_soup())
-    
-    def __parse(self, soup: BeautifulSoup):
+    def _parse(self, soup: BeautifulSoup):
         el = soup.find("div", class_="sc-7b53084c-1")
         trs = []
         for transaction in el:
@@ -54,13 +57,7 @@ class BtcComParser(BaseParser):
     def __init__(self) -> None:
         self.base_url = "https://explorer.btc.com/btc/unconfirmed-txs"
 
-    def parse(self) -> list[Transaction]:
-        return self.__parse(self.get_soup())
-    
-    async def aio_parse(self) -> list[Transaction]:
-        return self.__parse(await self.aio_get_soup())
-
-    def __parse(self, soup: BeautifulSoup) -> list[Transaction]:
+    def _parse(self, soup: BeautifulSoup) -> list[Transaction]:
         table = soup.find("table")
         tbody = table.find("tbody")
         trs = []
