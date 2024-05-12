@@ -1,4 +1,4 @@
-import sum_asyncio
+import asyncio
 
 
 async def calculate_sum(start, end):
@@ -12,12 +12,12 @@ async def main():
     for i in range(0, 1000000, chunk_size):
         tasks.append(calculate_sum(i+1, i+chunk_size+1))
 
-    partial_sums = await sum_asyncio.gather(*tasks)
+    partial_sums = await asyncio.gather(*tasks)
     total_sum = sum(partial_sums)
     print("Конечный результат:", total_sum)
 
 if __name__ == "__main__":
     import time
     start_time = time.time()
-    sum_asyncio.run(main())
+    asyncio.run(main())
     print("Затраченное время:", time.time() - start_time)

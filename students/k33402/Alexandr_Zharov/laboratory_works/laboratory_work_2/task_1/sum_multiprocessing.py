@@ -1,4 +1,4 @@
-from sum_multiprocessing import Process, Queue
+from multiprocessing import Process, Queue
 
 
 def calculate_sum(start, end, result_queue):

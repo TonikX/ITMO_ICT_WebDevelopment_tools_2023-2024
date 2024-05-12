@@ -35,7 +35,7 @@ async def parse_and_save(session, url):
 
 
 async def main():
-    urls = ["https://github.com/", "https://gitlab.com/", "https://hd.kinopoisk.ru/"]
+    urls = ["https://github.com/", "https://gitlab.com/", "https://www.youtube.com/"]
 
     create_table_if_not_exists()
 

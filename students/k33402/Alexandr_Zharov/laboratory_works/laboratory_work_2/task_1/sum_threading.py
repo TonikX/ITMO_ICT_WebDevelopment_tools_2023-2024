@@ -1,8 +1,7 @@
-import sum_threading
+import threading
 
 
 def calculate_sum(start, end, result):
-    print(start, end, result)
     partial_sum = sum(range(start, end))
     result.append(partial_sum)
 
@@ -13,8 +12,7 @@ def main():
     chunk_size = 100000
 
     for i in range(0, 1000000, chunk_size):
-        # print(result, i)
-        thread = sum_threading.Thread(target=calculate_sum, args=(i + 1, i + chunk_size + 1, result))
+        thread = threading.Thread(target=calculate_sum, args=(i + 1, i + chunk_size + 1, result))
         thread.start()
         threads.append(thread)
 
