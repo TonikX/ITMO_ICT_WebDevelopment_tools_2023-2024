@@ -19,7 +19,7 @@ class AbstractParser(ABC):
         ...
     
     @abstractmethod
-    def _parse(self, soup: BeautifulSoup):
+    def _parse(self, soup: BeautifulSoup) -> list[Transaction]:
         ...
     
 class BaseParser(AbstractParser):
