@@ -3,7 +3,7 @@ from time import time
 
 RUNS_NUMBER = 3
 CHUNKS_NUMBER = 4
-NUMBER = 1000000
+NUMBER = 1000000000
 
 
 def calc(lr):
