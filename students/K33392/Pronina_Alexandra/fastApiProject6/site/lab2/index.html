@@ -20,21 +20,55 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script>
     </head>
-
-    <body class="homepage">
+ <body class="homepage">
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href=".">My Docs</a>
+                <a class="navbar-brand" href=".">Лабораторные Прониной Александры</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
                 <!-- Expanded navigation -->
                 <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem active">
+                                <a href="." class="nav-link">№1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="pr1/" class="nav-link">Пр_1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="pr2/" class="nav-link">Пр_2</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="pr3/" class="nav-link">Пр_3</a>
+                            </li>
+                             <li class="navitem">
+                                <a href="lab2/" class="nav-link">№2</a>
+                            </li>
+                        </ul>
 
-                    <ul class="nav navbar-nav ms-md-auto">
+                    <ul class="nav navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="pr1/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/7Alexandra8/ITMO_ICT_WebDevelopment_tools_2023-2024/edit/master/docs/index.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                            </li>
                     </ul>
                 </div>
             </div>
