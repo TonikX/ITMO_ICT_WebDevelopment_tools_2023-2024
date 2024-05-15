@@ -1,0 +1,11 @@
+alembic==1.13.1
+fastapi==0.110.1
+pydantic==2.6.4
+SQLAlchemy==2.0.29
+sqlmodel==0.0.16
+typing_extensions==4.11.0
+uvicorn==0.29.0
+
+passlib~=1.7.4
+python-dotenv~=1.0.1
+PyJWT~=2.8.0
