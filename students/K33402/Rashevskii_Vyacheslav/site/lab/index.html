@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Lab - Рашевский_Вячеслав_K33402_Лабораторная_работа</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Рашевский_Вячеслав_K33402_Лабораторная_работа</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../leetcode/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#lab" class="nav-link">Lab</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#structure" class="nav-link">Structure</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#code" class="nav-link">Code</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#screenshots" class="nav-link">Screenshots</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#swagger" class="nav-link">Swagger</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="lab">Lab</h1>
+<h2 id="structure">Structure</h2>
+<p><img alt="structure.png" src="../src/structure.png" /></p>
+<h2 id="code">Code</h2>
+<h3 id="models">models</h3>
+<pre><code class="language-python">from datetime import datetime
+from enum import Enum
+from typing import Optional, List
+
+from sqlmodel import SQLModel, Field, Relationship
+
+
+class CategoryEnum(Enum):
+    salary = 'salary'
+    home = 'home'
+    health = 'health'
+    sports = 'sports'
+    food = 'food'
+    technology = 'technology'
+    cashback = 'cashback'
+    gifts = 'gifts'
+    other = 'other'
+
+
+class OperationEnum(Enum):
+    income = 'income'  # revenue
+    outcome = 'outcome'  # expense
+
+
+class CategoryOperationLink(SQLModel, table=True):  # many-many
+    id: Optional[int] = Field(default=None, primary_key=True, unique=True)
+    category_id: Optional[int] = Field(
+        default=None, foreign_key=&quot;category.id&quot;, primary_key=True
+    )
+    operation_id: Optional[int] = Field(
+        default=None, foreign_key=&quot;operation.id&quot;, primary_key=True
+    )
+    amount: Optional[float] = Field(default=None)
+
+
+class Category(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    category: CategoryEnum = Field(unique=True)
+    limit: float = Field(default=0.0)
+    current: float = Field(default=0.0)
+    operations: Optional[List[&quot;Operation&quot;]] = Relationship(back_populates=&quot;categories&quot;,
+                                                           link_model=CategoryOperationLink)  # many-many
+    favourite_category: List[&quot;Customer&quot;] = Relationship(back_populates=&quot;favourite_category&quot;)  # 1-many # *
+
+
+class Operation(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    operation: OperationEnum = Field(unique=True)
+    limit: float = Field(default=0.0)
+    alias: Optional[str] = Field(default=None, nullable=True)
+    categories: Optional[List[Category]] = Relationship(back_populates=&quot;operations&quot;,
+                                                        link_model=CategoryOperationLink)  # many-many
+
+
+class User(SQLModel):
+    username: str = Field(unique=True, index=True, nullable=False)
+    password: str = Field(nullable=False)
+    favourite_category_id: Optional[int] = Field(default=None, foreign_key=&quot;category.id&quot;)  # 1-many
+
+
+class Customer(User, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    balance: float = Field(default=0.0, nullable=False)
+    favourite_category: Optional[Category] = Relationship(back_populates=&quot;favourite_category&quot;)  # 1-many # *
+
+
+class CustomerCategory(User):
+    favourite_category: Optional[Category] = None  # *
+
+
+class Transaction(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    date: datetime = Field(default=None, nullable=False)
+    amount: float = Field(default=None, nullable=False)
+    customer_id: Optional[int] = Field(default=None, foreign_key=&quot;customer.id&quot;)  # 1-many
+    category_operation_link_id: Optional[int] = Field(default=None, foreign_key=&quot;categoryoperationlink.id&quot;)  # 1-many
+</code></pre>
+<h3 id="customer-handler-other-are-similar">Customer handler (other are similar)</h3>
+<pre><code class="language-python">from typing import List
+
+from fastapi import APIRouter, Depends
+from db import get_session
+from models import Customer, CustomerCategory
+
+customerRouter = APIRouter(prefix=&quot;/customers&quot;, tags=[&quot;customer&quot;])  # отвечает за swagger
+
+
+@customerRouter.get(&quot;/&quot;, response_model=list[CustomerCategory])
+async def get_customers(session=Depends(get_session)) -&gt; List[Customer]:
+    customers = session.query(Customer).all()
+    return customers
+
+
+@customerRouter.get(&quot;/{username_id}&quot;, response_model=CustomerCategory)
+async def get_customer(username_id: int, session=Depends(get_session)) -&gt; Customer:
+    customer = session.get(Customer, username_id)
+    return customer
+
+
+@customerRouter.post(&quot;/&quot;)
+async def create_customer(customer: Customer, session=Depends(get_session)):
+    customer = Customer.validate(customer)
+    customer.id = None
+    session.add(customer)
+    session.commit()
+    session.refresh(customer)
+    return customer
+
+
+@customerRouter.patch(&quot;/{username}&quot;)
+async def update_customer(customer: Customer, username: str, session=Depends(get_session)):
+    customer = Customer.validate(customer)
+    customer_from_db = session.query(Customer).filter(Customer.username == username).first()
+    if customer_from_db is None:
+        return &quot;No such customer&quot;
+    customer_data = customer.model_dump(exclude_unset=True)
+    for key, value in customer_data.items():
+        if value is None:
+            continue
+        setattr(customer_from_db, key, value)
+    session.add(customer_from_db)
+    session.commit()
+    session.refresh(customer_from_db)
+    return customer_from_db
+
+
+@customerRouter.delete(&quot;/{username}&quot;)
+async def delete_customer(username: str, session=Depends(get_session)):
+    session.query(Customer).filter(Customer.username == username).delete()
+    session.commit()
+    return &quot;Deleted&quot;
+</code></pre>
+<h3 id="db">DB</h3>
+<pre><code class="language-python">from sqlmodel import SQLModel, Session, create_engine
+from dotenv import load_dotenv
+import os
+
+load_dotenv('.env')
+db_url = os.getenv('DB_URL')
+print(db_url)
+engine = create_engine(db_url, echo=True)
+
+
+def init_db():
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+</code></pre>
+<h2 id="screenshots">Screenshots</h2>
+<p><img alt="get_categories.png" src="../src/get_categories.png" />
+<img alt="get_customers.png" src="../src/get_customers.png" />
+<img alt="patch.png" src="../src/patch.png" />
+<img alt="post_customer.png" src="../src/post_customer.png" /></p>
+<h2 id="swagger">Swagger</h2>
+<p><img alt="swagger.png" src="../src/swagger.png" /></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
