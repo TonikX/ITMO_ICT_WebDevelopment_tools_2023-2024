@@ -1,0 +1,61 @@
+site_name: "Лабораторные работы"
+theme:
+  name: material
+  features:
+    - navigation.indexes
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github-alt
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/lightbulb
+        name: Переключиться на тёмную тему
+    - media: "(prefers-color-scheme: dark)"
+      primary: black
+      scheme: slate
+      toggle:
+        icon: material/lightbulb-outline
+        name: Переключиться на светлую тему
+  language: ru
+repo_url: https://github.com/kinsl/ITMO_ICT_WebDevelopment2
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      restrict_base_path: False
+  - pymdownx.superfences
+  - pymdownx.keys
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - tables
+plugins:
+  - glightbox:
+      auto_caption: true
+extra_css:
+- css/custom.css
+- css/palette.scss
+nav:
+  - "№1: FastAPI":
+      - lw1/index.md
+      - lw1/env.md
+      - lw1/db.md
+      - lw1/models.md
+      - lw1/endpoints.md
+      - lw1/swagger.md
+  - "№2: Потоки. Процессы. Асинхронность":
+      - lw2/index.md
+      - "Задание 1": lw2/task1.md
+      - "Задание 2": lw2/task2.md
+      - lw2/conclusion.md
+  - "№3: Docker. Очереди":
+      - lw3/index.md

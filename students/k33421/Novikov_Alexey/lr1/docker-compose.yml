@@ -1,0 +1,17 @@
+version: "3.4"
+
+services:
+  db:
+    image: postgres:14.1
+    container_name: ict_postgres
+    restart: always
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DATABASE__USER}
+      - POSTGRES_PASSWORD=${DATABASE__PASSWORD}
+      - POSTGRES_DB=${DATABASE__NAME}
+    env_file:
+      - .env
+    ports:
+      - "${DATABASE__PORT}:5432"
