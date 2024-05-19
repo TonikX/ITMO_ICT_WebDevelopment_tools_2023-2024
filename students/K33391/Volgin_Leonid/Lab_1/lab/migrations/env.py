@@ -8,6 +8,14 @@ from models.main_models import *
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 
+from dotenv import load_dotenv
+
+import os
+
+
+load_dotenv()
+
+db_url = os.getenv("DB_URL")
 
 config = context.config
 

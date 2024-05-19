@@ -9,12 +9,12 @@ from dotenv import load_dotenv
 
 from repos.user_repos import find_user
 
-#import os
+import os
 
-#load_dotenv()
+load_dotenv()
 
-#secret_key = os.getenv("SECRET_KEY")
-secret_key = 'secret_key'
+secret_key = os.getenv("SECRET_KEY")
+#secret_key = 'secret_key'
 
 class AuthHandler:
     security = HTTPBearer()
