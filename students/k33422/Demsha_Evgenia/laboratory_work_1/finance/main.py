@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 
-import repos.expence_repo
+import repos.expense_repo
 from models import User, Account, ExpenseCategory, SourceOfIncome, Income, Expense
 from connections import init_db, get_session
 from typing import TypedDict, List
@@ -53,8 +53,20 @@ def categories_get(category_id: int, session=Depends(get_session)) -> ExpenseCat
 
 @app.get("/expenses")
 def expenses_list():
-    expenses = repos.expence_repo.select_all_expenses()
+    expenses = repos.expense_repo.select_all_expenses()
     return {"expenses": expenses}
+
+
+@app.get("/expense/{id}")
+def expenses_get():
+    expenses = repos.expense_repo.select_expense(id)
+    return {"expense": expense}
+
+
+@app.post("/expense")
+def create_expense(expense: Expense):
+    expense = Expense(amount=expense.amount, user_id=expense.user_id, category_id=expense.category_id, account_id=expense.account_id)
+
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ def select_all_expenses():
 def select_expense(id):
     with Session(engine) as session:
         statement = select(Expense, ExpenseCategory).join(ExpenseCategory)
-        statement = statement.where(Expense.id==id)
+        statement = statement.where(Expense.id == id)
         result = session.exec(statement)
         return result.first()
 
