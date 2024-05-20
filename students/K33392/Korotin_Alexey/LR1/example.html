@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    <input id="file-input" type="file"/>
+    <button id="submit" type="submit">Submit</button>
+</form>
+
+<form>
+    <label for="login">Login<input type="text" id="login"/></label>
+    <label for="password">Password<input type="password" id="password"/></label>
+    <button type="submit" id="login-submit">Login</button>
+</form>
+
+<script type="application/javascript">
+    const form = document.getElementById('file-input');
+    const submitButton = document.getElementById('submit');
+    const login = document.getElementById('login');
+    const password = document.getElementById('password');
+    const loginSubmit = document.getElementById('login-submit')
+
+    submitButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const data = new FormData();
+        data.append('file', form.files[0]);
+        const response = await fetch('http://localhost:8000/upload', {
+            mode: 'no-cors',
+            method: "POST",
+            body: data
+        });
+
+        console.log(response);
+    });
+
+    loginSubmit.addEventListener('click', async (e) => {
+       e.preventDefault();
+       const payload = {
+           login: login.value,
+           password: password.value
+       };
+
+       const response = await fetch('http://127.0.0.1:8000/login', {
+           method: 'POST',
+           headers: {
+               'accept': 'application/json',
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify(payload)
+       }).then(response => {
+           if (response.status === 401) {
+               alert("Bruh(");
+           }
+       });
+    });
+</script>
+
+</body>
+</html>
