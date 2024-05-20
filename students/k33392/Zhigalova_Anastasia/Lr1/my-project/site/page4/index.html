@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>app/Routes.py - LR1</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">LR1</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href="../page1/" class="nav-link">Time Managment</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../page2/" class="nav-link">models.py</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../page3/" class="nav-link">main.py</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">app/Routes.py</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../page5/" class="nav-link">pydanticModels.py</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../page6/" class="nav-link">conn.py</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../page3/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../page5/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#approutespy" class="nav-link">app/Routes.py</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#categories" class="nav-link">categories</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#users" class="nav-link">users</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#tasks" class="nav-link">tasks</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#taskscategories" class="nav-link">tasksCategories</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#timelogs" class="nav-link">timelogs</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#many-to-many-one-to-many" class="nav-link">many-to-many, one-to-many</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="approutespy">app/Routes.py</h1>
+<h2 id="categories">categories</h2>
+<pre><code>router = APIRouter()
+
+
+@router.get(&quot;/categories/{category_id}/tasks&quot;, response_model=List[Task])
+def read_tasks_by_category(category_id: int, session: Session = Depends(get_session)):
+    category = session.get(Category, category_id)
+    if not category:
+        raise HTTPException(status_code=404, detail=&quot;Category not found&quot;)
+    tasks = session.query(Task).join(TaskCategory).filter(TaskCategory.category_id == category_id).all()
+    return tasks
+
+@router.get(&quot;/tasks/{task_id}/categories&quot;, response_model=List[Category])
+def read_categories_by_task(task_id: int, session: Session = Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=&quot;Task not found&quot;)
+    categories = session.query(Category).join(TaskCategory).filter(TaskCategory.task_id == task_id).all()
+    return categories
+
+@router.get(&quot;/usersall/&quot;, response_model=List[UserWithTaskNames])
+def read_users_with_tasks(session: Session = Depends(get_session)):
+    statement = select(User).options(joinedload(User.tasks)).distinct()
+    result = session.execute(statement)
+    users = result.scalars().unique().all()
+    users_with_task_names = []
+    for user in users:
+        user_data = {
+            &quot;id&quot;: user.id,
+            &quot;username&quot;: user.username,
+            &quot;tasks&quot;: [{&quot;title&quot;: task.title} for task in user.tasks]
+        }
+        users_with_task_names.append(UserWithTaskNames(**user_data))
+
+    return users_with_task_names
+
+</code></pre>
+<h2 id="users">users</h2>
+<pre><code>router = APIRouter()
+
+@router.get(&quot;/users/&quot;, response_model=List[UserResponse])
+def read_users(session: Session = Depends(get_session)):
+    users = session.execute(select(User)).scalars().all()
+    return [UserResponse(id=user.id, username=user.username) for user in users]
+
+@router.get(&quot;/users/{user_id}&quot;, response_model=User)
+def read_user(user_id: int, session: Session = Depends(get_session)):
+    user = session.get(User, user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+    return user
+
+@router.post(&quot;/users/&quot;, response_model=int)
+def create_user(user: UserCreate, session: Session = Depends(get_session)):
+    db_user = User(username=user.username)
+    session.add(db_user)
+    session.commit()
+    session.refresh(db_user)
+    return db_user.id
+
+@router.put(&quot;/users/{user_id}&quot;)
+def update_user(user_id: int, user_update: UserUpdate, session: Session = Depends(get_session)):
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+    if user_update.username is not None:
+        user.username = user_update.username
+    session.commit()
+    return {&quot;message&quot;: &quot;User updated successfully&quot;}
+
+@router.delete(&quot;/users/{user_id}&quot;)
+def delete_user(user_id: int, session: Session = Depends(get_session)):
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+    session.delete(user)
+    session.commit()
+    return {&quot;message&quot;: &quot;User deleted successfully&quot;}
+
+</code></pre>
+<h2 id="tasks">tasks</h2>
+<pre><code>router = APIRouter()
+
+
+@router.post(&quot;/tasks/&quot;, response_model=Task)
+def create_task(task: Task, session: Session = Depends(get_session)):
+    db_task = Task.from_orm(task)
+    session.add(db_task)
+    session.commit()
+    session.refresh(db_task)
+    return db_task
+
+@router.get(&quot;/tasks/&quot;, response_model=List[Task])
+def read_tasks(session: Session = Depends(get_session)):
+    tasks = session.execute(select(Task)).scalars().all()
+    return tasks
+
+@router.get(&quot;/tasks/{task_id}&quot;, response_model=Task)
+def read_task(task_id: int, session: Session = Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=&quot;Task not found&quot;)
+    return task
+
+@router.put(&quot;/tasks/{task_id}&quot;, response_model=Task)
+def update_task(task_id: int, task_data: Task, session: Session = Depends(get_session)):
+    db_task = session.get(Task, task_id)
+    if not db_task:
+        raise HTTPException(status_code=404, detail=&quot;Task not found&quot;)
+
+    update_data = task_data.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_task, key, value)
+
+    session.add(db_task)
+    session.commit()
+    session.refresh(db_task)
+
+    return db_task
+
+@router.delete(&quot;/tasks/{task_id}&quot;, response_model=dict)
+def delete_task(task_id: int, session: Session = Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=&quot;Task not found&quot;)
+    timelogs = session.query(TimeLog).filter(TimeLog.task_id == task_id).all()
+    for timelog in timelogs:
+        session.delete(timelog)
+
+    for task_category in task.task_categories: 
+        session.delete(task_category)
+
+    session.delete(task)
+    session.commit()
+    return {&quot;ok&quot;: True}
+
+</code></pre>
+<h2 id="taskscategories">tasksCategories</h2>
+<pre><code>router = APIRouter()
+
+
+
+@router.post(&quot;/task_categories/&quot;)
+def create_task_category(task_category_data: TaskCategoryCreate, session: Session = Depends(get_session)):
+    task_category = TaskCategory(**task_category_data.dict())
+    session.add(task_category)
+    session.commit()
+    session.refresh(task_category)
+    return task_category
+
+
+@router.get(&quot;/task_categories/&quot;, response_model=List[TaskCategory])
+def read_task_categories(session: Session = Depends(get_session)):
+    task_categories = session.query(TaskCategory).all()
+    return task_categories
+
+
+@router.get(&quot;/task_categories/{id}&quot;, response_model=List[TaskCategory])
+def read_task_category(task_id: int, category_id: int, session: Session = Depends(get_session)):
+    statement = select(TaskCategory).where(TaskCategory.task_id == task_id, TaskCategory.category_id == category_id)
+    results = session.exec(statement).all()
+    if not results:
+        raise HTTPException(status_code=404, detail=&quot;TaskCategory not found&quot;)
+    return results
+
+
+
+@router.put(&quot;/task_categories/{task_id}/{category_id}&quot;, response_model=TaskCategoryUpdate)
+def update_task_category(task_id: int, category_id: int, task_category_update: TaskCategory, session: Session = Depends(get_session)):
+    db_task_category = session.get(TaskCategory, {'task_id': task_id, 'category_id': category_id})
+    if not db_task_category:
+        raise HTTPException(status_code=404, detail=&quot;TaskCategory not found&quot;)
+
+    db_task_category.additional_info = task_category_update.additional_info
+
+    session.commit()
+    return db_task_category
+
+</code></pre>
+<h2 id="timelogs">timelogs</h2>
+<pre><code>
+router = APIRouter()
+
+@router.post(&quot;/timelogs/&quot;, response_model=TimeLog)
+def create_timelog(timelog: TimeLogCreate, session: Session = Depends(get_session)):  
+    task = session.get(Task, timelog.task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=f&quot;Task with id {timelog.task_id} not found&quot;)
+
+    db_timelog = TimeLog(**timelog.dict())  
+    session.add(db_timelog)
+    try:
+        session.commit()
+    except Exception as e:
+        session.rollback()  
+        raise HTTPException(status_code=400, detail=str(e))
+    session.refresh(db_timelog)
+    return db_timelog
+
+
+@router.get(&quot;/timelogs/{timelog_id}&quot;, response_model=TimeLog)
+def read_timelog(timelog_id: int, session: Session = Depends(get_session)):
+    timelog = session.query(TimeLog).filter(TimeLog.id == timelog_id).first()
+    if not timelog:
+        raise HTTPException(status_code=404, detail=&quot;TimeLog not found&quot;)
+    return timelog
+
+
+@router.get(&quot;/timelogs/&quot;, response_model=List[TimeLog])
+def read_timelogs(session: Session = Depends(get_session)):
+    return session.query(TimeLog).all()
+
+@router.put(&quot;/timelogs/{timelog_id}&quot;, response_model=TimeLog)
+def update_timelog(timelog_id: int, timelog: TimeLogCreate, session: Session = Depends(get_session)):
+    db_timelog = session.query(TimeLog).filter(TimeLog.id == timelog_id).first()
+    if not db_timelog:
+        raise HTTPException(status_code=404, detail=&quot;TimeLog not found&quot;)
+    for var, value in vars(timelog).items():
+        setattr(db_timelog, var, value) if value else None
+    session.commit()
+    session.refresh(db_timelog)  
+    return db_timelog
+
+@router.delete(&quot;/timelogs/{timelog_id}&quot;, response_model=dict)
+def delete_timelog(timelog_id: int, session: Session = Depends(get_session)):
+    timelog = session.get(TimeLog, timelog_id)
+    if not timelog:
+        raise HTTPException(status_code=404, detail=&quot;TimeLog not found&quot;)
+    session.delete(timelog)
+    session.commit()
+    return {&quot;ok&quot;: True}
+
+</code></pre>
+<h2 id="many-to-many-one-to-many">many-to-many, one-to-many</h2>
+<pre><code>router = APIRouter()
+
+
+@router.get(&quot;/categories/{category_id}/tasks&quot;, response_model=List[Task])
+def read_tasks_by_category(category_id: int, session: Session = Depends(get_session)):
+    category = session.get(Category, category_id)
+    if not category:
+        raise HTTPException(status_code=404, detail=&quot;Category not found&quot;)
+    tasks = session.query(Task).join(TaskCategory).filter(TaskCategory.category_id == category_id).all()
+    return tasks
+
+@router.get(&quot;/tasks/{task_id}/categories&quot;, response_model=List[Category])
+def read_categories_by_task(task_id: int, session: Session = Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=&quot;Task not found&quot;)
+    categories = session.query(Category).join(TaskCategory).filter(TaskCategory.task_id == task_id).all()
+    return categories
+
+@router.get(&quot;/usersall/&quot;, response_model=List[UserWithTaskNames])
+def read_users_with_tasks(session: Session = Depends(get_session)):
+    statement = select(User).options(joinedload(User.tasks)).distinct()
+    result = session.execute(statement)
+    users = result.scalars().unique().all()
+    users_with_task_names = []
+    for user in users:
+        user_data = {
+            &quot;id&quot;: user.id,
+            &quot;username&quot;: user.username,
+            &quot;tasks&quot;: [{&quot;title&quot;: task.title} for task in user.tasks]
+        }
+        users_with_task_names.append(UserWithTaskNames(**user_data))
+
+    return users_with_task_names
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
