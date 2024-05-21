@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Book Taking</title>
+</head>
+<body>
+    <h1>Create Book Taking</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="book">Book ID:</label><br>
+        <input type="text" id="book" name="book"><br>
+        <label for="member">Member ID:</label><br>
+        <input type="text" id="member" name="member"><br>
+        <label for="date_taken">Date Taken:</label><br>
+        <input type="date" id="date_taken" name="date_taken"><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

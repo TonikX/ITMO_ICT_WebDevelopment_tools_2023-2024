@@ -1,0 +1,18 @@
+site_name: Library Management System Documentation
+
+nav:
+  - Home: index.md
+  - Books:
+      - All Books: all-books.md
+      - Reserved Books: reserved_books.md
+      - Available Books: available_books.md
+  - Members:
+      - All Members: members.md
+  - Bookings: bookings.md
+  - API:
+      - Books API: api/books.md
+      - Members API: api/members.md
+      - Bookings API: api/bookings.md
+
+theme:
+  name:  readthedocs
