@@ -1,0 +1,26 @@
+site_name: Митурский Богдан
+theme:
+  name: material
+  features:
+    - navigation.indexes
+  palette:
+    scheme: slate
+    primary: black
+    accent: indigo
+nav:
+  - Лабораторная работа №1:
+      - Оглавление: lab1/index.md
+      - Задание №1: lab1/task1.md
+      - Задание №2: lab1/task2.md
+      - Задание №3: lab1/task3.md
+      - Результат: lab1/result/index.md
+      - Вывод: lab1/conclusion.md
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - attr_list
+  - md_in_html
+plugins:
+  - glightbox
