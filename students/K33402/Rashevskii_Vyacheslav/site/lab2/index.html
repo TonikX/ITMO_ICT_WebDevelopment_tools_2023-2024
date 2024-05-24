@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Lab 2 - Рашевский_Вячеслав_K33402</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Рашевский_Вячеслав_K33402</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">№1: Реализация серверного приложения FastAPI.</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href=".." class="dropdown-item">Practice</a>
+</li>
+                                    
+<li>
+    <a href="../lab/" class="dropdown-item">Lab</a>
+</li>
+                                    
+<li>
+    <a href="../leetcode/" class="dropdown-item">Leetcode</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">№2: Потоки. Процессы. Асинхронность.</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Lab 2</a>
+</li>
+                                    
+<li>
+    <a href="../leetcode2/" class="dropdown-item">Leetcode</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../leetcode/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../leetcode2/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#lab-2" class="nav-link">Lab 2</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#code-screenshots" class="nav-link">Code + screenshots</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="lab-2">Lab 2</h1>
+<p>Подытог: создание процесса дороже создания потока, создание потока дороже создания рутины.
+Время выполнения в среднем у async &lt; threading &lt; multiprocessing.</p>
+<h2 id="code-screenshots">Code + screenshots</h2>
+<h3 id="async1py">async1.py</h3>
+<p>Создаем нужное количество (ко/го)рутин и делим 1_000_000 на их количество. Каждая единица выполнит функцию, которая суммирует все точки данного отрезка и результат добавит в лист.
+После выполнения суммируются результаты и выводится в консоли вместе с временем выполнения.</p>
+<pre><code class="language-python">import asyncio
+from time import time
+
+
+async def calculate_sum(start, end, index):
+    print(f&quot;started {index}&quot;)
+    s = sum(range(start, end + 1))
+    print(f&quot;finished {index}&quot;)
+    return s
+
+
+async def main(task_count):
+    numbers_per_task = 1_000_000 // task_count
+    tasks = list()
+
+    start_time = time()
+    for i in range(task_count):
+        start = i * numbers_per_task + 1
+        end = start + numbers_per_task - 1
+        tasks.append(calculate_sum(start, end, i))
+
+    results = await asyncio.gather(*tasks)
+    total_sum = sum(results)
+    end_time = time()
+    return total_sum, end_time - start_time
+
+
+if __name__ == &quot;__main__&quot;:
+    result, time = asyncio.run(main(4))
+    print(f&quot;Result of execution 'async': {result}&quot;)
+    print(f&quot;Time of execution 'async': {time} seconds&quot;)
+</code></pre>
+<p><img alt="async1.png" src="../src/async1.png" /></p>
+<h3 id="multiprocessing1py">multiprocessing1.py</h3>
+<p>Создаем нужное количество процессов и делим 1_000_000 на количество процессов. Каждый процесс имеет свои ресурсы, в отличие от потоков - нужно создать общий объект Queue, который хранит все суммы. 
+Процесс выполнит функцию, которая суммирует все точки данного отрезка и результат добавит в очередь.
+После выполнения всех процессов суммируются результаты и выводится в консоли вместе с временем выполнения.</p>
+<pre><code class="language-python">from multiprocessing import Process, Queue
+from time import time
+
+
+def calculate_sum(start, end, result, index):
+    print(f&quot;started {index}&quot;)
+    result.put(sum(range(start, end + 1)))
+    print(f&quot;finished {index}&quot;)
+
+
+def main(process_count):
+    numbers_per_process = 1_000_000 // process_count
+    processes = list()
+    q = Queue()
+
+    start_time = time()
+    for i in range(process_count):
+        start = i * numbers_per_process + 1
+        end = start + numbers_per_process - 1
+        p = Process(target=calculate_sum, args=(start, end, q, i))
+        processes.append(p)
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    result = 0
+    while not q.empty():
+        result += q.get()
+
+    end_time = time()
+
+    return result, end_time - start_time
+
+
+if __name__ == &quot;__main__&quot;:
+    result, time = main(4)
+    print(f&quot;Result of execution 'multiprocessing': {result}&quot;)
+    print(f&quot;Time of execution 'multiprocessing': {time} seconds&quot;)
+</code></pre>
+<p><img alt="multiprocessing1.png" src="../src/multiprocessing1.png" /></p>
+<h3 id="threading1py">threading1.py</h3>
+<p>Создаем нужное количество потоков и делим 1_000_000 на количество потоков. Каждый поток выполнит функцию, которая суммирует все точки данного отрезка и результат добавит в лист.
+После выполнения всех потоков суммируются результаты и выводится в консоли вместе с временем выполнения.</p>
+<pre><code class="language-python">import threading
+from time import time
+
+
+def calculate_sum(start, end, result, index):
+    print(f&quot;started {index}&quot;)
+    result[index] = sum(range(start, end + 1))
+    print(f&quot;finished {index}&quot;)
+
+
+def main(thread_count):
+    numbers_per_thread = 1_000_000 // thread_count
+    threads = list()
+    results = [0] * thread_count
+
+    start_time = time()
+    for i in range(thread_count):
+        start = i * numbers_per_thread + 1
+        end = start + numbers_per_thread - 1
+        t = threading.Thread(target=calculate_sum, args=(start, end, results, i))
+        threads.append(t)
+        t.start()
+
+    for t in threads:
+        t.join()
+
+    total_sum = sum(results)
+    end_time = time()
+    return total_sum, end_time - start_time
+
+
+if __name__ == &quot;__main__&quot;:
+    result, time = main(4)
+    print(f&quot;Result of execution 'threading': {result}&quot;)
+    print(f&quot;Time of execution 'threading': {time} seconds&quot;)
+</code></pre>
+<p><img alt="threading1.png" src="../src/threading1.png" /></p>
+<h3 id="async2py">async2.py</h3>
+<pre><code class="language-python">import asyncio
+import time
+import aiohttp
+from bs4 import BeautifulSoup
+from connection import DB
+from urls import URLs
+
+
+async def parse_and_save_async(url, con):
+    try:
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
+            async with session.get(url) as response:
+                page = await response.text()
+                soup = BeautifulSoup(page, 'html.parser')
+                print(soup.find('title').text)  # сохранять заголовок страницы в базу данных по мне бесполезно
+                # т.к. нагрузки 0 полезной, поэтому вывожу в консоль
+                prs = soup.find_all('div',
+                                    class_='Box-row Box-row--focus-gray p-0 mt-0 js-navigation-item js-issue-row')
+                for pr in prs:
+                    title = (pr.find('a',
+                                     class_='Link--primary v-align-middle no-underline h4 js-navigation-open markdown-title').
+                             text)
+                    span_text = pr.find('span', class_='opened-by').text.split()
+                    date = span_text[2] + ' ' + span_text[3][:-1] + ' ' + span_text[4]
+                    author = span_text[6]
+                    with con.cursor() as cursor:
+                        cursor.execute(DB.INSERT_SQL, (title, date, author))
+
+                con.commit()
+    except Exception as e:
+        print(&quot;Exception caught: &quot;, e)
+
+
+async def process_url_list_async(url_list, con):
+    tasks = []
+    for url in url_list:
+        task = asyncio.create_task(parse_and_save_async(url, con))
+        tasks.append(task)
+    await asyncio.gather(*tasks)
+
+
+async def main():
+    count_for_1_thread = 2
+    urls_for_1_thread = [URLs[i:i + count_for_1_thread] for i in range(0, len(URLs), count_for_1_thread)]
+
+    con = DB.connect()
+
+    await asyncio.gather(*(process_url_list_async(urls, con) for urls in urls_for_1_thread))
+
+    con.close()
+
+
+if __name__ == '__main__':
+    start_time = time.time()
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    asyncio.run(main())
+    end_time = time.time()
+    print(f&quot;Time of execution 'async': {end_time - start_time} seconds&quot;)
+</code></pre>
+<p><img alt="async2.png" src="../src/async2.png" /></p>
+<h3 id="multiprocessing2py">multiprocessing2.py</h3>
+<pre><code class="language-python">import multiprocessing
+import time
+import requests
+from bs4 import BeautifulSoup
+from connection import DB
+from urls import URLs
+
+
+def parse_and_save_multiprocessing(url):
+    con = DB.connect()
+    try:
+        page = requests.get(url)
+        soup = BeautifulSoup(page.text, 'html.parser')
+        print(soup.find('title').text)  # сохранять заголовок страницы в базу данных по мне бесполезно
+        # т.к. нагрузки 0 полезной, поэтому вывожу в консоль
+        prs = soup.find_all('div', class_='Box-row Box-row--focus-gray p-0 mt-0 js-navigation-item js-issue-row')
+        for pr in prs:
+            title = (pr.find('a',
+                             class_='Link--primary v-align-middle no-underline h4 js-navigation-open markdown-title').
+                     text)
+            span_text = pr.find('span', class_='opened-by').text.split()
+            date = span_text[2] + ' ' + span_text[3][:-1] + ' ' + span_text[4]
+            author = span_text[6]
+            with con.cursor() as cursor:
+                cursor.execute(DB.INSERT_SQL, (title, date, author))
+
+        con.commit()
+    except Exception as e:
+        print(&quot;Exception caught: &quot;, e)
+    finally:
+        con.close()
+
+
+def process_url_list_multiprocessing(url_list):
+    for url in url_list:
+        parse_and_save_multiprocessing(url)
+
+
+def main_multiprocessing():
+    count_for_1_thread = 2
+    urls_for_1_thread = [URLs[i:i + count_for_1_thread] for i in range(0, len(URLs), count_for_1_thread)]
+
+    processes = []
+    for urls in urls_for_1_thread:
+        process = multiprocessing.Process(target=process_url_list_multiprocessing, args=(urls,))  # make a tuple
+        processes.append(process)
+        process.start()
+
+    for process in processes:
+        process.join()
+
+
+if __name__ == '__main__':
+    start_time = time.time()
+    main_multiprocessing()
+    end_time = time.time()
+    print(f&quot;Time of execution 'multiprocessing': {end_time - start_time} seconds&quot;)
+</code></pre>
+<p><img alt="multiprocessing2.png" src="../src/multiprocessing2.png" /></p>
+<h3 id="threading2py">threading2.py</h3>
+<pre><code class="language-python">import threading
+import time
+from connection import DB
+import requests
+from bs4 import BeautifulSoup
+from urls import URLs
+
+
+def parse_and_save_threading(url, con):
+    try:
+        page = requests.get(url)
+        soup = BeautifulSoup(page.text, 'html.parser')
+        print(soup.find('title').text)  # сохранять заголовок страницы в базу данных по мне бесполезно
+        # т.к. нагрузки 0 полезной, поэтому вывожу в консоль
+        prs = soup.find_all('div', class_='Box-row Box-row--focus-gray p-0 mt-0 js-navigation-item js-issue-row')
+        for pr in prs:
+            title = (pr.find('a',
+                             class_='Link--primary v-align-middle no-underline h4 js-navigation-open markdown-title').
+                     text)
+            span_text = pr.find('span', class_='opened-by').text.split()
+            date = span_text[2] + ' ' + span_text[3][:-1] + ' ' + span_text[4]
+            author = span_text[6]
+            with con.cursor() as cursor:
+                cursor.execute(DB.INSERT_SQL, (title, date, author))
+
+        con.commit()
+    except Exception as e:
+        print(&quot;Exception caught: &quot;, e)
+
+
+def process_url_list_threading(url_list, con):
+    for url in url_list:
+        parse_and_save_threading(url, con)
+
+
+def main_threading():
+    count_for_1_thread = 2
+    urls_for_1_thread = [URLs[i:i + count_for_1_thread] for i in range(0, len(URLs), count_for_1_thread)]
+
+    con = DB.connect()
+
+    threads = []
+    for urls in urls_for_1_thread:
+        thread = threading.Thread(target=process_url_list_threading, args=(urls, con))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    con.close()
+
+
+if __name__ == '__main__':
+    start_time = time.time()
+    main_threading()
+    end_time = time.time()
+    print(f&quot;Time of execution 'threading': {end_time - start_time} seconds&quot;)
+</code></pre>
+<p><img alt="threading2.png" src="../src/threading2.png" /></p>
+<h3 id="urlspy">urls.py</h3>
+<pre><code class="language-python">URLs = [
+    'https://github.com/TonikX/ITMO_ICT_WebDevelopment_tools_2023-2024/pulls?page=1&amp;q=is%3Apr+is%3Aopen',
+    'https://github.com/TonikX/ITMO_ICT_WebDevelopment_tools_2023-2024/pulls?page=2&amp;q=is%3Apr+is%3Aopen',
+    'https://github.com/TonikX/ITMO_ICT_WebDevelopment_tools_2023-2024/pulls?page=3&amp;q=is%3Apr+is%3Aopen',
+    'https://github.com/TonikX/ITMO_ICT_WebDevelopment_2022-2023/pulls?page=1&amp;q=is%3Apr+is%3Aopen',
+    'https://github.com/TonikX/ITMO_ICT_WebDevelopment_2022-2023/pulls?page=2&amp;q=is%3Apr+is%3Aopen',
+    'https://github.com/TonikX/ITMO_ICT_WebDevelopment_2022-2023/pulls?page=3&amp;q=is%3Apr+is%3Aopen',
+]
+</code></pre>
+<h3 id="connectionpy">connection.py</h3>
+<pre><code class="language-python">import psycopg2
+
+
+class DB:
+    INSERT_SQL = &quot;&quot;&quot;insert into public.prs(title, date, author) values (%s, %s, %s);&quot;&quot;&quot;
+
+    @staticmethod
+    def connect():
+        con = psycopg2.connect(
+            dbname=&quot;web_tools_db&quot;,
+            user=&quot;postgres&quot;,
+            password=&quot;postgres&quot;,
+            host=&quot;localhost&quot;,
+            port=&quot;5432&quot;
+        )
+        return con
+</code></pre>
+<p><img alt="db_screenshot.png" src="../src/db_screenshot.png" /></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

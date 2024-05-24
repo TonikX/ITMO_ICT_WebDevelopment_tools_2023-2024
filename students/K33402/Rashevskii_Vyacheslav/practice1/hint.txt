@@ -1,0 +1,32 @@
+    # tl;dr python is trash
+    # https://rendex85.github.io/WebDevelopmentLabsDocs/lr2/lr2/
+    # сразу есть документация: localhost:8000/docs
+uvicorn main:app --reload --port 8000
+    # команду ниже запустить как администратор
+pip install fastapi sqlmodel psycopg2-binary python-dotenv alembic
+    # запустить postgresql и создать БД warriors_db
+alembic init migrations
+    # В файле alembic.ini переменной sqlalchemy.url необходимо указать адрес БД
+`
+63: sqlalchemy.url = postgresql://postgres:postgres@localhost:5432/finances_db
+```
+    # В файле env.py импортировать все из models.py и в переменной target_metadata указать значение target_metadata=SQLModel.metadata
+`
+1:  from models import *
+22: target_metadata = SQLModel.metadata
+```
+    # В файле script.py.mako импортировать библиотеку sqlmodel
+`
+    12: from sqlmodel import *
+```
+alembic revision --autogenerate -m "version ?"
+alembic upgrade head
+    # last version 1.6.6.5
+    # * оказывается они должны быть равны...
+pip install mkdocs-material
+pip uninstall jinja2
+pip install jinja2==2.11.3
+mkdocs new .
+    # or python -m mkdocs new .
+mkdocs serve
+    # or python -m mkdocs serve
