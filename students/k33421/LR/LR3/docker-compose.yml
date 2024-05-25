@@ -1,0 +1,58 @@
+services:
+
+  db:
+    container_name: db
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=${DATABASE__USER}
+      - POSTGRES_PASSWORD=${DATABASE__PASSWORD}
+      - POSTGRES_DB=Test
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    hostname: ${DATABASE__HOST}
+    restart: always
+    env_file:
+      - .env
+
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    command: python -m uvicorn main:app --host 0.0.0.0 --port 8002
+    volumes:
+      - ./my_app/:/app
+    ports:
+      - "8002:8002"
+    environment:
+      - DATABASE_URL=postgresql://postgres:qwerty12345@db/Test
+    restart: always
+    env_file:
+      - .env
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    container_name: redis
+    restart: always
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_worker
+    command: celery -A celery_app worker --loglevel=info
+    restart: always
+    volumes:
+      - ./my_app/:/app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - web
+
+volumes:
+  postgres-data:
