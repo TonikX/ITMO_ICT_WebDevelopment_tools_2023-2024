@@ -8,44 +8,46 @@ from data import URLs, number_of_threads
 
 async def parse_and_save_async(url, db_conn):
     try:
-        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
-            async with session.get(url) as response:
-                page = await response.text()
-                soup = BeautifulSoup(page, 'html.parser')
-                books = soup.find_all('div', class_='product-card')
-                for book in books:
-                    title = book.attrs['data-product-name']
-                    price = book.attrs['data-product-price-discounted']
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:  # асинхронно создаем клиент-сессию для совершения запросов
+            async with session.get(url) as response:  # асинхронно получаем ответ по ссылке из клиента-сессии
+                page = await response.text()  # получаем страницу текстом
+                soup = BeautifulSoup(page, 'html.parser')  # создаем парсер
+                books = soup.find_all('div', class_='product-card')  # находим все блоки книг по классу
+                for book in books:  # проходимся в цикле по всем книгам
+                    title = book.attrs['data-product-name']  # получаем название книги
+                    price = book.attrs['data-product-price-discounted']  # получаем цену книги
 
-                    with db_conn.cursor() as cursor:
-                        cursor.execute(DBConn.INSERT_SQL, (title, price))
+                    with db_conn.cursor() as cursor:  # через специальный класс cursor получаем доступ к базе данных
+                        cursor.execute(DBConn.INSERT_SQL, (title, price))  # выполняем ранее написанную команду и передаем в нее аргументы
 
-                db_conn.commit()
-    except Exception as e:
-        print("Ошибка:", e)
-        db_conn.rollback()
+                db_conn.commit()  # подтверждаем изменения
+    except Exception as e:  # при получении исключения
+        print("Ошибка:", e)  # выводим ошибку
+        db_conn.rollback()  # откатываем изменения
 
 
 async def process_url_list_async(url_list, conn):
-    tasks = []
-    for url in url_list:
-        task = asyncio.create_task(parse_and_save_async(url, conn))
-        tasks.append(task)
-    await asyncio.gather(*tasks)
+    tasks = []  # создаем список корутин, где будут они храниться
+    for url in url_list:  # проходимся циклом
+        task = asyncio.create_task(parse_and_save_async(url, conn))  # и запускаем корутины
+        tasks.append(task)  # добавляем к списку асинхронную функцию подсчета
+    await asyncio.gather(*tasks)  # ожидаем выполнения всех заданий асинхронно
 
 
 async def main():
-    chunk_size = len(URLs) // number_of_threads
-    url_chunks = [URLs[i:i + chunk_size] for i in range(0, len(URLs), chunk_size)]
-    db_conn = DBConn.connect_to_database()
+    chunk_size = len(URLs) // number_of_threads  # определяем количество ссылок для каждой потока (2)
+    url_chunks = [URLs[i:i + chunk_size] for i in range(0, len(URLs), chunk_size)]  # определяем сами ссылки
 
-    await asyncio.gather(*(process_url_list_async(chunk, db_conn) for chunk in url_chunks))
+    db_conn = DBConn.connect_to_database()  # подключаемся к базе данных
 
-    db_conn.close()
+    await asyncio.gather(
+        *(process_url_list_async(chunk, db_conn) for chunk in url_chunks))  # ожидаем выполнения всех заданий асинхронно
+
+    db_conn.close()  # закрываем подключение к базе данных
 
 
 if __name__ == '__main__':
-    start_time = time.time()
-    asyncio.run(main())
-    end_time = time.time()
-    print(f"Время выполнения async: {end_time - start_time} секунд")
+    start_time = time.time()  # засекаем начальное время
+    asyncio.run(main())  # запускаем программу
+    end_time = time.time()  # засекаем конечное время
+    print(f"Время выполнения async: {end_time - start_time} секунд")  # выводим время выполнения
