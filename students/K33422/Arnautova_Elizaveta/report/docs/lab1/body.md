@@ -1,7 +1,8 @@
 Схема БД:
-![](screenshots/bd.png)
+![](/lab1/screenshots/bd.png)
 
 Реализовано следующими классами:
+
 **models**
 ```python
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, DateTime, UniqueConstraint
@@ -98,7 +99,10 @@ class Message(Base):
 
 ```
 
+
+
 Подключение к базе выполнено в отдельном файле, чтобы не нагружать остальные:
+
 **database**
 ```python
 from sqlalchemy import create_engine
@@ -114,11 +118,13 @@ Base = declarative_base()
 ```
 
 Структура проекта:
-![](/screenshots/project.png)
+
+![](/lab1/screenshots/project.png)
 
 
 
 **main:**
+
 ```python
 from __future__ import annotations
 
