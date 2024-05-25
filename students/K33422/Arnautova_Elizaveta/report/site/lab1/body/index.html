@@ -71,9 +71,9 @@
             <div class="section" itemprop="articleBody">
               
                 <p>Схема БД:
-<img alt="" src="screenshots/bd.png" /></p>
-<p>Реализовано следующими классами:
-<strong>models</strong></p>
+<img alt="" src="/lab1/screenshots/bd.png" /></p>
+<p>Реализовано следующими классами:</p>
+<p><strong>models</strong></p>
 <pre><code class="language-python">from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, DateTime, UniqueConstraint
 from sqlalchemy.orm import relationship
 
@@ -167,8 +167,8 @@ class Message(Base):
     timestamp = Column(DateTime, nullable=False)
 
 </code></pre>
-<p>Подключение к базе выполнено в отдельном файле, чтобы не нагружать остальные:
-<strong>database</strong></p>
+<p>Подключение к базе выполнено в отдельном файле, чтобы не нагружать остальные:</p>
+<p><strong>database</strong></p>
 <pre><code class="language-python">from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -180,8 +180,8 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 </code></pre>
-<p>Структура проекта:
-<img alt="" src="/screenshots/project.png" /></p>
+<p>Структура проекта:</p>
+<p><img alt="" src="/lab1/screenshots/project.png" /></p>
 <p><strong>main:</strong></p>
 <pre><code class="language-python">from __future__ import annotations
 
