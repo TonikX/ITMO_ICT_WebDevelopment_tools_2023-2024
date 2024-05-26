@@ -1,0 +1,13 @@
+site_name: Hackathon lab
+nav:
+  - Home: index.md
+  - Auth: auth.md
+  - Hackathons: hackathons.md
+  - Submissions: submissions.md
+  - Tasks: tasks.md
+  - Teams: teams.md
+  - Lab2_description: lab2_description.md
+  - Lab2_task1: task1.md
+  - Lab2_task2: task2.md
+theme:
+  name: material
