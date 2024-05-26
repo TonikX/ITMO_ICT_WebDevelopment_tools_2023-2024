@@ -21,3 +21,6 @@ nav:
           - Генерация JWT-токенов: 'lr_1/advanced_features/jwt.md'
           - Хеширование паролей: 'lr_1/advanced_features/hash.md'
           - Доп. эндпоинты для работы с пользователем: 'lr_1/advanced_features/user.md'
+  - Лабораторная работа №2:
+      - Задание 1: 'lr_2/task_1.md'
+      - Задание 2: 'lr_2/task_2.md'
