@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pydantic
+sqlmodel
+psycopg2-binary
+python-dotenv
+celery
+redis
+numpy
+matplotlib
+tqdm
+tensorflow==2.15.0
