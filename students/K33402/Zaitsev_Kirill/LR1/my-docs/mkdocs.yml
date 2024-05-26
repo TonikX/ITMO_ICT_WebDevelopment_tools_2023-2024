@@ -1,0 +1,7 @@
+site_name: My Project Documentation
+theme: readthedocs
+nav:
+  - Home: index.md
+  - Main: main.md
+  - Connection: connection.md
+  - Models: models.md
