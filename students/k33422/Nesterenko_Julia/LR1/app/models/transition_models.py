@@ -28,5 +28,5 @@ class Transition(TransitionDefault, table=True):
                                                  sa_relationship_kwargs={"cascade": "all, delete"})
 
 
-from models.step_models import Step
+from .step_models import Step
 Transition.model_rebuild(_types_namespace={"Step": Step})

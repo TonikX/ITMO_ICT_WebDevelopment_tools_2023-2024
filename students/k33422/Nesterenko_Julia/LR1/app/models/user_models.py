@@ -61,5 +61,5 @@ class UserPwd(SQLModel):
     new_password2: str = Field(min_length=8, max_length=60)
 
 
-from models.usertriplink_models import UserTripLink
+from .usertriplink_models import UserTripLink
 User.model_rebuild(_types_namespace={"UserTripLink": UserTripLink})

@@ -3,11 +3,11 @@ from typing import List
 from typing_extensions import TypedDict
 from sqlmodel import select
 
-from models.user_models import * 
-from models.trip_models import * 
-from models.usertriplink_models import *
-from connection import *
-from auth import AuthHandler
+from app.models.user_models import * 
+from app.models.trip_models import * 
+from app.models.usertriplink_models import *
+from app.connection import *
+from app.auth import AuthHandler
 
 
 trip_router = APIRouter()

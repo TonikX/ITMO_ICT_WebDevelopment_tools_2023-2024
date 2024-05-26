@@ -39,8 +39,8 @@ class UserTripLinkUsers(SQLModel):
     user: "UserDefault" = None
 
 
-from models.user_models import User, UserDefault
-from models.trip_models import Trip, TripDetailed
+from .user_models import User, UserDefault
+from .trip_models import Trip, TripDetailed
 UserTripLink.model_rebuild(_types_namespace={"User": User, "Trip": Trip})
 UserTripLinkTrips.model_rebuild(_types_namespace={"TripDetailed": TripDetailed})
 UserTripLinkUsers.model_rebuild(_types_namespace={"UserDefault": UserDefault})

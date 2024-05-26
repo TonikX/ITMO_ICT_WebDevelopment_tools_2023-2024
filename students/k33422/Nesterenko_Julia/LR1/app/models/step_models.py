@@ -40,8 +40,8 @@ class StepDetailed(StepDefault):
     transition: Optional["Transition"] = None
 
 
-from models.trip_models import Trip
-from models.stay_models import Stay
-from models.transition_models import Transition
+from .trip_models import Trip
+from .stay_models import Stay
+from .transition_models import Transition
 Step.model_rebuild(_types_namespace={"Trip": Trip, "Stay": Stay, "Transition": Transition})
 StepDetailed.model_rebuild(_types_namespace={"Trip": Trip, "Stay": Stay, "Transition": Transition})

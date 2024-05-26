@@ -9,8 +9,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-from connection import *
-from models.user_models import * 
+from .connection import *
+from .models.user_models import * 
 
 
 class AuthHandler:

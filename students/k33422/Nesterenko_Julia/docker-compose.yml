@@ -1,0 +1,73 @@
+services:
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+  celery_tasks:
+    build: ./LR1
+    command: celery -A app.celery_tasks worker --loglevel=info
+    environment:
+      - PARSER_URL=http://parser:8001/parse
+      - REDIS_URL=redis://redis/0
+    depends_on:
+      - redis
+      - main
+      - celery_beat
+  celery_beat:
+    build: ./LR1
+    #command: celery -A app.celery_tasks beat --loglevel=info
+    environment:
+      - PARSER_URL=http://parser:8001/parse
+      - REDIS_URL=redis://redis/0
+    depends_on:
+      - redis
+      - main
+  flower:
+    build: ./LR1
+    command: celery -A app.celery_tasks flower --port=5555
+    environment:
+      - PARSER_URL=http://parser:8001/parse
+      - REDIS_URL=redis://redis/0
+    ports:
+      - 5555:5555
+    depends_on:
+      - redis
+      - main
+      - celery_tasks
+  db:
+    image: postgres
+    volumes:
+      - ./LR3/web_lab1.sql:/docker-entrypoint-initdb.d/web_lab1.sql
+      - lab3_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=lab3
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+  main:
+    build: ./LR1
+    depends_on:
+      - redis
+      - db
+    environment:
+      - DB_ADMIN=postgresql://admin:admin@db/lab3
+      - PARSER_URL=http://parser:8001/parse
+      - REDIS_URL=redis://redis/0
+    ports:
+      - "8000:8000"
+  parser:
+    build: ./LR3
+    depends_on:
+      - db
+    environment:
+      - DB_ADMIN=postgresql://admin:admin@db/lab3
+    ports:
+      - "8001:8001"
+volumes:
+  lab3_data: 
+
+
+# сборка
+# docker-compose up -d

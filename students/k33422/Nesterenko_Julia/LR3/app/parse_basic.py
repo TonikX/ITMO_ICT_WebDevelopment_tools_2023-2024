@@ -92,12 +92,3 @@ def parse_and_save(key, url):
     except Exception as e:
         print("OH NO, EXCEPTION!")
         raise e
-   
-
-if __name__ == "__main__":
-    start = time()
-    for key in URLS.keys():
-        url = URLS[key]
-        parse_and_save(key, url)
-        print()
-    print("Execution time:", time() - start)
