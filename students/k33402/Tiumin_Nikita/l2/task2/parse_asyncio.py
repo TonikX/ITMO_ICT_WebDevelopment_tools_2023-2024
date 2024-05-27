@@ -1,7 +1,8 @@
 import asyncio
 from time import time
-from db import get_connnection, close_connection, create_trip, insert_trip
-from parser import parse_trips
+from db import get_connnection, close_connection, create_trip, insert_trip_async
+from parser import parse_trips_async
+import aiosqlite
 
 
 RUNS_NUMBER = 3
@@ -12,14 +13,15 @@ PAGES_NUMBER = 16
 async def parse_and_save(urls):
     parsed_trips = []
     for url in urls:
-        next_parsed_trips = parse_trips(url)
+        next_parsed_trips = await parse_trips_async(url)
         parsed_trips = [*parsed_trips, *next_parsed_trips]
 
-    conn = get_connnection()
-    for trip in parsed_trips:
-        trip_to_insert = create_trip(trip)
-        insert_trip(conn, trip_to_insert)
-    close_connection(conn)
+    # conn = get_connnection()
+    async with aiosqlite.connect('db.sqlite') as conn:
+        for trip in parsed_trips:
+            trip_to_insert = create_trip(trip)
+            await insert_trip_async(conn, trip_to_insert)
+    # close_connection(conn)
     return 'success'
 
 

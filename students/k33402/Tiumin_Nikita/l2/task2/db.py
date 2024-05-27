@@ -101,6 +101,11 @@ def insert_trip(conn, trip):
     conn.commit()
 
 
+async def insert_trip_async(conn, trip):
+    async with conn.execute('''INSERT INTO tours (name,price,difficultyLevelId,comfortLevelId,placeId,createdAt,updatedAt,canGoWithChildren,maxPeople) VALUES (?,?,?,?,?,datetime(\'now\'),datetime(\'now\'), 1,100)''', (trip.name,trip.price,trip.difficulty_id,trip.comfort_id,1)):
+        await conn.commit()
+
+
 if __name__ == '__main__':
     conn = get_connnection()
 
