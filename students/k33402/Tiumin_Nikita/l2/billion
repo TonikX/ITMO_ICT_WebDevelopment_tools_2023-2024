@@ -1,0 +1,53 @@
+C:\Users\tyumi\AppData\Local\Programs\Python\Python310\python.exe C:/Users/tyumi/Desktop/web/students/k33402/Tiumin_Nikita/l2/task1/sum_asyncio.py
+1  run:  28.44098472595215 s. RESULT:  500000000500000000
+2  run:  29.033018112182617 s. RESULT:  500000000500000000
+3  run:  34.16701149940491 s. RESULT:  500000000500000000
+Average time:  30.54700477917989 s
+
+Process finished with exit code 0
+
+C:\Users\tyumi\AppData\Local\Programs\Python\Python310\python.exe C:/Users/tyumi/Desktop/web/students/k33402/Tiumin_Nikita/l2/task1/sum_multiprocessing.py
+1  run:  11.234996795654297 s. RESULT:  500000000500000000
+2  run:  10.676998853683472 s. RESULT:  500000000500000000
+3  run:  10.901039123535156 s. RESULT:  500000000500000000
+Average time:  10.937678257624308 s
+
+Process finished with exit code 0
+
+C:\Users\tyumi\AppData\Local\Programs\Python\Python310\python.exe C:/Users/tyumi/Desktop/web/students/k33402/Tiumin_Nikita/l2/task1/sum_threading.py
+1  run:  28.884958267211914 s. RESULT:  500000000500000000
+2  run:  28.903634071350098 s. RESULT:  500000000500000000
+3  run:  29.682029724121094 s. RESULT:  500000000500000000
+Average time:  29.156874020894367 s
+
+Process finished with exit code 0
+
+
+
+
+
+
+
+C:\Users\tyumi\AppData\Local\Programs\Python\Python310\python.exe C:/Users/tyumi/Desktop/web/students/k33402/Tiumin_Nikita/l2/task2/parse_asyncio.py
+1  run:  20.575468063354492 s. RESULT:  ['success', 'success', 'success', 'success']
+2  run:  18.624937295913696 s. RESULT:  ['success', 'success', 'success', 'success']
+3  run:  19.625298976898193 s. RESULT:  ['success', 'success', 'success', 'success']
+Average time:  19.608568112055462 s
+
+Process finished with exit code 0
+
+C:\Users\tyumi\AppData\Local\Programs\Python\Python310\python.exe C:/Users/tyumi/Desktop/web/students/k33402/Tiumin_Nikita/l2/task2/parse_threading.py
+1  run:  8.343009233474731 s. RESULT:  ['success', 'success', 'success', 'success']
+2  run:  8.987829208374023 s. RESULT:  ['success', 'success', 'success', 'success']
+3  run:  7.404290437698364 s. RESULT:  ['success', 'success', 'success', 'success']
+Average time:  8.24504295984904 s
+
+Process finished with exit code 0
+
+C:\Users\tyumi\AppData\Local\Programs\Python\Python310\python.exe C:/Users/tyumi/Desktop/web/students/k33402/Tiumin_Nikita/l2/task2/parse_multiprocessing.py
+1  run:  6.602014064788818 s. RESULT:  ['success', 'success', 'success', 'success']
+2  run:  7.115768909454346 s. RESULT:  ['success', 'success', 'success', 'success']
+3  run:  7.808634281158447 s. RESULT:  ['success', 'success', 'success', 'success']
+Average time:  7.175472418467204 s
+
+Process finished with exit code 0
