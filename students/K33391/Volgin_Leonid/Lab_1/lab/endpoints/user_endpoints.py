@@ -41,6 +41,19 @@ def login(user: UserLogin):
     token = auth_handler.encode_token(user_found.username)
     return {'token': token}
 
+@user_router.get("/pwd_change")
+def fresh_pwd(pwd, new_pwd, user=Depends(auth_handler.get_current_user)):
+    hashed_pwd = auth_handler.get_password_hash(pwd)
+    #print(hashed_pwd)
+    #print(user.password)
+    #if hashed_pwd == user.password:
+    new_hashed_pwd = auth_handler.get_password_hash(new_pwd)
+    session.query(User).filter(User.id == user.id).update({'password': new_hashed_pwd})
+    session.commit()
+    #else:
+        #raise HTTPException(status_code=401, detail=f'{hashed_pwd} {user.password}')
+
+
 
 @user_router.post('/users/me', tags=['users'])
 def get_current_user(user: User = Depends(auth_handler.get_current_user)):

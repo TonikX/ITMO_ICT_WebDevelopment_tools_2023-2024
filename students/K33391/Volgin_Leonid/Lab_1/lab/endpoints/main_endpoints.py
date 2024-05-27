@@ -6,7 +6,7 @@ from sqlmodel import Session, select
 from endpoints.user_endpoints import auth_handler
 from students.K33391.Volgin_Leonid.Lab_1.lab.db import session, get_session
 from students.K33391.Volgin_Leonid.Lab_1.lab.models.main_models import Author, Author_Default, Publisher_Default, \
-    Publisher, Book, Book_Default, WishList, WishList_Default, Acception
+    Publisher, Book, Book_Default, WishList, WishList_Default, Acception, Publisher_Submodel
 
 main_router = APIRouter()
 
@@ -54,9 +54,9 @@ def author_update(author_id: int, author: Author_Default, session=Depends(get_se
 
 
 
-@main_router.get("/publishers/{publisher_id}")
+@main_router.get("/publishers/{publisher_id}",response_model=Publisher_Submodel)
 def get_publisher(publisher_id: int):
-    publisher = session.get(Author, publisher_id)
+    publisher = session.get(Publisher, publisher_id)
     if not publisher:
         raise HTTPException(status_code=404, detail="Publisher not found")
     return publisher

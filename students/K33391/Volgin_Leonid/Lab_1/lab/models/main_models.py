@@ -23,6 +23,7 @@ class WishList(WishList_Default, table=True):
     #__table_args__ = {'extend_existing': True}
     #id: Optional[int] = Field(primary_key=True)
     is_accepted: Optional[bool] = Field(default=None, nullable=True)
+    aboba: Optional[bool] = Field(default=None, nullable=True)
     user_id: Optional[int] = Field(default=None, foreign_key="user.id", primary_key=True)
 
 
@@ -43,6 +44,9 @@ class User(User_Default, table=True):
 class Publisher_Default(SQLModel):
     name: str
     info: str
+
+class Publisher_Submodel(Publisher_Default):
+    books: Optional[list['Book']] = None
 
 class Publisher(Publisher_Default, table=True):
     #__table_args__ = {'extend_existing': True}
