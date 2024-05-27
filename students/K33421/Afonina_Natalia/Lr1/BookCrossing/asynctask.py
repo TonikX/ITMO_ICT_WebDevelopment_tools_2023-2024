@@ -5,8 +5,12 @@ from sqlalchemy.orm import sessionmaker
 from connection import engine
 from models import Author
 from time import time
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.future import select
 
-Session = sessionmaker(bind=engine)
+DATABASE_URL = "postgresql+asyncpg://postgres:qwerty@localhost:5432/bookcrossing_db"
+engine = create_async_engine(DATABASE_URL, echo=True)
+Session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
 
 async def fetch(url, session):
@@ -22,34 +26,37 @@ async def parse_and_save_author(url, session):
     if not content_div:
         print(f"Content div not found for {url}")
         return
+    async with Session() as db_session:
+        for ul in content_div.find_all('ul', recursive=True):
+            for li in ul.find_all('li', recursive=False):
+                author_tag = li.find('a')
+                if author_tag:
+                    author_name = author_tag.get_text()
+                    if author_name:
+                        bio = li.get_text().split(author_name, 1)[-1].strip()
 
-    for ul in content_div.find_all('ul', recursive=True):
-        for li in ul.find_all('li', recursive=False):
-            author_tag = li.find('a')
-            if author_tag:
-                author_name = author_tag.get_text()
-                if author_name:
-                    bio = li.get_text().split(author_name, 1)[-1].strip()
+                        stmt = select(Author).filter_by(name=author_name)
+                        result = await db_session.execute(stmt)
+                        author = result.scalars().first()
 
-                    with Session() as session:
-                        author = session.query(Author).filter(Author.name == author_name).first()
                         if not author:
                             author = Author(name=author_name, bio=bio)
-                            session.add(author)
-                            session.commit()
+                            db_session.add(author)
+                            await db_session.commit()
                             print(f"Saved {author_name} from {url}")
                         else:
                             print(f"{author_name} already exists in the database")
-                else:
-                    print(f"Author name not found in {url}")
+                    else:
+                        print(f"Author name not found in {url}")
 
 
 async def main_async(urls):
-    start_time = time()
+    loop = asyncio.get_running_loop()
+    start_time = loop.time()
     async with aiohttp.ClientSession() as session:
         tasks = [parse_and_save_author(url, session) for url in urls]
         await asyncio.gather(*tasks)
-    end_time = time()
+    end_time = loop.time()
     print(f"Async: {end_time - start_time} seconds")
 
 

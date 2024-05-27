@@ -1,6 +1,6 @@
 import threadingtask
 import time
-import threadingtask
+import threading
 
 
 def sum_numbers(start, end):

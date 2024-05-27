@@ -8,6 +8,7 @@ from time import time
 
 Session = sessionmaker(bind=engine)
 
+
 def parse_and_save_author(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -34,10 +35,12 @@ def parse_and_save_author(url):
                     else:
                         print(f"{author_name} already exists in the database")
 
+
 def chunk_list(lst, n):
     """Разделяет список на n равных частей."""
     k, m = divmod(len(lst), n)
-    return [lst[i*k + min(i, m):(i+1)*k + min(i+1, m)] for i in range(n)]
+    return [lst[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n)]
+
 
 def main_multiprocessing(urls):
     start_time = time()
@@ -46,13 +49,14 @@ def main_multiprocessing(urls):
     end_time = time()
     print(f"Multiprocessing: {end_time - start_time} seconds")
 
+
 urls = [
     "https://en.wikipedia.org/wiki/List_of_poets",
     "https://en.wikipedia.org/wiki/List_of_children%27s_literature_writers",
     "https://en.wikipedia.org/wiki/List_of_fantasy_authors"
 ]
 
-num_processes = 4  # Количество процессов
+num_processes = 3  # Количество процессов
 chunks = chunk_list(urls, num_processes)
 
 if __name__ == '__main__':
