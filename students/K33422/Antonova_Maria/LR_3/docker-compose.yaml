@@ -1,0 +1,71 @@
+version: "3.10"
+services:
+  app:
+    build:
+      context: .
+    env_file: .env
+    depends_on:
+      - db
+    ports:
+      - "8001:8001"
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8001
+    networks:
+      - backend
+    restart: always
+
+  db:
+    image: postgres
+    restart: always
+    #env_file: .env
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=hfm
+      - POSTGRES_PORT=5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  celery:
+    restart: always
+    build: .
+    command: celery -A src.celery worker -B -l INFO
+    volumes:
+      - .:/usr/src/lab
+    env_file: .env
+    depends_on:
+      - db
+      - redis
+      - parser
+    networks:
+      - backend
+  parser:
+    restart: always
+    build: .
+    command: uvicorn src.main2:app --host 0.0.0.0 --port 80
+    volumes:
+      - .:/usr/src/lab
+    env_file: .env
+    depends_on:
+      - db
+    ports:
+      - "8002:80"
+    networks:
+      - backend
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+     driver: bridge

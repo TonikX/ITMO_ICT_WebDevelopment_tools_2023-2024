@@ -1,0 +1,987 @@
+[[package]]
+name = "aiohttp"
+version = "3.9.5"
+description = "Async http client/server framework (asyncio)"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+aiosignal = ">=1.1.2"
+async-timeout = {version = ">=4.0,<5.0", markers = "python_version < \"3.11\""}
+attrs = ">=17.3.0"
+frozenlist = ">=1.1.1"
+multidict = ">=4.5,<7.0"
+yarl = ">=1.0,<2.0"
+
+[package.extras]
+speedups = ["brotlicffi", "brotli", "aiodns"]
+
+[[package]]
+name = "aiosignal"
+version = "1.3.1"
+description = "aiosignal: a list of registered asynchronous callbacks"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+frozenlist = ">=1.1.0"
+
+[[package]]
+name = "alembic"
+version = "1.13.1"
+description = "A database migration tool for SQLAlchemy."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+Mako = "*"
+SQLAlchemy = ">=1.3.0"
+typing-extensions = ">=4"
+
+[package.extras]
+tz = ["backports.zoneinfo"]
+
+[[package]]
+name = "amqp"
+version = "5.2.0"
+description = "Low-level AMQP client for Python (fork of amqplib)."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+vine = ">=5.0.0,<6.0.0"
+
+[[package]]
+name = "annotated-types"
+version = "0.7.0"
+description = "Reusable constraint types to use with typing.Annotated"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "anyio"
+version = "4.3.0"
+description = "High level compatibility layer for multiple asynchronous event loop implementations"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+exceptiongroup = {version = ">=1.0.2", markers = "python_version < \"3.11\""}
+idna = ">=2.8"
+sniffio = ">=1.1"
+typing-extensions = {version = ">=4.1", markers = "python_version < \"3.11\""}
+
+[package.extras]
+doc = ["packaging", "Sphinx (>=7)", "sphinx-rtd-theme", "sphinx-autodoc-typehints (>=1.2.0)"]
+test = ["anyio", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "uvloop (>=0.17)"]
+trio = ["trio (>=0.23)"]
+
+[[package]]
+name = "async-timeout"
+version = "4.0.3"
+description = "Timeout context manager for asyncio programs"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "attrs"
+version = "23.2.0"
+description = "Classes Without Boilerplate"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+cov = ["attrs", "coverage[toml] (>=5.3)"]
+dev = ["attrs", "pre-commit"]
+docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-towncrier", "towncrier", "zope-interface"]
+tests = ["attrs", "zope-interface"]
+tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
+tests-no-zope = ["attrs", "cloudpickle", "hypothesis", "pympler", "pytest-xdist", "pytest (>=4.3.0)"]
+
+[[package]]
+name = "beautifulsoup4"
+version = "4.12.3"
+description = "Screen-scraping library"
+category = "main"
+optional = false
+python-versions = ">=3.6.0"
+
+[package.dependencies]
+soupsieve = ">1.2"
+
+[package.extras]
+cchardet = ["cchardet"]
+chardet = ["chardet"]
+charset-normalizer = ["charset-normalizer"]
+html5lib = ["html5lib"]
+lxml = ["lxml"]
+
+[[package]]
+name = "billiard"
+version = "4.2.0"
+description = "Python multiprocessing fork with improvements and bugfixes"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "bs4"
+version = "0.0.2"
+description = "Dummy package for Beautiful Soup (beautifulsoup4)"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+beautifulsoup4 = "*"
+
+[[package]]
+name = "celery"
+version = "5.4.0"
+description = "Distributed Task Queue."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+billiard = ">=4.2.0,<5.0"
+click = ">=8.1.2,<9.0"
+click-didyoumean = ">=0.3.0"
+click-plugins = ">=1.1.1"
+click-repl = ">=0.2.0"
+kombu = ">=5.3.4,<6.0"
+python-dateutil = ">=2.8.2"
+tzdata = ">=2022.7"
+vine = ">=5.1.0,<6.0"
+
+[package.extras]
+arangodb = ["pyArango (>=2.0.2)"]
+auth = ["cryptography (==42.0.5)"]
+azureblockblob = ["azure-storage-blob (>=12.15.0)"]
+brotli = ["brotli (>=1.0.0)", "brotlipy (>=0.7.0)"]
+cassandra = ["cassandra-driver (>=3.25.0,<4)"]
+consul = ["python-consul2 (==0.1.5)"]
+cosmosdbsql = ["pydocumentdb (==2.3.5)"]
+couchbase = ["couchbase (>=3.0.0)"]
+couchdb = ["pycouchdb (==1.14.2)"]
+django = ["Django (>=2.2.28)"]
+dynamodb = ["boto3 (>=1.26.143)"]
+elasticsearch = ["elasticsearch (<=8.13.0)", "elastic-transport (<=8.13.0)"]
+eventlet = ["eventlet (>=0.32.0)"]
+gcs = ["google-cloud-storage (>=2.10.0)"]
+gevent = ["gevent (>=1.5.0)"]
+librabbitmq = ["librabbitmq (>=2.0.0)"]
+memcache = ["pylibmc (==1.6.3)"]
+mongodb = ["pymongo[srv] (>=4.0.2)"]
+msgpack = ["msgpack (==1.0.8)"]
+pymemcache = ["python-memcached (>=1.61)"]
+pyro = ["pyro4 (==4.82)"]
+pytest = ["pytest-celery[all] (>=1.0.0)"]
+redis = ["redis (>=4.5.2,!=4.5.5,<6.0.0)"]
+s3 = ["boto3 (>=1.26.143)"]
+slmq = ["softlayer-messaging (>=1.0.3)"]
+solar = ["ephem (==4.1.5)"]
+sqlalchemy = ["sqlalchemy (>=1.4.48,<2.1)"]
+sqs = ["boto3 (>=1.26.143)", "urllib3 (>=1.26.16)", "kombu[sqs] (>=5.3.4)", "pycurl (>=7.43.0.5)"]
+tblib = ["tblib (>=1.3.0)", "tblib (>=1.5.0)"]
+yaml = ["PyYAML (>=3.10)"]
+zookeeper = ["kazoo (>=1.3.1)"]
+zstd = ["zstandard (==0.22.0)"]
+
+[[package]]
+name = "certifi"
+version = "2024.2.2"
+description = "Python package for providing Mozilla's CA Bundle."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "click"
+version = "8.1.7"
+description = "Composable command line interface toolkit"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+colorama = {version = "*", markers = "platform_system == \"Windows\""}
+
+[[package]]
+name = "click-didyoumean"
+version = "0.3.1"
+description = "Enables git-like *did-you-mean* feature in click"
+category = "main"
+optional = false
+python-versions = ">=3.6.2"
+
+[package.dependencies]
+click = ">=7"
+
+[[package]]
+name = "click-plugins"
+version = "1.1.1"
+description = "An extension module for click to enable registering CLI commands via setuptools entry-points."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+click = ">=4.0"
+
+[package.extras]
+dev = ["pytest (>=3.6)", "pytest-cov", "wheel", "coveralls"]
+
+[[package]]
+name = "click-repl"
+version = "0.3.0"
+description = "REPL plugin for Click"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+click = ">=7.0"
+prompt-toolkit = ">=3.0.36"
+
+[package.extras]
+testing = ["pytest-cov (>=4.0.0)", "pytest (>=7.2.1)", "tox (>=4.4.3)"]
+
+[[package]]
+name = "colorama"
+version = "0.4.6"
+description = "Cross-platform colored terminal text."
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
+
+[[package]]
+name = "dnspython"
+version = "2.6.1"
+description = "DNS toolkit"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+dev = ["black (>=23.1.0)", "coverage (>=7.0)", "flake8 (>=7)", "mypy (>=1.8)", "pylint (>=3)", "pytest-cov (>=4.1.0)", "pytest (>=7.4)", "sphinx (>=7.2.0)", "twine (>=4.0.0)", "wheel (>=0.42.0)"]
+dnssec = ["cryptography (>=41)"]
+doh = ["h2 (>=4.1.0)", "httpcore (>=1.0.0)", "httpx (>=0.26.0)"]
+doq = ["aioquic (>=0.9.25)"]
+idna = ["idna (>=3.6)"]
+trio = ["trio (>=0.23)"]
+wmi = ["wmi (>=1.5.1)"]
+
+[[package]]
+name = "email-validator"
+version = "2.1.1"
+description = "A robust email address syntax and deliverability validation library."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+dnspython = ">=2.0.0"
+idna = ">=2.0.0"
+
+[[package]]
+name = "exceptiongroup"
+version = "1.2.1"
+description = "Backport of PEP 654 (exception groups)"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+test = ["pytest (>=6)"]
+
+[[package]]
+name = "fastapi"
+version = "0.111.0"
+description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+email_validator = ">=2.0.0"
+fastapi-cli = ">=0.0.2"
+httpx = ">=0.23.0"
+jinja2 = ">=2.11.2"
+orjson = ">=3.2.1"
+pydantic = ">=1.7.4,<1.8 || >1.8,<1.8.1 || >1.8.1,<2.0.0 || >2.0.0,<2.0.1 || >2.0.1,<2.1.0 || >2.1.0,<3.0.0"
+python-multipart = ">=0.0.7"
+starlette = ">=0.37.2,<0.38.0"
+typing-extensions = ">=4.8.0"
+ujson = ">=4.0.1,<4.0.2 || >4.0.2,<4.1.0 || >4.1.0,<4.2.0 || >4.2.0,<4.3.0 || >4.3.0,<5.0.0 || >5.0.0,<5.1.0 || >5.1.0"
+uvicorn = {version = ">=0.12.0", extras = ["standard"]}
+
+[package.extras]
+all = ["httpx (>=0.23.0)", "jinja2 (>=2.11.2)", "python-multipart (>=0.0.7)", "itsdangerous (>=1.1.0)", "pyyaml (>=5.3.1)", "ujson (>=4.0.1,!=4.0.2,!=4.1.0,!=4.2.0,!=4.3.0,!=5.0.0,!=5.1.0)", "orjson (>=3.2.1)", "email_validator (>=2.0.0)", "uvicorn[standard] (>=0.12.0)", "pydantic-settings (>=2.0.0)", "pydantic-extra-types (>=2.0.0)"]
+
+[[package]]
+name = "fastapi-cli"
+version = "0.0.4"
+description = "Run and manage FastAPI apps from the command line with FastAPI CLI. 🚀"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+typer = ">=0.12.3"
+
+[package.extras]
+standard = ["fastapi", "uvicorn[standard] (>=0.15.0)"]
+
+[[package]]
+name = "frozenlist"
+version = "1.4.1"
+description = "A list-like structure which implements collections.abc.MutableSequence"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "greenlet"
+version = "3.0.3"
+description = "Lightweight in-process concurrent programming"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["sphinx", "furo"]
+test = ["objgraph", "psutil"]
+
+[[package]]
+name = "h11"
+version = "0.14.0"
+description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "httpcore"
+version = "1.0.5"
+description = "A minimal low-level HTTP client."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+certifi = "*"
+h11 = ">=0.13,<0.15"
+
+[package.extras]
+asyncio = ["anyio (>=4.0,<5.0)"]
+http2 = ["h2 (>=3,<5)"]
+socks = ["socksio (>=1.0.0,<2.0.0)"]
+trio = ["trio (>=0.22.0,<0.26.0)"]
+
+[[package]]
+name = "httptools"
+version = "0.6.1"
+description = "A collection of framework independent HTTP protocol utils."
+category = "main"
+optional = false
+python-versions = ">=3.8.0"
+
+[package.extras]
+test = ["Cython (>=0.29.24,<0.30.0)"]
+
+[[package]]
+name = "httpx"
+version = "0.27.0"
+description = "The next generation HTTP client."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+anyio = "*"
+certifi = "*"
+httpcore = ">=1.0.0,<2.0.0"
+idna = "*"
+sniffio = "*"
+
+[package.extras]
+brotli = ["brotli", "brotlicffi"]
+cli = ["click (>=8.0.0,<9.0.0)", "pygments (>=2.0.0,<3.0.0)", "rich (>=10,<14)"]
+http2 = ["h2 (>=3,<5)"]
+socks = ["socksio (>=1.0.0,<2.0.0)"]
+
+[[package]]
+name = "idna"
+version = "3.7"
+description = "Internationalized Domain Names in Applications (IDNA)"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "jinja2"
+version = "3.1.4"
+description = "A very fast and expressive template engine."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+MarkupSafe = ">=2.0"
+
+[package.extras]
+i18n = ["Babel (>=2.7)"]
+
+[[package]]
+name = "kombu"
+version = "5.3.7"
+description = "Messaging library for Python."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+amqp = ">=5.1.1,<6.0.0"
+vine = "*"
+
+[package.extras]
+azureservicebus = ["azure-servicebus (>=7.10.0)"]
+azurestoragequeues = ["azure-storage-queue (>=12.6.0)", "azure-identity (>=1.12.0)"]
+confluentkafka = ["confluent-kafka (>=2.2.0)"]
+consul = ["python-consul2"]
+librabbitmq = ["librabbitmq (>=2.0.0)"]
+mongodb = ["pymongo (>=4.1.1)"]
+msgpack = ["msgpack"]
+pyro = ["pyro4"]
+qpid = ["qpid-python (>=0.26)", "qpid-tools (>=0.26)"]
+redis = ["redis (>=4.5.2,!=4.5.5,!=5.0.2)"]
+slmq = ["softlayer-messaging (>=1.0.3)"]
+sqlalchemy = ["sqlalchemy (>=1.4.48,<2.1)"]
+sqs = ["boto3 (>=1.26.143)", "urllib3 (>=1.26.16)", "pycurl (>=7.43.0.5)"]
+yaml = ["PyYAML (>=3.10)"]
+zookeeper = ["kazoo (>=2.8.0)"]
+
+[[package]]
+name = "mako"
+version = "1.3.5"
+description = "A super-fast templating language that borrows the best ideas from the existing templating languages."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+MarkupSafe = ">=0.9.2"
+
+[package.extras]
+testing = ["pytest"]
+babel = ["babel"]
+lingua = ["lingua"]
+
+[[package]]
+name = "markdown-it-py"
+version = "3.0.0"
+description = "Python port of markdown-it. Markdown parsing, done right!"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+mdurl = ">=0.1,<1.0"
+
+[package.extras]
+benchmarking = ["psutil", "pytest", "pytest-benchmark"]
+code_style = ["pre-commit (>=3.0,<4.0)"]
+compare = ["commonmark (>=0.9,<1.0)", "markdown (>=3.4,<4.0)", "mistletoe (>=1.0,<2.0)", "mistune (>=2.0,<3.0)", "panflute (>=2.3,<3.0)"]
+linkify = ["linkify-it-py (>=1,<3)"]
+plugins = ["mdit-py-plugins"]
+profiling = ["gprof2dot"]
+rtd = ["mdit-py-plugins", "myst-parser", "pyyaml", "sphinx", "sphinx-copybutton", "sphinx-design", "sphinx-book-theme", "jupyter-sphinx"]
+testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
+
+[[package]]
+name = "markupsafe"
+version = "2.1.5"
+description = "Safely add untrusted strings to HTML/XML markup."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "mdurl"
+version = "0.1.2"
+description = "Markdown URL utilities"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "multidict"
+version = "6.0.5"
+description = "multidict implementation"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "orjson"
+version = "3.10.3"
+description = "Fast, correct Python JSON library supporting dataclasses, datetimes, and numpy"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "passlib"
+version = "1.7.4"
+description = "comprehensive password hashing framework supporting over 30 schemes"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+argon2 = ["argon2-cffi (>=18.2.0)"]
+bcrypt = ["bcrypt (>=3.1.0)"]
+build_docs = ["sphinx (>=1.6)", "sphinxcontrib-fulltoc (>=1.2.0)", "cloud-sptheme (>=1.10.1)"]
+totp = ["cryptography"]
+
+[[package]]
+name = "prompt-toolkit"
+version = "3.0.43"
+description = "Library for building powerful interactive command lines in Python"
+category = "main"
+optional = false
+python-versions = ">=3.7.0"
+
+[package.dependencies]
+wcwidth = "*"
+
+[[package]]
+name = "psycopg2-binary"
+version = "2.9.9"
+description = "psycopg2 - Python-PostgreSQL Database Adapter"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "pydantic"
+version = "2.7.1"
+description = "Data validation using Python type hints"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+annotated-types = ">=0.4.0"
+pydantic-core = "2.18.2"
+typing-extensions = ">=4.6.1"
+
+[package.extras]
+email = ["email-validator (>=2.0.0)"]
+
+[[package]]
+name = "pydantic-core"
+version = "2.18.2"
+description = "Core functionality for Pydantic validation and serialization"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
+
+[[package]]
+name = "pygments"
+version = "2.18.0"
+description = "Pygments is a syntax highlighting package written in Python."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+windows-terminal = ["colorama (>=0.4.6)"]
+
+[[package]]
+name = "pyjwt"
+version = "2.8.0"
+description = "JSON Web Token implementation in Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+crypto = ["cryptography (>=3.4.0)"]
+dev = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface", "cryptography (>=3.4.0)", "pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)", "pre-commit"]
+docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
+tests = ["pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)"]
+
+[[package]]
+name = "python-dateutil"
+version = "2.9.0.post0"
+description = "Extensions to the standard Python datetime module"
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+
+[package.dependencies]
+six = ">=1.5"
+
+[[package]]
+name = "python-dotenv"
+version = "1.0.1"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
+name = "python-multipart"
+version = "0.0.9"
+description = "A streaming multipart parser for Python"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+dev = ["atomicwrites (==1.4.1)", "attrs (==23.2.0)", "coverage (==7.4.1)", "hatch", "invoke (==2.2.0)", "more-itertools (==10.2.0)", "pbr (==6.0.0)", "pluggy (==1.4.0)", "py (==1.11.0)", "pytest-cov (==4.1.0)", "pytest-timeout (==2.2.0)", "pytest (==8.0.0)", "pyyaml (==6.0.1)", "ruff (==0.2.1)"]
+
+[[package]]
+name = "pyyaml"
+version = "6.0.1"
+description = "YAML parser and emitter for Python"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "redis"
+version = "5.0.4"
+description = "Python client for Redis database and key-value store"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+async-timeout = {version = ">=4.0.3", markers = "python_full_version < \"3.11.3\""}
+
+[package.extras]
+hiredis = ["hiredis (>=1.0.0)"]
+ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"]
+
+[[package]]
+name = "rich"
+version = "13.7.1"
+description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
+category = "main"
+optional = false
+python-versions = ">=3.7.0"
+
+[package.dependencies]
+markdown-it-py = ">=2.2.0"
+pygments = ">=2.13.0,<3.0.0"
+
+[package.extras]
+jupyter = ["ipywidgets (>=7.5.1,<9)"]
+
+[[package]]
+name = "shellingham"
+version = "1.5.4"
+description = "Tool to Detect Surrounding Shell"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "six"
+version = "1.16.0"
+description = "Python 2 and 3 compatibility utilities"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[[package]]
+name = "sniffio"
+version = "1.3.1"
+description = "Sniff out which async library your code is running under"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "soupsieve"
+version = "2.5"
+description = "A modern CSS selector implementation for Beautiful Soup."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "sqlalchemy"
+version = "2.0.30"
+description = "Database Abstraction Library"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+greenlet = {version = "!=0.4.17", markers = "platform_machine == \"aarch64\" or platform_machine == \"ppc64le\" or platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"AMD64\" or platform_machine == \"win32\" or platform_machine == \"WIN32\""}
+typing-extensions = ">=4.6.0"
+
+[package.extras]
+asyncio = ["greenlet (!=0.4.17)"]
+mypy = ["mypy (>=0.910)"]
+mssql = ["pyodbc"]
+mssql-pymssql = ["pymssql"]
+mssql-pyodbc = ["pyodbc"]
+mysql = ["mysqlclient (>=1.4.0)"]
+mysql-connector = ["mysql-connector-python"]
+mariadb-connector = ["mariadb (>=1.0.1,!=1.1.2,!=1.1.5)"]
+oracle = ["cx_oracle (>=8)"]
+oracle-oracledb = ["oracledb (>=1.0.1)"]
+postgresql = ["psycopg2 (>=2.7)"]
+postgresql-pg8000 = ["pg8000 (>=1.29.1)"]
+postgresql-asyncpg = ["greenlet (!=0.4.17)", "asyncpg"]
+postgresql-psycopg2binary = ["psycopg2-binary"]
+postgresql-psycopg2cffi = ["psycopg2cffi"]
+postgresql-psycopg = ["psycopg (>=3.0.7)"]
+postgresql-psycopgbinary = ["psycopg[binary] (>=3.0.7)"]
+pymysql = ["pymysql"]
+aiomysql = ["greenlet (!=0.4.17)", "aiomysql (>=0.2.0)"]
+aioodbc = ["greenlet (!=0.4.17)", "aioodbc"]
+asyncmy = ["greenlet (!=0.4.17)", "asyncmy (>=0.2.3,!=0.2.4,!=0.2.6)"]
+aiosqlite = ["greenlet (!=0.4.17)", "aiosqlite", "typing_extensions (!=3.10.0.1)"]
+sqlcipher = ["sqlcipher3-binary"]
+
+[[package]]
+name = "sqlmodel"
+version = "0.0.18"
+description = "SQLModel, SQL databases in Python, designed for simplicity, compatibility, and robustness."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+pydantic = ">=1.10.13,<3.0.0"
+SQLAlchemy = ">=2.0.0,<2.1.0"
+
+[[package]]
+name = "starlette"
+version = "0.37.2"
+description = "The little ASGI library that shines."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+anyio = ">=3.4.0,<5"
+
+[package.extras]
+full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.7)", "pyyaml"]
+
+[[package]]
+name = "typer"
+version = "0.12.3"
+description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+click = ">=8.0.0"
+rich = ">=10.11.0"
+shellingham = ">=1.3.0"
+typing-extensions = ">=3.7.4.3"
+
+[[package]]
+name = "typing-extensions"
+version = "4.12.0"
+description = "Backported and Experimental Type Hints for Python 3.8+"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "tzdata"
+version = "2024.1"
+description = "Provider of IANA time zone data"
+category = "main"
+optional = false
+python-versions = ">=2"
+
+[[package]]
+name = "ujson"
+version = "5.10.0"
+description = "Ultra fast JSON encoder and decoder for Python"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "uvicorn"
+version = "0.29.0"
+description = "The lightning-fast ASGI server."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+click = ">=7.0"
+colorama = {version = ">=0.4", optional = true, markers = "sys_platform == \"win32\" and extra == \"standard\""}
+h11 = ">=0.8"
+httptools = {version = ">=0.5.0", optional = true, markers = "extra == \"standard\""}
+python-dotenv = {version = ">=0.13", optional = true, markers = "extra == \"standard\""}
+pyyaml = {version = ">=5.1", optional = true, markers = "extra == \"standard\""}
+typing-extensions = {version = ">=4.0", markers = "python_version < \"3.11\""}
+uvloop = {version = ">=0.14.0,<0.15.0 || >0.15.0,<0.15.1 || >0.15.1", optional = true, markers = "sys_platform != \"win32\" and sys_platform != \"cygwin\" and platform_python_implementation != \"PyPy\" and extra == \"standard\""}
+watchfiles = {version = ">=0.13", optional = true, markers = "extra == \"standard\""}
+websockets = {version = ">=10.4", optional = true, markers = "extra == \"standard\""}
+
+[package.extras]
+standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)", "pyyaml (>=5.1)", "uvloop (>=0.14.0,!=0.15.0,!=0.15.1)", "watchfiles (>=0.13)", "websockets (>=10.4)"]
+
+[[package]]
+name = "uvloop"
+version = "0.19.0"
+description = "Fast implementation of asyncio event loop on top of libuv"
+category = "main"
+optional = false
+python-versions = ">=3.8.0"
+
+[package.extras]
+docs = ["Sphinx (>=4.1.2,<4.2.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)"]
+test = ["flake8 (>=5.0,<6.0)", "psutil", "pycodestyle (>=2.9.0,<2.10.0)", "pyOpenSSL (>=23.0.0,<23.1.0)", "mypy (>=0.800)", "Cython (>=0.29.36,<0.30.0)", "aiohttp (>=3.8.1)", "aiohttp (==3.9.0b0)"]
+
+[[package]]
+name = "vine"
+version = "5.1.0"
+description = "Python promises."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "watchfiles"
+version = "0.21.0"
+description = "Simple, modern and high performance file watching and code reload in python."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+anyio = ">=3.0.0"
+
+[[package]]
+name = "wcwidth"
+version = "0.2.13"
+description = "Measures the displayed width of unicode strings in a terminal"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "websockets"
+version = "12.0"
+description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "yarl"
+version = "1.9.4"
+description = "Yet another URL library"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+idna = ">=2.0"
+multidict = ">=4.0"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.10"
+content-hash = "714c4897aabaae06f7a2d80adfb9cabd4e992dbfdffa6afe06669d291bb5ce74"
+
+[metadata.files]
+aiohttp = []
+aiosignal = []
+alembic = []
+amqp = []
+annotated-types = []
+anyio = []
+async-timeout = []
+attrs = []
+beautifulsoup4 = []
+billiard = []
+bs4 = []
+celery = []
+certifi = []
+click = []
+click-didyoumean = []
+click-plugins = []
+click-repl = []
+colorama = []
+dnspython = []
+email-validator = []
+exceptiongroup = []
+fastapi = []
+fastapi-cli = []
+frozenlist = []
+greenlet = []
+h11 = []
+httpcore = []
+httptools = []
+httpx = []
+idna = []
+jinja2 = []
+kombu = []
+mako = []
+markdown-it-py = []
+markupsafe = []
+mdurl = []
+multidict = []
+orjson = []
+passlib = []
+prompt-toolkit = []
+psycopg2-binary = []
+pydantic = []
+pydantic-core = []
+pygments = []
+pyjwt = []
+python-dateutil = []
+python-dotenv = []
+python-multipart = []
+pyyaml = []
+redis = []
+rich = []
+shellingham = []
+six = []
+sniffio = []
+soupsieve = []
+sqlalchemy = []
+sqlmodel = []
+starlette = []
+typer = []
+typing-extensions = []
+tzdata = []
+ujson = []
+uvicorn = []
+uvloop = []
+vine = []
+watchfiles = []
+wcwidth = []
+websockets = []
+yarl = []
