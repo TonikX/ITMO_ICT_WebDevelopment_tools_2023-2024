@@ -2,6 +2,7 @@ import asyncio
 import aiohttp
 from bs4 import BeautifulSoup
 import time
+import ssl
 from database import commit_article
 
 async def parse_and_save(session, url):
@@ -15,7 +16,11 @@ async def parse_and_save(session, url):
 async def main():
     urls = ["https://zoom.us/", "https://www.skype.com/", "https://discord.com/"]
 
-    async with aiohttp.ClientSession() as session:
+    ssl_context = ssl.create_default_context()
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE
+
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context)) as session:
         tasks = [parse_and_save(session, url) for url in urls]
         await asyncio.gather(*tasks)
 
