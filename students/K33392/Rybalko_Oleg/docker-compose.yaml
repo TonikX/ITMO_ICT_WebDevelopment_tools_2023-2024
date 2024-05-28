@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./lr1
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_URL=postgresql://postgres:password@db:5432/postgres
+    depends_on:
+      - db
+
+  parser:
+    build:
+      context: ./lr2/ex2
+    ports:
+      - "8081:8080"
+    environment:
+      - DB_URL=postgresql://postgres:password@db:5432/postgres
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    container_name: postgres_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+
+volumes:
+  postgres_data:
+
