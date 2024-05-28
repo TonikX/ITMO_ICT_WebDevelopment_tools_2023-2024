@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+sqlmodel
+python-dotenv
+celery
+redis
+numpy
+matplotlib
+tqdm
+tensorflow==2.15.0
