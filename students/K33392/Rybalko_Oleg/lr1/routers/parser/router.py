@@ -8,7 +8,6 @@ from celery.result import AsyncResult
 
 router = APIRouter(prefix="/parse")
 app = Celery("parser")
-app.autodiscover_tasks()
 
 @router.post("")
 async def parse(req: ParseRequest):
