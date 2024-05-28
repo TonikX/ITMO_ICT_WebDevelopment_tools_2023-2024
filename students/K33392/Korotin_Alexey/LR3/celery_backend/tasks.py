@@ -1,13 +1,13 @@
+import logging
+from typing import TypedDict
 from urllib.request import urlopen
 
 from bs4 import BeautifulSoup
-from pydantic import BaseModel
 
 from .app import app
-import logging
 
 
-class WebPage(BaseModel):
+class WebPage(TypedDict):
     title: str
 
 

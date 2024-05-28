@@ -11,6 +11,9 @@ class TaskDto(BaseModel):
     task_id: str
 
 
+class ResultDto(BaseModel):
+    title: str
+
 @app.post("/tasks")
 async def place_task(url: str) -> TaskDto:
     task = long_running_task.delay(url)
@@ -21,7 +24,8 @@ async def place_task(url: str) -> TaskDto:
 async def get_task_result(task_id: str):
     result = AsyncResult(task_id)
     try:
-        return result.get()
+        r = result.get()
+        return ResultDto(title=r["title"])
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
