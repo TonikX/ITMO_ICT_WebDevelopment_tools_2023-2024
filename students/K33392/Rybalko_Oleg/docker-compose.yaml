@@ -14,8 +14,6 @@ services:
   parser:
     build:
       context: ./lr2/ex2
-    ports:
-      - "8081:8080"
     environment:
       - DB_URL=postgresql://postgres:password@db:5432/postgres
     depends_on:
