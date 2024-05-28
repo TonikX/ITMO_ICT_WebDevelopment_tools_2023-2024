@@ -2,7 +2,7 @@ from celery.result import AsyncResult
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from celery_backend.tasks import long_running_task
+from celery_backend.tasks import parse_task
 
 app = FastAPI()
 
@@ -16,7 +16,7 @@ class ResultDto(BaseModel):
 
 @app.post("/tasks")
 async def place_task(url: str) -> TaskDto:
-    task = long_running_task.delay(url)
+    task = parse_task.delay(url)
     return TaskDto(task_id=task.id)
 
 

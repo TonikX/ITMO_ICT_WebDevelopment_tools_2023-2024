@@ -22,5 +22,5 @@ def parse_page(url: str) -> WebPage:
 
 
 @app.task
-def long_running_task(url):
+def parse_task(url):
     return parse_page(url)
