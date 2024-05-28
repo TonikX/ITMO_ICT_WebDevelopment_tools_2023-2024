@@ -1,11 +1,6 @@
 from pydantic import BaseModel
-from enum import Enum
-
-class ParserType(Enum):
-    BTC_COM = "btccom"
-    BLOCKHAIN_COM = "blockchaincom"
-
+from typing import Literal
 
 class ParseRequest(BaseModel):
-    parser: ParserType
+    parser: Literal["btccom", "blockchaincom"]
 
