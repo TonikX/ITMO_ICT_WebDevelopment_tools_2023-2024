@@ -1,0 +1,40 @@
+site_name: Чаптыков Н.В. К33422, Средства веб-программирования
+site_url: https://ludwigbithoven.github.io/ITMO_ICT_WebDevelopment_tools_2023-2024/w
+nav:
+  - 'Лабораторная работа 1':
+    - 'Бекенд на FastAPI':
+      - Описание варианта: index.md
+      - Main: main.md
+      - Models: models.md
+      - Routes: routes.md
+      - Connection: connection.md
+  - 'Лабораторная работа 2':
+    - Потоки, процессы, асинхронность.:
+      - 'Сумматор':
+        - Импорты, базовый сумматор: sum.md
+        - Реализации сумматора: sum_realisations.md
+        - Запуск: sum_launch.md
+      - 'Парсер/скрапер':
+        - Импорты, базовый скрапер: description.md
+        - Связь с БД: backend.md
+        - Реализации скрапера: parsescrape.md
+        - Запуск: scrape_launch.md
+  - 'Лабораторная работа 3':
+    - Упаковка FastAPI приложения в Docker, Работа с источниками данных и Очереди:
+      - 'Docker':
+        - Dockerfile: dockerfile.md
+        - Docker-compose: docker-compose.md
+        - Сопутствующие скрипты: docker-extra.md
+      - 'FastAPI':
+        - Скрапер: fastapi-scraper.md
+        - Эндпоинты: fastapi-endpoints.md
+theme:
+    name: readthedocs
+    include_homepage_in_sidebar: false
+    highlightjs: true
+    hijs_languages:
+        - python
+markdown_extensions:
+    - toc:
+        permalink: True
+        separator: "_"
