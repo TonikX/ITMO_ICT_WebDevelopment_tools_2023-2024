@@ -1,5 +1,5 @@
 Схема БД:
-![](/screenshots/bd.png)
+![](screenshots/bd.png)
 
 Реализовано следующими классами:
 
