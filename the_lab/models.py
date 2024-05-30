@@ -139,9 +139,6 @@ class BookResponse(SQLModel):
     class Config:
         orm_mode = True
 
-    class Config:
-        orm_mode = True
-
 
 User.model_rebuild()
 Book.model_rebuild()
