@@ -14,6 +14,7 @@ class TaskDto(BaseModel):
 class ResultDto(BaseModel):
     title: str
 
+
 @app.post("/tasks")
 async def place_task(url: str) -> TaskDto:
     task = parse_task.delay(url)

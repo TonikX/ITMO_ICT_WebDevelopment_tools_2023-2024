@@ -23,6 +23,7 @@ services:
       dockerfile: Dockerfile
     environment:
       DATABASE_URL: postgresql://postgres:postgres@app-db:5432/db
+      PARSER_URL: http://parser:8000/tasks
     depends_on:
       app-db:
         condition: service_healthy
@@ -53,5 +54,6 @@ services:
     environment:
       REDIS_HOST: redis://redis:6379/0
       BROKER: redis://redis:6379/0
+      CALLBACK_URL: http://app:8000/internal/parse-callback
     depends_on:
       - redis

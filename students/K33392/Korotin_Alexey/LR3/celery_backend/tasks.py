@@ -1,11 +1,17 @@
 import logging
+import os
 from typing import TypedDict
 from urllib.request import urlopen
-
+import requests
 from bs4 import BeautifulSoup
 
 from .app import app
+from celery import Task
+from dotenv import load_dotenv
 
+load_dotenv()
+
+CALLBACK_URL = os.getenv("CALLBACK_URL")
 
 class WebPage(TypedDict):
     title: str
@@ -21,6 +27,13 @@ def parse_page(url: str) -> WebPage:
     return page
 
 
-@app.task
+class BaseTask(Task):
+
+    def on_success(self, retval, task_id, args, kwargs):
+        super().on_success(retval, task_id, args, kwargs)
+        requests.post(CALLBACK_URL, params={'title': retval['title']})
+
+
+@app.task(base=BaseTask)
 def parse_task(url):
     return parse_page(url)
