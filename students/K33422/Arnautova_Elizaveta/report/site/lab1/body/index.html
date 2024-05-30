@@ -1,11 +1,80 @@
-Схема БД:
-![](/screenshots/bd.png)
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Code part - Отчет по лабораторным работам</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Code part";
+        var mkdocs_page_input_path = "lab1/body.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
 
-Реализовано следующими классами:
+<body class="wy-body-for-nav" role="document">
 
-**models**
-```python
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, DateTime, UniqueConstraint
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Отчет по лабораторным работам
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Лабораторная №1</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Code part</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../screens/">Screenshots</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Отчет по лабораторным работам</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Лабораторная №1</li>
+      <li class="breadcrumb-item active">Code part</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>Схема БД:
+<img alt="" src="/lab1/screenshots/bd.png" /></p>
+<p>Реализовано следующими классами:</p>
+<p><strong>models</strong></p>
+<pre><code class="language-python">from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, DateTime, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -97,15 +166,10 @@ class Message(Base):
     content = Column(String, nullable=False)
     timestamp = Column(DateTime, nullable=False)
 
-```
-
-
-
-Подключение к базе выполнено в отдельном файле, чтобы не нагружать остальные:
-
-**database**
-```python
-from sqlalchemy import create_engine
+</code></pre>
+<p>Подключение к базе выполнено в отдельном файле, чтобы не нагружать остальные:</p>
+<p><strong>database</strong></p>
+<pre><code class="language-python">from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -115,18 +179,11 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
-```
-
-Структура проекта:
-
-![](screenshots/project.png)
-
-
-
-**main:**
-
-```python
-from __future__ import annotations
+</code></pre>
+<p>Структура проекта:</p>
+<p><img alt="" src="/lab1/screenshots/project.png" /></p>
+<p><strong>main:</strong></p>
+<pre><code class="language-python">from __future__ import annotations
 
 from datetime import date
 from fastapi import Depends, FastAPI, HTTPException
@@ -206,10 +263,10 @@ def swipe(user_id: int, recipient_id: int, is_right: bool, db: Session = Depends
 @app.post('/trip/{user_id}/request_join/')
 def request_join(user_id: int, trip_id: int, db: Session = Depends(get_db)):
     if trip_id in list(map(lambda request: request.id, service.get_user_requests(db, user_id))):
-        raise HTTPException(status_code=400, detail="You've already sent request for this trip")
+        raise HTTPException(status_code=400, detail=&quot;You've already sent request for this trip&quot;)
     if service.get_trip(db, trip_id).initiator_id not in service.get_match_list(db, user_id):
-        raise HTTPException(status_code=400, detail="You can't join this trip. It's illegal. "
-                                                    "Wherever you even got this id anyway?")
+        raise HTTPException(status_code=400, detail=&quot;You can't join this trip. It's illegal. &quot;
+                                                    &quot;Wherever you even got this id anyway?&quot;)
     service.request_trip_join(db, user_id, trip_id)
     return {'result': 'ok'}
 
@@ -218,9 +275,9 @@ def request_join(user_id: int, trip_id: int, db: Session = Depends(get_db)):
 def process_request(user_id: int, request_id: int, accept: bool, db: Session = Depends(get_db)):
     request = service.get_request(db, request_id)
     if request.trip.initiator_id != user_id:
-        raise HTTPException(status_code=400, detail="This isn't your request, put it down on the ground slowly")
+        raise HTTPException(status_code=400, detail=&quot;This isn't your request, put it down on the ground slowly&quot;)
     if request.accepted is not None:
-        raise HTTPException(status_code=400, detail="This request is already processed")
+        raise HTTPException(status_code=400, detail=&quot;This request is already processed&quot;)
     service.process_join_request(db, request_id, accept)
     return {'result': 'ok'}
 
@@ -231,23 +288,21 @@ def search(user_id: int, region_id: int | None = None, place_id: int | None = No
            return_before: date | None = None, return_after: date | None = None, db: Session = Depends(get_db)):
     if place_id and service.get_place(db, place_id).region_id != region_id:
         raise HTTPException(status_code=400, detail='Learn your geography mate, your destination is in another region')
-    departure_sanity_check = departure_after and departure_before and departure_after > departure_before
-    return_sanity_check = return_after and return_before and return_after > return_before
-    intersect_sanity_check = return_before and departure_after and departure_after > return_before
+    departure_sanity_check = departure_after and departure_before and departure_after &gt; departure_before
+    return_sanity_check = return_after and return_before and return_after &gt; return_before
+    intersect_sanity_check = return_before and departure_after and departure_after &gt; return_before
     if departure_sanity_check or return_sanity_check or intersect_sanity_check:
-        raise HTTPException(status_code=400, detail="Congratulations, you broke time. Don't do it again. Please.")
+        raise HTTPException(status_code=400, detail=&quot;Congratulations, you broke time. Don't do it again. Please.&quot;)
     companion = service.find_companion(db, user_id, region_id, place_id, departure_before,
                                        departure_after, return_before, return_after)
     if companion:
         return companion
     else:
-        raise HTTPException(status_code=400, detail="Sorry, we couldn't find you a companion with these parameters.")
+        raise HTTPException(status_code=400, detail=&quot;Sorry, we couldn't find you a companion with these parameters.&quot;)
 
-```
-
-**dtos:**
-```python
-from __future__ import annotations
+</code></pre>
+<p><strong>dtos:</strong></p>
+<pre><code class="language-python">from __future__ import annotations
 
 from datetime import date
 
@@ -317,12 +372,9 @@ class UserOutBrief(UserBase):
     class Config:
         orm_mode = True
 
-```
-
-
-**service:**
-```python
-from __future__ import annotations
+</code></pre>
+<p><strong>service:</strong></p>
+<pre><code class="language-python">from __future__ import annotations
 
 from sqlalchemy.orm import Session
 from sqlalchemy import true, false
@@ -395,13 +447,13 @@ def get_trip(db: Session, trip_id: int):
     return db.query(Trip).filter(Trip.id == trip_id).first()
 
 
-def get_place(db: Session, place_id: int) -> Place:
+def get_place(db: Session, place_id: int) -&gt; Place:
     return db.query(Place).get(place_id)
 
 
 def get_joinable_trips(db: Session, user_id: int):
     matches = get_match_list(db, user_id)
-    return db.query(Trip).filter(Trip.initiator_id.in_(matches) & Trip.companion_id.is_(None) & (Trip.is_completed == false()))
+    return db.query(Trip).filter(Trip.initiator_id.in_(matches) &amp; Trip.companion_id.is_(None) &amp; (Trip.is_completed == false()))
 
 
 def create_user_trip(db: Session, trip: TripCreate, user_id: int):
@@ -444,16 +496,16 @@ def get_user_completed_trips(db: Session, user_id: int):
 
 
 def get_match_list(db: Session, user_id: int):
-    my_swipes = db.query(Swipe).filter((Swipe.sender_id == user_id) & (Swipe.is_right == true())).all()
+    my_swipes = db.query(Swipe).filter((Swipe.sender_id == user_id) &amp; (Swipe.is_right == true())).all()
     res = list(filter(
-        lambda swipe: db.query(Swipe).filter((Swipe.recipient_id == user_id) & (Swipe.sender_id == swipe.recipient_id)
-                                             & (Swipe.is_right == true())).first(),
+        lambda swipe: db.query(Swipe).filter((Swipe.recipient_id == user_id) &amp; (Swipe.sender_id == swipe.recipient_id)
+                                             &amp; (Swipe.is_right == true())).first(),
         my_swipes))
     return list(map(lambda swipe: swipe.recipient_id, res))
 
 
 def get_white_list(db: Session, user_id: int):
-    white_swipes = db.query(Swipe).filter((Swipe.recipient_id == user_id) & (Swipe.is_right == true())).all()
+    white_swipes = db.query(Swipe).filter((Swipe.recipient_id == user_id) &amp; (Swipe.is_right == true())).all()
     return list(map(lambda swipe: swipe.sender_id, white_swipes))
 
 
@@ -475,7 +527,7 @@ def swipe(db: Session, user_id: int, candidate_id: int, right: bool):
 
 
 def check_swipe(db: Session, user_id: int, candidate_id: int):
-    return db.query(Swipe).filter((Swipe.sender_id == user_id) & (Swipe.recipient_id == candidate_id)).first()
+    return db.query(Swipe).filter((Swipe.sender_id == user_id) &amp; (Swipe.recipient_id == candidate_id)).first()
 
 
 def request_trip_join(db: Session, user_id: int, trip_id: int):
@@ -490,7 +542,7 @@ def get_user_requests(db: Session, user_id: int):
     return db.query(TripJoinRequest).filter(TripJoinRequest.sender_id == user_id).all()
 
 
-def get_request(db: Session, request_id: int) -> TripJoinRequest:
+def get_request(db: Session, request_id: int) -&gt; TripJoinRequest:
     return db.query(TripJoinRequest).get(request_id)
 
 
@@ -522,26 +574,71 @@ def find_companion(db: Session, user_id: int, region_id: int | None, place_id: i
     if place_id:
         filters.append(Trip.place_id == place_id)
     if departure_before:
-        filters.append(Trip.start_date <= departure_before)
+        filters.append(Trip.start_date &lt;= departure_before)
     if departure_after:
-        filters.append(Trip.start_date >= departure_after)
+        filters.append(Trip.start_date &gt;= departure_after)
     if return_before:
-        filters.append(Trip.expected_end_date <= return_before)
+        filters.append(Trip.expected_end_date &lt;= return_before)
     if return_after:
-        filters.append(Trip.expected_end_date >= return_after)
+        filters.append(Trip.expected_end_date &gt;= return_after)
 
     if filters:
         trip = (db.query(Trip).filter(*filters)
-                .filter(Trip.initiator_id.not_in(black_list) & (Trip.initiator_id != user_id)).first())
+                .filter(Trip.initiator_id.not_in(black_list) &amp; (Trip.initiator_id != user_id)).first())
         if trip:
             return get_user_full(db, trip.initiator)
         else:
             return None
     else:
-        res = db.query(User).filter(User.id.not_in(black_list) & (User.id != user_id)).first()
+        res = db.query(User).filter(User.id.not_in(black_list) &amp; (User.id != user_id)).first()
         if res:
             return get_user_full(db, res)
         else:
             return None
 
-```
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../screens/" class="btn btn-neutral float-right" title="Screenshots">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="../screens/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
