@@ -27,6 +27,7 @@ app.add_middleware(
 )
 
 CELERY_APP_URL = "http://celery_app:5000"
+URL_TO_SEND_RESULTS_TO = "http://fastapi_app:8000/api/wait_for_result"
 
 @app.on_event("startup")
 def on_startup():
@@ -380,13 +381,18 @@ def get_drinks_count(session: Session = Depends(get_session)):
     count = session.exec(select(func.count(Drink.id))).one()
     return count
 
+@app.get("/predictions", response_model=List[PredictionRead])
+def get_predictions(session: Session = Depends(get_session)):
+    all_predictions = session.exec(select(Prediction)).all()
+    return all_predictions
+
 ############################################################################################
 
 @app.post('/api/process')
 async def process(ingredients_joined: str = ''):
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.post(f"{CELERY_APP_URL}/api/predict?ingredients_joined={ingredients_joined}")
+            response = await client.post(f"{CELERY_APP_URL}/api/predict?ingredients_joined={ingredients_joined}&url_to_send_results_to={URL_TO_SEND_RESULTS_TO}")
             response.raise_for_status()
             task_info = response.json()
             return task_info
@@ -422,6 +428,19 @@ async def status(task_id: str):
             raise HTTPException(status_code=exc.response.status_code, detail=exc.response.text)
         except Exception as ex:
             raise HTTPException(status_code=500, detail=str(ex))
+        
+
+@app.post('/api/wait_for_result', response_model=Prediction)
+async def accept_result(ingredients_joined: str = '', result: str = '', session: Session = Depends(get_session)):
+    prediction = Prediction(
+        input=ingredients_joined,
+        result=result
+    )
+    session.add(prediction)
+    session.commit()
+    session.refresh(prediction)
+    return prediction
+
 
 
 if __name__ == "__main__":

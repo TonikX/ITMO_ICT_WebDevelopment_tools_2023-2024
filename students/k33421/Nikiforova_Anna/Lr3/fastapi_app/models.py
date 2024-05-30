@@ -108,12 +108,12 @@ class IngredientWithAmountCreate(SQLModel, table=False):
     
 ############################################################################################
 
-class Task(SQLModel, table=False):
-    task_id: str
-    status: str
-
-
-class Prediction(SQLModel, table=False):
-    task_id: str
-    status: str
+class Prediction(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    input: str
     result: str
+    
+class PredictionRead(SQLModel, table=False):
+    input: str
+    result: str
+   

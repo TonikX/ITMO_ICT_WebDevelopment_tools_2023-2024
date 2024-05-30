@@ -8,4 +8,5 @@ redis
 numpy
 matplotlib
 tqdm
+httpx
 tensorflow==2.15.0

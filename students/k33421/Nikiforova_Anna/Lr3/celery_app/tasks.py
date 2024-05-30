@@ -2,6 +2,7 @@ from celery import Task
 from celery.exceptions import MaxRetriesExceededError
 from celery_worker import app
 from ml import load_model, load_tokenizer, create_prediction_mask, predict_next_word
+import httpx
 
 
 BASE_WORDS_WHITELIST = ['вода', 'вода газированная', 'чай черный', 'кофе натуральный', 'молоко']  # leave empty to include all
@@ -40,12 +41,17 @@ class PredictTask(Task):
 
 
 @app.task(ignore_result=False, bind=True, base=PredictTask)
-def predict(self, ingredients_joined: str) -> dict[str]:
+def predict(self, ingredients_joined: str, url_to_send_results_to: str) -> dict[str]:
     try:
         if ingredients_joined == '':  # first ingredient is always base
             prediction = predict_next_word(self.tokenizer, self.model, ingredients_joined, mask=self.base_mask)
         else:
             prediction = predict_next_word(self.tokenizer, self.model, ingredients_joined, mask=self.optional_mask)
+            
+        if url_to_send_results_to != '':
+            with httpx.Client() as client:
+                client.post(f"{url_to_send_results_to}?ingredients_joined={ingredients_joined}&result={prediction}")
+
         return {'status': 'SUCCESS', 'result': prediction}
     except Exception as ex:
         try:
