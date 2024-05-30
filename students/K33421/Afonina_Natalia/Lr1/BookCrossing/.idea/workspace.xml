@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b9185aa1-755a-486d-8a6f-6d962e65b3a4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile.parser" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/desktop.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/pythonProject.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Dockerfile.parser" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Lab2/task_1_async.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Lab2/task_1_multiprocessing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Lab2/task_1_simple.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Lab2/task_1_threading.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/alembic.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/asynctask.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/connection.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/migrations/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/migrations/env.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/migrations/script.py.mako" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/migrations/versions/03b22e7f5d84_fix_user_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/migrations/versions/e339e44273b0_fix_user_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/multiprocessingtask.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/threadingtask.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab2/task_1_threading.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab2/task_1_threading.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/asynctask.py" beforeDir="false" afterPath="$PROJECT_DIR$/asynctask.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2drmAKf7vKh8ZUAJwVsVeTrp4Ee" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.asynctask.executor&quot;: &quot;Run&quot;,
+    &quot;Python.multiprocessingtask.executor&quot;: &quot;Run&quot;,
+    &quot;Python.task_1_async.executor&quot;: &quot;Run&quot;,
+    &quot;Python.task_1_multiprocessing.executor&quot;: &quot;Run&quot;,
+    &quot;Python.task_1_simple.executor&quot;: &quot;Run&quot;,
+    &quot;Python.task_1_threading.executor&quot;: &quot;Run&quot;,
+    &quot;Python.threadingtask.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/ITMO_ICT_WebDevelopment_tools_2023-2024/students/K33421/Afonina_Natalia/Lr1/BookCrossing&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Python.task_1_async">
+    <configuration name="task_1_async" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="BookCrossing" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Lab2" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Lab2/task_1_async.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="task_1_simple" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="BookCrossing" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Lab2" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Lab2/task_1_simple.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="task_1_threading" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="BookCrossing" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Lab2" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Lab2/task_1_threading.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="threadingtask" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="BookCrossing" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/threadingtask.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.task_1_threading" />
+        <item itemvalue="Python.task_1_simple" />
+        <item itemvalue="Python.task_1_async" />
+        <item itemvalue="Python.threadingtask" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-d68999036c7f-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.14475.56" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b9185aa1-755a-486d-8a6f-6d962e65b3a4" name="Changes" comment="" />
+      <created>1710774426774</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1710774426774</updated>
+    </task>
+    <servers />
+  </component>
+</project>
