@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-import threadingtask
-=======
->>>>>>> Stashed changes
 import time
 import threading
 

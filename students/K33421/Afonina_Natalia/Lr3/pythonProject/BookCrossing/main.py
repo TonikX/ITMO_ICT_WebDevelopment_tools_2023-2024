@@ -11,8 +11,8 @@ import datetime
 import jwt
 from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-
 from asynctask import main_async
+
 app = FastAPI()
 auth = Authorization()
 
@@ -22,6 +22,7 @@ def on_startup():
     init_db()
 
 
+
 @app.post("/parse")
 async def parse(urls: List[str]):
     try:
@@ -29,7 +30,6 @@ async def parse(urls: List[str]):
         return {"message": "Parsing completed"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 @app.post("/register")
 def register(username: str, password: str, firstname: str = None, lastname: str = None,

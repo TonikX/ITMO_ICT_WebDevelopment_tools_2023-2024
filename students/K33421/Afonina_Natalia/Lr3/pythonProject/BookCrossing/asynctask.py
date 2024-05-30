@@ -1,12 +1,3 @@
-import aiohttp
-import asyncio
-from bs4 import BeautifulSoup
-from sqlalchemy.orm import sessionmaker
-from connection import engine
-from models import Author
-from time import time
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.future import select
 import asyncio
 from time import time
 
@@ -17,7 +8,6 @@ from sqlalchemy.future import select
 from sqlalchemy.orm import sessionmaker
 
 from models import Author
-
 
 DATABASE_URL = "postgresql+asyncpg://postgres:qwerty@localhost:5432/bookcrossing_db"
 engine = create_async_engine(DATABASE_URL, echo=True)
@@ -62,14 +52,12 @@ async def parse_and_save_author(url, session):
 
 
 async def main_async(urls):
-    loop = asyncio.get_running_loop()
-    start_time = loop.time()
+    start_time = time()
     async with aiohttp.ClientSession() as session:
         tasks = [parse_and_save_author(url, session) for url in urls]
         await asyncio.gather(*tasks)
-    end_time = loop.time()
+    end_time = time()
     print(f"Async: {end_time - start_time} seconds")
-
 
 # urls = [
 #     "https://en.wikipedia.org/wiki/List_of_poets",
