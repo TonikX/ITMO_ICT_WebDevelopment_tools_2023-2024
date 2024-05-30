@@ -1,0 +1,11 @@
+alembic==1.13.1
+fastapi[all]==0.111.0
+SQLAlchemy==2.0.30
+sqlmodel==0.0.18
+psycopg[c]==3.1.19
+python-dotenv==1.0.1
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+celery[redis]==5.4.0
+requests==2.32.2
+beautifulsoup4==4.12.3

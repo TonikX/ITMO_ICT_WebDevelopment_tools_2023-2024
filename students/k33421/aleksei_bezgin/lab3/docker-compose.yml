@@ -1,0 +1,60 @@
+version: "3.4"
+
+services:
+  db:
+    image: postgres:14.1
+    hostname: ${DB_HOST}
+    container_name: db
+    restart: always
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    env_file:
+      - .env
+
+  rabbitmq:
+    image: rabbitmq:3.13.1
+    hostname: ${RABBITMQ__HOST}
+    container_name: rabbitmq
+    restart: always
+
+  redis:
+    image: redis:7.2.4
+    hostname: ${REDIS__HOST}
+    container_name: redis
+    restart: always
+
+  rest:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rest
+    command: python -m uvicorn main:app --host 0.0.0.0 --port 8081
+    restart: always
+    volumes:
+      - ./src/:/app
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery
+    command: python -m celery -A celery_worker.app worker
+    restart: always
+    volumes:
+      - ./src/:/app
+    env_file:
+      - .env
+    depends_on:
+      - rest
+      - redis
+      - rabbitmq
