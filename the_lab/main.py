@@ -331,7 +331,7 @@ def create_ownership(
 
 
 @app.delete(
-    "/delete/book_genre_link/{genre_id}/{book_id}", response_model=models.BookGenreLink
+    "/book_genre_link/delete/{genre_id}/{book_id}", response_model=models.BookGenreLink
 )
 def delete_book_genre_link(
     genre_id: int, book_id: int, session: Session = Depends(get_session)
@@ -358,7 +358,7 @@ def get_ownerships(session: Session = Depends(get_session)):
 
 
 @app.delete(
-    "/delete_ownership/{book_id}/{owner_id}", response_model=models.BookOwnership
+    "/ownership/delete/{book_id}/{owner_id}", response_model=models.BookOwnership
 )
 def delete_ownership(
     book_id: int, owner_id: int, session: Session = Depends(get_session)
