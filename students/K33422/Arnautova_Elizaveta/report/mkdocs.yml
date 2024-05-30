@@ -1,9 +1,0 @@
-site_name: Отчет по лабораторным работам
-theme:
-  name: readthedocs
-nav:
-  - Лабораторная №1:
-      - Code part: lab1/body.md
-      - Screenshots: lab1/screens.md
-      
-      
