@@ -26,6 +26,17 @@ def create_work(
     task = session.get(Task, work.task_id)
     if not task:
         raise HTTPException(status_code=404, detail="Not found")
+    participant = session.query(Participant).filter(
+        Participant.contest_id == task.contest_id,
+        Participant.user_id == user.id,
+    ).first()
+    if not participant:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    approval = session.query(ParticipantApprovals).filter(
+        ParticipantApprovals.participant_id == participant.id,
+    ).first()
+    if not approval:
+        raise HTTPException(status_code=403, detail="Forbidden")
     new_work = Work(
         task_id=work.task_id,
         description=work.description,
