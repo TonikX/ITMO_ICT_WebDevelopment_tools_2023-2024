@@ -1,0 +1,6 @@
+site_name: My Docs
+dev_addr: 127.0.0.1:1212
+
+nav:
+  - Home: index.md
+  - Task 1: task.md

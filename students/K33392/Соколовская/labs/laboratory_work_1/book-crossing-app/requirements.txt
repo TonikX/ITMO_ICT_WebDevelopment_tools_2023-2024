@@ -1,0 +1,9 @@
+fastapi[all]~=0.111.0
+sqlmodel~=0.0.18
+psycopg2-binary
+alembic~=1.13.1
+python-dotenv~=1.0.1
+PyJWT~=2.8.0
+passlib~=1.7.4
+starlette~=0.37.2
+SQLAlchemy~=2.0.30
