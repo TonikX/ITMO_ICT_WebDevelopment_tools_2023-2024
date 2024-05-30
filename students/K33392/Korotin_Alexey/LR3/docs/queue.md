@@ -37,3 +37,52 @@ URL `https://openbudget.kz/data/`
 ![img_2.png](img_2.png)
 В качестве ответа получаем заголовок запрашиваемой нами HTML-страницы.
 ![img_3.png](img_3.png)
+
+# Перенаправление запросов
+В ЛР 1 был реализованы эндпонты для парсинга и коллбэка по завершению парсинга.
+![img_4.png](img_4.png)
+## Шаг 1 Запрос
+Посылаем запрос с URL-адресом для парсинга 
+`POST /parse?url=...`
+Далее этот запрос перенаправляется на сервис парсинга
+```python
+@app_router.post('/parse', tags=['Parsing'])
+def parse(url: str) -> None:
+    r = requests.post(PARSER_URL, params={'url': url})
+    if r.status_code != 200:
+        raise HTTPException(status_code=r.status_code, detail=r.json())
+
+```
+## Шаг 2 Постановка celery-задачи
+При получении запроса на парсинг, сервис парсинга создает celery-задачу и возвращает её ID
+```python
+@app.post("/tasks")
+async def place_task(url: str) -> TaskDto:
+    task = parse_task.delay(url)
+    return TaskDto(task_id=task.id)
+
+```
+## Шаг 3 Callback при успешном выполнении
+Далее был реализован функционал обратного вызова при успешном выполнении celery-задачи
+```python
+
+class BaseTask(Task):
+
+    def on_success(self, retval, task_id, args, kwargs):
+        super().on_success(retval, task_id, args, kwargs)
+        requests.post(CALLBACK_URL, params={'title': retval['title']})
+
+
+@app.task(base=BaseTask)
+def parse_task(url):
+    return parse_page(url)
+```
+Посылается запрос по адресу CALLBACK_URL
+## Шаг 4 сохранение результата в БД
+```python
+@app_router.post('/internal/parse-callback', tags=['Parsing'])
+def parse_callback(title: str, db: Session = Depends(get_session)) -> None:
+    page = WebPage(title=title)
+    db.add(page)
+    db.commit()
+```
