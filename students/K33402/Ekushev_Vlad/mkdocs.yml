@@ -1,0 +1,21 @@
+site_name: Report
+theme:
+  name: material
+markdown_extensions:
+  - attr_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+plugins:
+  - mkdocs-video
+nav:
+  - index.md
+  - '№1: Реализация серверного приложения FastAPI':
+      - lab2/index.md
+      - lab2/db.md
+      - lab2/auth.md
+      - lab2/results.md
