@@ -1,0 +1,5 @@
+sqlmodel
+python-dotenv
+bs4
+psycopg2
+aiohttp
