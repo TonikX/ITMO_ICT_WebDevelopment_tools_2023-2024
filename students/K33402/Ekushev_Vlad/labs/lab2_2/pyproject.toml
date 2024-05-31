@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "lab2-2"
+version = "0.1.0"
+description = ""
+authors = ["jarvis394 <tarnatovski@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+beautifulsoup4 = "^4.12.3"
+python-dotenv = "^1.0.1"
+requests = "^2.32.3"
+psycopg2 = "^2.9.9"
+sqlalchemy = "^2.0.30"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.4"
+pre-commit = "^3.7.0"
+mypy = "^1.9.0"
+
+
+[tool.mypy]
+pretty = true
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+ignore_missing_imports = true
+strict = true
+warn_unreachable = true
+exclude = ["venv", "alembic"]
+
+[tool.ruff]
+target-version = "py310"
+exclude = ["alembic"]

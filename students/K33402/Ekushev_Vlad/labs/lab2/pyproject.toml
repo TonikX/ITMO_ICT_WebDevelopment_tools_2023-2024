@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["jarvis394 <tarnatovski@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.110.0"
+sqlmodel = "^0.0.18"
+alembic = "^1.13.1"
+uvicorn = "^0.29.0"
+pydantic = "^2.6.4"
+pydantic-settings = "^2.2.1"
+psycopg2 = "^2.9.9"
+psycopg2-binary = "^2.9.9"
+python-dotenv = "^1.0.1"
+jose = "^1.0.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+slugify = "^0.0.1"
+python-multipart = "^0.0.9"
+email-validator = "^2.1.1"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.4"
+pre-commit = "^3.7.0"
+mypy = "^1.9.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.mypy]
+pretty = true
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+ignore_missing_imports = true
+strict = true
+warn_unreachable = true
+exclude = ["venv", "alembic"]
+
+[tool.ruff]
+target-version = "py310"
+exclude = ["alembic"]
+
+[tool.poetry.scripts]
+app = "app.main:start"
