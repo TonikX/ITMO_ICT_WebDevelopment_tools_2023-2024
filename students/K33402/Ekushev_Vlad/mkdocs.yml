@@ -19,3 +19,7 @@ nav:
       - lab2/db.md
       - lab2/auth.md
       - lab2/results.md
+  - '№2: Потоки. Процессы. Асинхронность':
+      - lab2_2/task1.md
+      - lab2_2/task2.md
+      - lab2_2/results.md
