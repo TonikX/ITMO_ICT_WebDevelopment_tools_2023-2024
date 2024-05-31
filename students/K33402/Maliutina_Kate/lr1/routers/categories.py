@@ -1,8 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_session
 from models.categories import Category
+from models.links import CategoryOperationLink
 
 categoryRouter = APIRouter(prefix="", tags=["category"])  # отвечает за swagger
+
+
+@categoryRouter.get("/categories/m", response_model=list[CategoryOperationLink])
+async def get_categories_many(session=Depends(get_session)):
+    categories = session.query(CategoryOperationLink).all()
+    return categories
 
 
 @categoryRouter.get("/categories/", response_model=list[Category])  # response_model отвечает за тип отображаемых и возвращаемых значений - нужно для отображения полей и вложенных моделей
