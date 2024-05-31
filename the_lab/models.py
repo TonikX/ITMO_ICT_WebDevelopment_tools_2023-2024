@@ -1,7 +1,11 @@
 from datetime import datetime
 from typing import List, Optional
 from sqlmodel import SQLModel, Field, Relationship
-from base_models import *
+
+import sys
+
+sys.path.insert(0, "C:/Users/nic03/Uni/ITMO_ICT_WebDevelopment_tools_2023-2024/")
+from the_lab.base_models import *
 
 
 class BookOwnership(SQLModel, table=True):
