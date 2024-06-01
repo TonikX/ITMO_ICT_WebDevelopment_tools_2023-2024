@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16
+    container_name: db
+    restart: always
+    volumes:
+      - ../task_1/db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=dptgo
+      - POSTGRES_PASSWORD=iloveweb
+      - POSTGRES_DB=hackathons
+    ports:
+      - "5434:5432"
+
+  web:
+    build:
+      context: /Users/bill/PycharmProjects
+      dockerfile: web-programming/lab_3_S2/task_1/web/Dockerfile
+    depends_on:
+      - db
+      - parser
+    environment:
+      DATABASE_URL: postgresql://dptgo:iloveweb@db:5432/hackathons
+    command: python -m uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+
+  parser:
+    build:
+      context: /Users/bill/PycharmProjects
+      dockerfile: web-programming/lab_3_S2/task_1/parser/Dockerfile
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://dptgo:iloveweb@db:5432/hackathons
+    command: python -m uvicorn call_parser:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+
+volumes:
+  postgres_data:
