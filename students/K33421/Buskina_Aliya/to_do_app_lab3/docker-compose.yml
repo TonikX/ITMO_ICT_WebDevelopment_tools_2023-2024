@@ -1,0 +1,10 @@
+version: "3.10"
+services:
+  postgres:
+    image: postgres:14.12
+    environment:
+      POSTGRES_DB: todo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Aliya2103
+    ports:
+      - "5433:5432"
