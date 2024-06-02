@@ -1,3 +1,4 @@
-site_name: Volgin Leonid K33391 labs arbuz
+site_name: Volgin Leonid K33391 labs
 nav:
   - "2 лабораторная работа":
+      - lr2.md
