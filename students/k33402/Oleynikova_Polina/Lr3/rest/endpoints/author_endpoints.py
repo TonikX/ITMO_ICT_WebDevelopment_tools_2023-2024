@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+import requests
 from sqlmodel import select
 from fastapi import Depends
 from models import Author, AuthorBase, AuthorReadFull
@@ -49,4 +50,18 @@ def delete_author(author_id: int, session=Depends(get_session)):
         raise HTTPException(status_code=404, detail="Author not found")
     session.delete(author)
     session.commit()
+    return {"ok": True}
+
+
+@author_router.post("/get_by_url")
+def call_parse_url_api(url: str):
+    api_url = "http://celery_app:3000/parse-url/"
+                
+    data = {"url": url}
+    try:
+        response = requests.post(api_url, json=data)
+        if response.status_code != 200:
+            raise HTTPException(status_code=400, detail=f"Failed to call parse URL API. Status code: {response.status_code}, Response: {response.text}")
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=400, detail=f"An error occurred while calling parse URL API: {e}")
     return {"ok": True}
