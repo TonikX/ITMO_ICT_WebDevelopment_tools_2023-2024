@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Endpoints - Kozlov-docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Endpoints";
+        var mkdocs_page_input_path = "lab1\\endpoints.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Kozlov-docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Лабораторная работа 1</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../main/">backend для планера задач на fastAPI</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Код</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../practice/">Практика</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../models/">Модели</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../db/">Соединение с БД</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Endpoints</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Дополнительные инструменты для работы с конечными точками</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Конечные точки</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../auth/">Аутентификация</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Лабораторная работа 2</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >Задание1</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task1/">Задание 1</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../lab2/main/">Асинхронный парсер notion API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Код</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_auxilary/">Вспомогательные модули</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_threading/">Task2 threading</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_multiprocessing/">Реализация через multiprocessing</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_asyncio/">Реализация через AsyncIO</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_conclusion/">Выводы</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Kozlov-docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Лабораторная работа 1</li>
+          <li class="breadcrumb-item">Код</li>
+      <li class="breadcrumb-item active">Endpoints</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="endpoints">Endpoints</h1>
+<h2 id="_1">Дополнительные инструменты для работы с конечными точками</h2>
+<pre><code class="language-python">from fastapi import HTTPException
+import models
+from sqlmodel import Session, select, SQLModel
+import typing as tp
+
+
+def add_object_to_db_and_refresh(session: Session, object: SQLModel):
+    session.add(object)
+    session.commit()
+    session.refresh(object)
+
+
+class ProjectValidator:
+    _object = None
+
+    def __init__(self, session, user_id, object_id):
+        self._session = session
+        self._user_id = user_id
+        self._object_id = object_id
+        self._project = self._retrieve_project()
+
+
+    @property
+    def object(self) -&gt; models.Project:
+        if self._object is None:
+            self._object = self._retrieve_object_or_exception()
+        return self._object
+
+    def _retrieve_project(self) -&gt; models.Project:
+        return self.object
+
+    def _retrieve_object_or_exception(self) -&gt; models.Project:
+        project = self._session.get(models.Project, self._object_id)
+        if project is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f'Project with id={self.object.id} is not found'
+            )
+        return project
+
+    def is_admin_or_exception(self):
+        statement = select(models.ProjectUserLink) \
+            .where(models.ProjectUserLink.user_id == self._user_id) \
+            .where(models.ProjectUserLink.user_id == self._project.id)
+        user_entries: tp.List[models.ProjectUserLink] = list(
+            self._session.exec(statement).all()
+        )
+        for entry in user_entries:
+            if entry.role == models.Role.admin:
+                return
+        raise HTTPException(
+            status_code=403,
+            detail=f'you\'re not admin of project with id={self._project.id}'
+        )
+
+    def is_in_project_or_exception(self):
+        statement = select(models.ProjectUserLink) \
+            .where(models.ProjectUserLink.user_id == self._user_id) \
+            .where(models.ProjectUserLink.user_id == self._project.id)
+        user_entries: tp.List[models.ProjectUserLink] = list(self._session.exec(statement).all())
+        if len(user_entries) == 0:
+            raise HTTPException(
+                status_code=403,
+                detail=f'You\'re not allowed to view project with id={self._project.id}'
+            )
+
+
+class CategoryValidator(ProjectValidator):
+
+    def _retrieve_project(self) -&gt; models.Project:
+        return self.object.project
+
+    def _retrieve_object_or_exception(self) -&gt; models.Category:
+        category = self._session.get(models.Category, self._object_id)
+        if category is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f'Category with id={self._object_id} is not found'
+            )
+        return category
+
+
+class TaskValidator(CategoryValidator):
+    def _retrieve_project(self) -&gt; models.Project:
+        return self.object.category.project
+
+    def _retrieve_object_or_exception(self) -&gt; models.Task:
+        task = self._session.get(models.Task, self._object_id)
+        if task is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f'Task with id={self._object_id} is not found'
+            )
+        return task
+
+</code></pre>
+<h2 id="_2">Конечные точки</h2>
+<pre><code class="language-python">from fastapi import FastAPI, Depends, HTTPException
+import models
+from sqlmodel import Session, select
+from db import init_db, get_session_depends
+import db_queries
+import auth
+from enum import Enum
+import typing as tp
+from endpoints import endpoint_tools as tools
+
+app = FastAPI()
+
+
+class Tags(Enum):
+    user = 'user'
+    project = 'project'
+    category = 'category'
+    task = 'task'
+
+@app.on_event(&quot;startup&quot;)
+def on_startup():
+    init_db()
+
+
+
+# ------------------Token-----------------
+@app.post('/token/', status_code=200, tags=[Tags.user])
+def create_api_token(
+        user_login: models.UserLogin
+) -&gt; tp.TypedDict('token_response', {'access_token': str, 'token_type': str}):
+    try:
+        user_db = db_queries.get_user_by_username(user_login.username)
+    except ValueError:
+        raise HTTPException(status_code=400, detail=f'no user with username {user_login.username}')
+
+    is_password_correct = auth.verify_password(user_login.password, user_db.hashed_password)
+    if not is_password_correct:
+        raise HTTPException(status_code=400, detail=f'Incorrect password for username: {user_login.username}')
+
+    token = auth.generate_token(user_login.username)
+    return {'access_token': token, 'token_type': 'bearer'}
+
+
+# ------------------User-------------------
+
+@app.get('/user/{user_id}', status_code=200, tags=[Tags.user])
+def get_user_by_id(
+        user_id: int,
+        session: Session = Depends(get_session_depends)
+) -&gt; models.UserGet:
+    user = session.get(models.User, user_id)
+    if user is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f'user with user_id={user_id} not found'
+        )
+    user_get = models.UserGet.model_validate(user)
+    return user_get
+
+
+@app.get('/user/', status_code=200, tags=[Tags.user])
+def get_current_user(
+        user_db:models.User = Depends(auth.get_current_user)
+) -&gt; models.UserGet:
+    user_get = models.UserGet.model_validate(user_db)
+    return user_get
+
+@app.get('/user/list/', status_code=200, tags=[Tags.user])
+def get_list_of_users(
+    session: Session = Depends(get_session_depends)
+)-&gt; tp.List[models.UserGet]:
+    query = select(models.User)
+    user_db_list = session.exec(query).all()
+    user_get_list = [
+        models.UserGet.model_validate(user) for user in user_db_list
+    ]
+    return user_get_list
+
+
+@app.post('/user/', status_code=201, tags=[Tags.user])
+def create_user(
+        user: models.UserRegister,
+        session:Session=Depends(get_session_depends)
+)-&gt; tp.TypedDict('Created message', {'msg': str}):
+    hashed_password = auth.get_password_hash(user.password)
+    user_data = user.dict()
+    user_data['hashed_password'] = hashed_password
+    user = models.User.model_validate(user_data)
+    tools.add_object_to_db_and_refresh(session, user)
+    return {'msg': &quot;Created&quot;}
+
+
+@app.put('/user/password/', status_code=201, tags=[Tags.user])
+def change_user_password(
+        user_password: models.UserChangePassword,
+        user_db: models.User = Depends(auth.get_current_user),
+        session: Session = Depends(get_session_depends)
+) -&gt; tp.TypedDict('password_put_response', {'msg': str}):
+    is_password_correct = auth.verify_password(user_password.current_password, user_db.hashed_password)
+    if not is_password_correct:
+        raise HTTPException(status_code=400, detail='Incorrect current password')
+
+    if user_password.new_password != user_password.new_password_verification:
+        raise HTTPException(status_code=400, detail='Passwords don\'t match')
+
+    new_hash = auth.get_password_hash(user_password.new_password)
+    user_db.hashed_password = new_hash
+    session.add(user_db)
+    session.commit()
+    return {'msg': 'password changed'}
+
+
+
+
+# ------------Project---------------
+
+@app.get('/project/{project_id}', status_code=200, tags=[Tags.project])
+def get_project_info(
+        project_id: int,
+        user_db: models.User = Depends(auth.get_current_user),
+        session: Session = Depends(get_session_depends)
+) -&gt; models.ProjectBase:
+    project_validator = tools.ProjectValidator(session, user_db.id, project_id)
+    project_validator.is_in_project_or_exception()
+    project = project_validator.object
+    project_base = models.ProjectBase.model_validate(project)
+    return project_base
+
+
+@app.get('/project/', status_code=200, tags=[Tags.project])
+def get_user_project_list(
+    user_db: models.User = Depends(auth.get_current_user),
+    session: Session = Depends(get_session_depends)
+):
+    statement = select(models.ProjectUserLink) \
+        .where(models.ProjectUserLink.user_id == user_db.id)
+    user_entries: tp.List[models.ProjectUserLink] = list(session.exec(statement).all())
+    return [entry.project for entry in user_entries]
+
+
+@app.post('/project/', status_code=201, tags=[Tags.project])
+def create_project(
+        project: models.ProjectBase,
+        user_db: models.User = Depends(auth.get_current_user),
+        session: Session = Depends(get_session_depends)
+) -&gt; tp.TypedDict('post_project', {'msg': str}):
+    project = models.Project.model_validate(project)
+    tools.add_object_to_db_and_refresh(session, project)
+    # add creator as project admin
+    link = models.ProjectUserLink(
+        user_id=user_db.id,
+        project_id=project.id,
+        role=models.Role.admin
+    )
+    tools.add_object_to_db_and_refresh(session, link)
+    return {'msg': 'Created'}
+
+
+@app.get('/project/{project_id}/user/', status_code=200, tags=[Tags.project])
+def get_list_of_users_in_project(
+        project_id: int,
+        user_db: models.User = Depends(auth.get_current_user),
+        session: Session = Depends(get_session_depends)
+) -&gt; tp.List[models.UserGet]:
+    project_validator = tools.ProjectValidator(session, user_db.id, project_id)
+    project_validator.is_in_project_or_exception()
+    project = project_validator.object
+    users = project.users
+    users_get = [models.UserGet.model_validate(user) for user in users]
+    return users_get
+
+
+@app.post('/project/{project_id}/user/', status_code=200, tags=[Tags.project])
+def add_user_to_project(
+        project_id: int,
+        user_in_project: models.UserInProjectForm,
+        session: Session = Depends(get_session_depends),
+        user_db: models.User = Depends(auth.get_current_user)
+) -&gt; tp.TypedDict('add_to_project', {'msg': str}):
+    project_validator = tools.ProjectValidator(session, user_db.id, project_id)
+    project_validator.is_admin_or_exception()
+    data_for_link = user_in_project.dict()
+    data_for_link['project_id'] = project_id
+    link = models.ProjectUserLink.validate(data_for_link)
+    tools.add_object_to_db_and_refresh(session, link)
+    return {'msg': 'Created'}
+
+
+@app.get('/project/{project_id}/category/', status_code=200, tags=[Tags.project])
+def get_project_categories(
+        project_id: int,
+        session: Session = Depends(get_session_depends),
+        user_db: models.User = Depends(auth.get_current_user)
+) -&gt; tp.List[models.Category]:
+    project_validator = tools.ProjectValidator(session, user_db.id, project_id)
+    project_validator.is_in_project_or_exception()
+    project = project_validator.object
+    return project.categories
+
+
+@app.post('/project/{project_id}/category/', status_code=201, tags=[Tags.project])
+def add_category_to_project(
+        project_id: int,
+        category: models.CategoryBase,
+        session: Session = Depends(get_session_depends),
+        user_db: models.User = Depends(auth.get_current_user)
+) -&gt; tp.TypedDict('add_category', {'msg': str, 'object': models.Category}):
+    project_validator = tools.ProjectValidator(session, user_db.id, project_id)
+    project_validator.is_admin_or_exception()
+    category = category.dict()
+    category['project_id'] = project_id
+    category = models.Category.model_validate(category)
+    tools.add_object_to_db_and_refresh(session, category)
+    return {'msg': 'Created', 'object': category}
+
+
+@app.get('/project/{project_id}/task', status_code=200, tags=[Tags.project])
+def get_project_tasks(
+        project_id: int,
+        session: Session = Depends(get_session_depends),
+        user_db: models.User = Depends(auth.get_current_user)
+) -&gt; tp.List[models.CategoryWithBaseTasks]:
+    project_validator = tools.ProjectValidator(session, user_db.id, project_id)
+    project_validator.is_in_project_or_exception()
+    project = project_validator.object
+    return project.categories
+
+
+@app.get('/project/{project_id}/calendar_entries', status_code=200, tags=[Tags.project])
+def get_project_calendar_entries(
+    project_id: int,
+    session: Session = Depends(get_session_depends),
+    user_db: models.User = Depends(auth.get_current_user)
+) -&gt; models.ProjectWithCalendarEntries:
+    project_validator = tools.ProjectValidator(session, user_db.id, project_id)
+    project = project_validator.object
+    project_validator.is_in_project_or_exception()
+    project_with_entries = models.ProjectWithCalendarEntries.model_validate(project)
+    return project_with_entries
+
+
+
+
+# -------------------Category---------------
+
+
+
+
+
+
+
+
+
+
+@app.get('/category/{category_id}/', status_code=200, tags=[Tags.category])
+def get_category_info(
+    category_id: int,
+    session: Session = Depends(get_session_depends),
+    user_db: models.User = Depends(auth.get_current_user)
+) -&gt; models.CategoryBase:
+    category_validator = tools.CategoryValidator(session, user_db.id, category_id)
+    category = category_validator.object
+    category_validator.is_in_project_or_exception()
+    category_base = models.CategoryBase.model_validate(category)
+    return category_base
+
+
+@app.get('/category/{category_id}/task/', status_code=200, tags=[Tags.category])
+def get_category_tasks(
+        category_id: int,
+        session: Session = Depends(get_session_depends),
+        user_db: models.User = Depends(auth.get_current_user)
+):
+    category_validator = tools.CategoryValidator(session, user_db.id, category_id)
+    category = category_validator.object
+    category_validator.is_in_project_or_exception()
+    category_with_tasks = models.CategoryWithBaseTasks.model_validate(category)
+    return category_with_tasks
+
+
+
+@app.post('/category/{category_id}/task/', status_code=201, tags=[Tags.category])
+def add_task_to_category(
+        category_id: int,
+        task: models.TaskBase,
+        session: Session = Depends(get_session_depends),
+        user_db: models.User = Depends(auth.get_current_user)
+) -&gt; tp.TypedDict('task added', {'msg': str, 'obj': models.Task}):
+    category_validator = tools.CategoryValidator(session, user_db.id, category_id)
+    category_validator.is_admin_or_exception()
+
+    task_data = task.dict()
+    task_data['category_id'] = category_id
+    task = models.Task.model_validate(task_data)
+    tools.add_object_to_db_and_refresh(session, task)
+    return {'msg': 'Created', 'obj': task}
+
+
+@app.get('/category/{category_id}/calendar_entries', status_code=200, tags=[Tags.category])
+def get_category_calendar_entries(
+        category_id: int,
+        session: Session = Depends(get_session_depends),
+        user_db: models.User = Depends(auth.get_current_user)
+) -&gt; models.CategoryWithEntries:
+    category_validator = tools.CategoryValidator(session, user_db.id, category_id)
+    category_validator.is_in_project_or_exception()
+    category = category_validator.object
+    category_with_entries = models.CategoryWithEntries.model_validate(
+        category
+    )
+    return category_with_entries
+
+
+
+
+# ----------------------------Tasks-----------------------------
+
+
+
+
+@app.get('/task/{task_id}', status_code=200, tags=[Tags.task])
+def get_task_info(
+        task_id: int,
+        session: Session = Depends(get_session_depends),
+        user_db: models.User = Depends(auth.get_current_user)
+) -&gt; models.TaskBase:
+    task_validator = tools.TaskValidator(session, user_db.id, task_id)
+    task = task_validator.object
+    task_validator.is_in_project_or_exception()
+    task_base = models.TaskBase.model_validate(task)
+    return task_base
+
+
+@app.post('/task/{task_id}/calendar_entries/', status_code=201, tags=[Tags.task])
+def add_calendar_entry_to_task(
+        task_id: int,
+        calendar_entry: models.CalendarEntryBase,
+        session: Session = Depends(get_session_depends),
+        user_db: models.User = Depends(auth.get_current_user)
+) -&gt; tp.TypedDict('task added', {'msg': str, 'obj': models.CalendarEntry}):
+    task_validator = tools.TaskValidator(session, user_db.id, task_id)
+    task_validator.is_admin_or_exception()
+    calendar_entry_data = calendar_entry.dict()
+    calendar_entry_data['task_id'] = task_id
+    calendar_entry = models.CalendarEntry.model_validate(calendar_entry_data)
+    tools.add_object_to_db_and_refresh(session, calendar_entry)
+    return {'msg': 'Created', 'obj': calendar_entry}
+
+
+@app.get('/task/{task_id}/calendar_entries/', status_code=200, tags=[Tags.task])
+def get_task_calendar_entries(
+        task_id: int,
+        session: Session = Depends(get_session_depends),
+        user_db: models.User = Depends(auth.get_current_user)
+) -&gt; models.TaskWithEntries:
+    task_validator = tools.TaskValidator(session, user_db.id, task_id)
+    task = task_validator.object
+    task_validator.is_in_project_or_exception()
+    task_with_entries = models.TaskWithEntries.model_validate(task)
+    return task_with_entries
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../db/" class="btn btn-neutral float-left" title="Соединение с БД"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../auth/" class="btn btn-neutral float-right" title="Аутентификация">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../db/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../auth/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
