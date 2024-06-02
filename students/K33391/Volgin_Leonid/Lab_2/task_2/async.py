@@ -8,6 +8,13 @@ from students.K33391.Volgin_Leonid.Lab_2.task_2.conn import init_db, sion
 from models import *
 from urls import URLS
 
+async def save_song(title, song):
+    author = song.find('span', class_='artist').get_text()
+    name = song.find('span', class_='song').get_text()
+    # print(author,': ', name)
+    pesnya = Song(name=name, author=author, title=title)
+    sion.add(pesnya)
+    sion.commit()
 
 async def parse_and_save(url):
     try:
@@ -20,12 +27,7 @@ async def parse_and_save(url):
                 songs = soup.find_all('div', class_="name_track")
                 for song in songs:
                     try:
-                        author = song.find('span', class_='artist').get_text()
-                        name = song.find('span', class_='song').get_text()
-                        #print(author,': ', name)
-                        pesnya = Song(name=name, author=author, title=title)
-                        sion.add(pesnya)
-                        sion.commit()
+                        await save_song(title, song)
                     except Exception as e:
                         pass
     except Exception as ex:
@@ -45,4 +47,4 @@ if __name__ == '__main__':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     asyncio.run(main())
     end_time = time.time()
-    print(f"Threading time ': {end_time - start_time} seconds")
+    print(f"Async time ': {end_time - start_time} seconds")
