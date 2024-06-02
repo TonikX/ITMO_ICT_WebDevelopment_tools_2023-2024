@@ -1,20 +1,19 @@
-"""add import to env.py
+"""version 6
 
-Revision ID: c63f5b777ca7
-Revises: 65427cf84bac
-Create Date: 2024-05-11 21:56:20.095478
+Revision ID: 34a78eb678ae
+Revises: 9bd350772ac4
+Create Date: 2024-05-31 22:17:13.190223
 
 """
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-from sqlmodel import *
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'c63f5b777ca7'
-down_revision: Union[str, None] = '65427cf84bac'
+revision: str = '34a78eb678ae'
+down_revision: Union[str, None] = '9bd350772ac4'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

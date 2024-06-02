@@ -1,20 +1,19 @@
-"""add import to script.py.mako
+"""version 3
 
-Revision ID: 65427cf84bac
-Revises: bc177ef05efc
-Create Date: 2024-05-11 21:34:39.136273
+Revision ID: 5cf5aed51f75
+Revises: 2cbd62dbee7c
+Create Date: 2024-05-31 20:24:03.591911
 
 """
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-from sqlmodel import *
 
 
 # revision identifiers, used by Alembic.
-revision: str = '65427cf84bac'
-down_revision: Union[str, None] = 'bc177ef05efc'
+revision: str = '5cf5aed51f75'
+down_revision: Union[str, None] = '2cbd62dbee7c'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
