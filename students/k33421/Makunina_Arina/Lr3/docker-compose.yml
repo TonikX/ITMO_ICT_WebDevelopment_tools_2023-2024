@@ -1,0 +1,91 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: main.Dockerfile
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      celery:
+        condition: service_healthy
+    volumes:
+      - ./application:/app
+
+  parser:
+    build:
+      context: .
+      dockerfile: parser.Dockerfile
+    container_name: fastapi_parser
+    ports:
+      - "8001:8000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./parser:/app
+
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2512
+      POSTGRES_DB: web
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:6
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  celery:
+    build:
+      context: .
+      dockerfile: parser.Dockerfile
+    command: ["python", "-m", "celery", "-A", "celery_config.celery_app", "worker", "--loglevel=info"]
+    container_name: celery_worker
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A celery_config.celery_app status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./parser:/app
+
+
+volumes:
+  postgres_data:
