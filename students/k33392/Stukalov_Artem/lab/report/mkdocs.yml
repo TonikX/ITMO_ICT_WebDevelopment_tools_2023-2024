@@ -46,3 +46,8 @@ nav:
   - '№2: Потоки. Процессы. Асинхронность':
       - lab3/task-1.md
       - lab3/task-2.md
+  - '№3: Упаковка FastAPI приложения в Docker, Работа с источниками данных и Очереди':
+      - lab4/structure.md
+      - lab4/api.md
+      - lab4/celery.md
+      - lab4/docker.md
