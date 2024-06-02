@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Task 1 - Отчет по лабораторным работам</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Task 1";
+        var mkdocs_page_input_path = "lab2/task1.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Отчет по лабораторным работам
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab 1</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../lab1/body/">Body</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../lab1/screens/">Screens</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab 2</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 1</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task2/">Task 2</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Отчет по лабораторным работам</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Lab 2</li>
+      <li class="breadcrumb-item active">Task 1</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><strong>Задача 1. Различия между threading, multiprocessing и async в Python</strong></p>
+<p><strong>Задача:</strong>  Напишите три различных программы на Python, использующие каждый из подходов: threading, multiprocessing и async. Каждая программа должна решать считать сумму всех чисел от 1 до 1000000. Разделите вычисления на несколько параллельных задач для ускорения выполнения.</p>
+<p><strong>Подробности задания:</strong></p>
+<ul>
+<li>Напишите программу на Python для каждого подхода: threading, multiprocessing и async.</li>
+<li>Каждая программа должна содержать функцию calculate_sum(), которая будет выполнять вычисления.</li>
+<li>Для threading используйте модуль threading, для multiprocessing - модуль multiprocessing, а для async - ключевые слова async/await и модуль asyncio.</li>
+<li>Каждая программа должна разбить задачу на несколько подзадач и выполнять их параллельно.
+Замерьте время выполнения каждой программы и сравните результаты.</li>
+</ul>
+<p><strong>naive</strong></p>
+<pre><code class="language-python">import time
+
+def calculate_sum(i_from, i_to):
+    return sum(range(i_from, i_to))
+
+
+if __name__ == &quot;__main__&quot;:
+    times = 10
+    av_time = 0
+    for i in range (times):
+        start_time = time.time()
+        result = calculate_sum(1, 1000000)
+        end_time = time.time()
+        av_time += end_time - start_time
+
+    print(f&quot;Average naive execution time: {av_time / times:.4f} seconds&quot;)
+
+</code></pre>
+<p><strong>threading</strong></p>
+<pre><code class="language-python">import threading
+import time
+
+
+# Использует генераторное выражение x*x for x in range(start, end) и функцию sum
+def calculate_sum(start, end):
+    total = sum(x * x for x in range(start, end))
+    return total
+
+
+# Вызывает calculate_sum и сохраняет результат в список results по индексу index
+def thread_worker(start, end, results, index):
+    results[index] = calculate_sum(start, end)
+    # print(results)
+
+
+def one_thread(num_threads, range_per_thread):
+    start_time = time.time()
+
+    for i in range(num_threads):
+        start = i * range_per_thread  # вычисляются старт-
+        end = (i + 1) * range_per_thread  # финиш для каждого потока
+        thread = threading.Thread(target=thread_worker, args=(start, end, results, i))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    total_sum = sum(results)
+
+    end_time = time.time()
+    return total_sum, end_time - start_time
+
+
+if __name__ == &quot;__main__&quot;:
+    num_threads = 10
+    range_per_thread = 10 ** 6 // num_threads
+    times = 10
+    threads = []
+    results = [0] * num_threads
+
+    av_time = 0
+    for i in range(times):
+        total_sum, timer = one_thread(num_threads, range_per_thread)
+        av_time += timer
+
+    print(f&quot;Threading total sum: {total_sum}&quot;)
+    print(f&quot;Average threading execution time: {av_time / times:.4f} seconds&quot;)
+
+
+</code></pre>
+<p><strong>multiprocessing</strong></p>
+<pre><code class="language-python">import multiprocessing
+import time
+
+
+def calculate_sum(start, end):
+    total = sum(x * x for x in range(start, end))
+    return total
+
+
+if __name__ == &quot;__main__&quot;:
+    num_processes = 10
+    range_per_process = 10 ** 6 // num_processes
+    times = 10
+
+    av_time = 0
+    for i in range(times):
+        pool = multiprocessing.Pool(processes=num_processes)  # Создаем пул процессов
+        # список кортежей с границами диапазонов
+        tasks = [(i * range_per_process, (i + 1) * range_per_process) for i in range(num_processes)]
+
+        start_time = time.time()
+        results = pool.starmap(calculate_sum, tasks)
+        pool.close()
+        pool.join()
+
+        total_sum = sum(results)
+        end_time = time.time()
+
+        av_time = av_time + end_time - start_time
+
+    print(f&quot;Multiprocessing total sum: {total_sum}&quot;)
+    print(f&quot;Multiprocessing execution time: {av_time / times:.4f} seconds&quot;)
+
+</code></pre>
+<p><strong>asyncio</strong></p>
+<pre><code class="language-python">import asyncio
+import time
+
+
+async def calculate_sum(start, end):
+    total = sum(x * x for x in range(start, end))
+    return total
+
+
+async def main():
+    num_tasks = 10
+    range_per_task = 10 ** 6 // num_tasks
+    times = 10
+
+    av_time = 0
+    for i in range(times):
+        tasks = [calculate_sum(i * range_per_task, (i + 1) * range_per_task) for i in range(num_tasks)]
+        start_time = time.time()
+        results = await asyncio.gather(*tasks)
+        total_sum = sum(results)
+        end_time = time.time()
+
+        av_time = av_time + end_time - start_time
+
+    print(f&quot;Asyncio total sum: {total_sum}&quot;)
+    print(f&quot;Asyncio execution time: {av_time/times:.4f} seconds&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    asyncio.run(main())
+
+</code></pre>
+<p>Во всех примерах код выполнялся 10 раз, все делилось на 10 процессов/потоков/запросов для всех вычислялось среднее арифметическое времени выполнения.</p>
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Naive</th>
+      <th>Threading</th>
+      <th>Multiprocessing</th>
+      <th>Asyncio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Average</th>
+      <td>0.0151</td>
+      <td>0.0632</td>
+      <td>0.1009</td>
+      <td>0.0640</td>
+    </tr>
+    <tr>
+      <th>Max</th>
+      <td>0.0159</td>
+      <td>0.0989</td>
+      <td>0.1294</td>
+      <td>0.0698</td>
+    </tr>
+    <tr>
+      <th>Min</th>
+      <td>0.0139</td>
+      <td>0.0583</td>
+      <td>0.0619</td>
+      <td>0.0648</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>И тут, как можно увидеть, происходит веселое: наивный алгоритм отрабатывает ощутимо быстрее, чем что бы то ни было (даже если уменьшать количество процессов/потоков/запросов). Потому что на то, чтоб просто сотворить это все, тоже уходит время... и в рамках выполнения этой задачи это время критично.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../lab1/screens/" class="btn btn-neutral float-left" title="Screens"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../task2/" class="btn btn-neutral float-right" title="Task 2">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../lab1/screens/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../task2/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

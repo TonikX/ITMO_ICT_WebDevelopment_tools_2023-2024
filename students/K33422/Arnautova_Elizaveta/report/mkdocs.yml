@@ -1,12 +1,3 @@
-# site_name: Отчет по лабораторным работам
-# theme:
-#   name: readthedocs
-# nav:
-#   - Лабораторная №1:
-#       - Code part: lab1/body.md
-#       - Screenshots: lab1/screens.md
-
-
 site_name: Отчет по лабораторным работам
 theme:
   name: readthedocs
@@ -15,3 +6,6 @@ nav:
   - Lab 1:
       - Body: lab1/body.md
       - Screens: lab1/screens.md
+  - Lab 2:
+      - Task 1: lab2/task1.md
+      - Task 2: lab2/task2.md
