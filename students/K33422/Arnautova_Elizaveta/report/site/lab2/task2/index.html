@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Task 2 - Отчет по лабораторным работам</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Task 2";
+        var mkdocs_page_input_path = "lab2/task2.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Отчет по лабораторным работам
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab 1</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../lab1/body/">Body</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../lab1/screens/">Screens</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab 2</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../task1/">Task 1</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 2</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Отчет по лабораторным работам</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Lab 2</li>
+      <li class="breadcrumb-item active">Task 2</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><strong>Задача 2. Параллельный парсинг веб-страниц с сохранением в базу данных</strong></p>
+<p><strong>Задача:</strong> Напишите программу на Python для параллельного парсинга нескольких веб-страниц с сохранением данных в базу данных с использованием подходов threading, multiprocessing и async. Каждая программа должна парсить информацию с нескольких веб-сайтов, сохранять их в базу данных.</p>
+<p><strong>Подробности задания:</strong></p>
+<ul>
+<li>Напишите три различных программы на Python, использующие каждый из подходов: threading, multiprocessing и async.</li>
+<li>Каждая программа должна содержать функцию parse_and_save(url), которая будет загружать HTML-страницу по указанному URL, парсить ее, сохранять заголовок страницы в базу данных и выводить результат на экран.</li>
+<li>Используйте базу данных из лабораторной работы номер 1 для заполенния ее данными. Если Вы не понимаете, какие таблицы и откуда Вы могли бы заполнить с помощью парсинга, напишите преподавателю в общем чате потока.</li>
+<li>Для threading используйте модуль threading, для multiprocessing - модуль multiprocessing, а для async - ключевые слова async/await и модуль aiohttp для асинхронных запросов.</li>
+<li>Создайте список нескольких URL-адресов веб-страниц для парсинга и разделите его на равные части для параллельного парсинга.</li>
+<li>Запустите параллельный парсинг для каждой программы и сохраните данные в базу данных.</li>
+<li>Замерьте время выполнения каждой программы и сравните результаты.</li>
+</ul>
+<p><strong>naive</strong></p>
+<pre><code class="language-python">from threading import Thread
+import requests
+from bs4 import BeautifulSoup
+import psycopg2
+import time
+import re
+
+
+def parse_and_save(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    conn = psycopg2.connect(&quot;dbname=recipes user=postgres password=12345678 host=localhost&quot;)
+    curs = conn.cursor()
+
+    recipe_blocks = soup.find_all('div', class_='emotion-etyz2y')
+
+    for block in recipe_blocks:
+        try:
+            title = block.find('span', class_=&quot;emotion-1bs2jj2&quot;).text
+            ingredients_text = block.find('button', class_=&quot;emotion-d6nx0p&quot;).text
+            servings_text = block.find('span', class_=&quot;emotion-tqfyce&quot;).text[0]
+            cook_time = block.find('span', class_=&quot;emotion-14gsni6&quot;).text
+            author = block.find('span', class_=&quot;emotion-14tqfr&quot;).text.replace(&quot;Автор:&quot;, &quot;&quot;).strip()
+            servings = int(re.search(r'\d+', servings_text).group())
+            ingredients = int(re.search(r'\d+', ingredients_text).group())
+
+            curs.execute(&quot;INSERT INTO titles (url, title, ingredients, servings, cook_time, author) VALUES (%s, %s, %s, %s, %s, %s)&quot;,
+                     (url, title, ingredients, servings, cook_time, author))
+            conn.commit()
+            # print(f&quot;Saved: {title} | Ingredients: {ingredients} | Servings: {servings} | Cook time: {cook_time}&quot;)
+        except AttributeError as e:
+            print(f&quot;Failed to parse block: {e}&quot;)
+
+    curs.close()
+    conn.close()
+
+
+if __name__ == &quot;__main__&quot;:
+    urls = [
+        'https://eda.ru/recepty/zavtraki',
+        'https://eda.ru/recepty/osnovnye-blyuda',
+        'https://eda.ru/recepty/sousy-marinady',
+        'https://eda.ru/recepty/zagotovki',
+        'https://eda.ru/recepty/bulony',
+        'https://eda.ru/recepty/pasta-picca',
+        'https://eda.ru/recepty/supy',
+        'https://eda.ru/recepty/zakuski',
+        'https://eda.ru/recepty/rizotto',
+        'https://eda.ru/recepty/sendvichi',
+        'https://eda.ru/recepty/napitki',
+        'https://eda.ru/recepty/salaty',
+        'https://eda.ru/recepty/vypechka-deserty',
+
+    ]
+
+    start_time = time.time()
+    for url in urls:
+        parse_and_save(url)
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    print(f&quot;Threading execution time: {execution_time:.4f} seconds&quot;)
+
+</code></pre>
+<p><strong>threading</strong></p>
+<pre><code class="language-python">from threading import Thread
+import requests
+from bs4 import BeautifulSoup
+import psycopg2
+import time
+import re
+
+
+def parse_and_save(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    conn = psycopg2.connect(&quot;dbname=recipes user=postgres password=12345678 host=localhost&quot;)
+    curs = conn.cursor()
+
+    recipe_blocks = soup.find_all('div', class_='emotion-etyz2y')
+
+    for block in recipe_blocks:
+        try:
+            title = block.find('span', class_=&quot;emotion-1bs2jj2&quot;).text
+            ingredients_text = block.find('button', class_=&quot;emotion-d6nx0p&quot;).text
+            servings_text = block.find('span', class_=&quot;emotion-tqfyce&quot;).text[0]
+            cook_time = block.find('span', class_=&quot;emotion-14gsni6&quot;).text
+            author = block.find('span', class_=&quot;emotion-14tqfr&quot;).text.replace(&quot;Автор:&quot;, &quot;&quot;).strip()
+            servings = int(re.search(r'\d+', servings_text).group())
+            ingredients = int(re.search(r'\d+', ingredients_text).group())
+
+            curs.execute(&quot;INSERT INTO titles (url, title, ingredients, servings, cook_time, author) VALUES (%s, %s, %s, %s, %s, %s)&quot;,
+                     (url, title, ingredients, servings, cook_time, author))
+            conn.commit()
+            # print(f&quot;Saved: {title} | Ingredients: {ingredients} | Servings: {servings} | Cook time: {cook_time}&quot;)
+        except AttributeError as e:
+            print(f&quot;Failed to parse block: {e}&quot;)
+
+    curs.close()
+    conn.close()
+
+
+def main(urls):
+    threads = []
+    for url in urls:
+        thread = Thread(target=parse_and_save, args=(url,))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+
+if __name__ == &quot;__main__&quot;:
+    urls = [
+        'https://eda.ru/recepty/zavtraki',
+        'https://eda.ru/recepty/osnovnye-blyuda',
+        'https://eda.ru/recepty/sousy-marinady',
+        'https://eda.ru/recepty/zagotovki',
+        'https://eda.ru/recepty/bulony',
+        'https://eda.ru/recepty/pasta-picca',
+        'https://eda.ru/recepty/supy',
+        'https://eda.ru/recepty/zakuski',
+        'https://eda.ru/recepty/rizotto',
+        'https://eda.ru/recepty/sendvichi',
+        'https://eda.ru/recepty/napitki',
+        'https://eda.ru/recepty/salaty',
+        'https://eda.ru/recepty/vypechka-deserty',
+
+    ]
+
+    start_time = time.time()
+    main(urls)
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    print(f&quot;Threading execution time: {execution_time:.4f} seconds&quot;)
+
+</code></pre>
+<p><strong>multiprocessing</strong></p>
+<pre><code class="language-python">from multiprocessing import Process
+import requests
+from bs4 import BeautifulSoup
+import psycopg2
+import time
+import re
+
+
+def parse_and_save(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    conn = psycopg2.connect(&quot;dbname=recipes user=postgres password=12345678 host=localhost&quot;)
+    curs = conn.cursor()
+
+    recipe_blocks = soup.find_all('div', class_='emotion-etyz2y')
+
+    for block in recipe_blocks:
+        try:
+            title = block.find('span', class_=&quot;emotion-1bs2jj2&quot;).text
+            ingredients_text = block.find('button', class_=&quot;emotion-d6nx0p&quot;).text
+            servings_text = block.find('span', class_=&quot;emotion-tqfyce&quot;).text[0]
+            cook_time = block.find('span', class_=&quot;emotion-14gsni6&quot;).text
+            author = block.find('span', class_=&quot;emotion-14tqfr&quot;).text.replace(&quot;Автор:&quot;, &quot;&quot;).strip()
+            servings = int(re.search(r'\d+', servings_text).group())
+            ingredients = int(re.search(r'\d+', ingredients_text).group())
+
+            curs.execute(
+                &quot;INSERT INTO titles (url, title, ingredients, servings, cook_time, author) VALUES (%s, %s, %s, %s, %s, %s)&quot;,
+                (url, title, ingredients, servings, cook_time, author))
+            # print(f&quot;Saved: {title} | Ingredients: {ingredients} | Servings: {servings} | Cook time: {cook_time}&quot;)
+
+        except AttributeError as e:
+            print(f&quot;Failed to parse block: {e}&quot;)
+
+    curs.close()
+    conn.close()
+
+
+def main(urls):
+    processes = []
+    for url in urls:
+        process = Process(target=parse_and_save, args=(url,))
+        processes.append(process)
+        process.start()
+
+    for process in processes:
+        process.join()
+
+
+if __name__ == &quot;__main__&quot;:
+    urls = [
+        'https://eda.ru/recepty/zavtraki',
+        'https://eda.ru/recepty/osnovnye-blyuda',
+        'https://eda.ru/recepty/sousy-marinady',
+        'https://eda.ru/recepty/zagotovki',
+        'https://eda.ru/recepty/bulony',
+        'https://eda.ru/recepty/pasta-picca',
+        'https://eda.ru/recepty/supy',
+        'https://eda.ru/recepty/zakuski',
+        'https://eda.ru/recepty/rizotto',
+        'https://eda.ru/recepty/sendvichi',
+        'https://eda.ru/recepty/napitki',
+        'https://eda.ru/recepty/salaty',
+        'https://eda.ru/recepty/vypechka-deserty',
+    ]
+
+    start_time = time.time()
+    main(urls)
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    print(f&quot;Multiprocessing execution time: {execution_time:.4f} seconds&quot;)
+
+</code></pre>
+<p><strong>asyncio</strong></p>
+<pre><code class="language-python">import asyncio
+import time
+
+
+async def calculate_sum(start, end):
+    total = sum(x * x for x in range(start, end))
+    return total
+
+
+async def main():
+    num_tasks = 10
+    range_per_task = 10 ** 6 // num_tasks
+    times = 10
+
+    av_time = 0
+    for i in range(times):
+        tasks = [calculate_sum(i * range_per_task, (i + 1) * range_per_task) for i in range(num_tasks)]
+        start_time = time.time()
+        results = await asyncio.gather(*tasks)
+        total_sum = sum(results)
+        end_time = time.time()
+
+        av_time = av_time + end_time - start_time
+
+    print(f&quot;Asyncio total sum: {total_sum}&quot;)
+    print(f&quot;Asyncio execution time: {av_time/times:.4f} seconds&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    asyncio.run(main())
+
+</code></pre>
+<p>Здесь уже не стала автоматизировать прогон N-раз, просто прогнала вручную, чтобы проверить и вычислить погрешность.</p>
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Naive</th>
+      <th>Threading</th>
+      <th>Multiprocessing</th>
+      <th>Asyncio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Time</th>
+      <td>7.6552 ± 3.2</td>
+      <td>1.4692 ± 0.4</td>
+      <td>1.4662 ± 0.3</td>
+      <td>1.3968 ± 0.3</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Тут уже наивный алгоритм перестает справляться. И это особенно колоритно в погрешности: если у async, multiprocessing и threading речь идет про десятые секунды, то для наивного разница исчисляется уже в секундах.</p>
+<p>Для моих данных несильно, но, все же, лучше, отработал Asyncio.</p>
+<p><strong>Threading (Многопоточность)</strong></p>
+<pre><code>Особенности:
+* Многопоточность позволяет выполнять несколько потоков в рамках одного процесса.
+* Все потоки делят между собой одно и то же пространство памяти.
+* Потоки выполняются параллельно, но из-за GIL (Global Interpreter Lock) в Python 
+только один поток может выполнять Python код в любой момент времени.
+* Подходит для задач, связанных с вводом-выводом (I/O-bound), например, сетевые запросы, 
+чтение/запись файлов, ожидание ответов от баз данных.
+
+Когда лучше использовать:
+* Задачи, которые требуют ожидания внешних ресурсов.
+* Когда нужно выполнить параллельно много операций ввода-вывода.
+
+Пример: сетевые запросы, работа с файлами.
+</code></pre>
+<p><strong>Multiprocessing (Многопроцессорность)</strong></p>
+<pre><code>Особенности:
+
+* Многопроцессорность позволяет создавать несколько процессов, 
+каждый из которых имеет свое собственное пространство памяти.
+* Не ограничен GIL, так как каждый процесс исполняется независимо.
+* Подходит для задач, связанных с интенсивными вычислениями (CPU-bound).
+
+Когда лучше использовать:
+* Задачи, требующие значительных вычислительных ресурсов.
+* Обработка данных, научные вычисления, машинное обучение.
+
+Пример: параллельная обработка больших объемов данных.
+</code></pre>
+<p><strong>Async (Асинхронное программирование)</strong></p>
+<pre><code>Особенности:
+* Асинхронное программирование позволяет выполнять операции ввода-вывода 
+асинхронно, не блокируя основной поток выполнения.
+* Использует event loop (цикл событий) для управления задачами.
+* Подходит для задач ввода-вывода с высокой задержкой, где блокировка основного потока 
+нежелательна.
+
+Когда лучше использовать:
+* Сетевые приложения, работа с веб-серверами.
+* Когда требуется одновременное выполнение множества I/O операций с минимальными задержками.
+
+Пример: асинхронные веб-серверы, асинхронные клиентские запросы.
+</code></pre>
+<p><strong>Различия во времени выполнения</strong></p>
+<ul>
+<li>Threading может быть медленнее из-за GIL, если задачи CPU-bound. Но для I/O-bound задач (например, сетевые запросы) многопоточность может значительно уменьшить время ожидания.</li>
+<li>Multiprocessing не ограничен GIL, поэтому для CPU-bound задач он будет быстрее, чем threading. Однако создание и управление процессами требует больше ресурсов и времени, чем создание потоков.</li>
+<li>Async наиболее эффективен для большого количества I/O-bound задач, так как позволяет избежать блокировки и максимально использовать время ожидания.</li>
+</ul>
+<p><strong>Выводы</strong></p>
+<ul>
+<li>Использовать threading, если много задач на ввод-вывод =&gt; упростить код за счет параллельного выполнения.</li>
+<li>Использовать multiprocessing, если куча задач, требующих интенсивных вычислений, и нужно преодолеть ограничения GIL.</li>
+<li>Использовать async, если нужно эффективно управлять большим количеством I/O-bound задач и минимизировать задержки.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../task1/" class="btn btn-neutral float-left" title="Task 1"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../task1/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

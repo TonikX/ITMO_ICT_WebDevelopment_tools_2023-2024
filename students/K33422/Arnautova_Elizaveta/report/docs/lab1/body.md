@@ -1,3 +1,5 @@
+[Ссылка на практики](https://github.com/LizaArnautova/ITMO_ICT_WebDevelopment_tools_2023-2024/tree/main/students/K33422/Arnautova_Elizaveta/Lr1/practice)
+
 Схема БД:
 ![](screenshots/bd.png)
 
