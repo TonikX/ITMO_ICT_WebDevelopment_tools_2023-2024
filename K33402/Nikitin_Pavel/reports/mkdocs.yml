@@ -1,0 +1,21 @@
+site_name: My Docs
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+nav:
+  - Главная: "index.md"
+  - Лабораторная работа 1: "lab_1/index.md"
+  - Лабораторная работа 2: "lab_2/index.md"
+  - Лабораторная работа 3: "lab_3/index.md"
