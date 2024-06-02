@@ -1,0 +1,3 @@
+node target_sum = 100000000 split_count = 20
+real: 0.105
+user: 0.885

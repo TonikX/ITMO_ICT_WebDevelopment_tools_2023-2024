@@ -1,0 +1,53 @@
+site_name: 'Лабораторные работы'
+theme:
+  name: material
+  features:
+    - navigation.indexes
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github-alt
+  palette:
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Темная тема
+    - media: '(prefers-color-scheme: dark)'
+      primary: black
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Светлая тема
+  language: ru
+repo_url: https://github.com/TUTOR03/ITMO_ICT_WebDevelopment_tools_2023-2024
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: '../'
+  - pymdownx.superfences
+  - pymdownx.keys
+plugins:
+  - glightbox:
+      auto_caption: true
+nav:
+  - '№1: Реализация серверного приложения FastAPI':
+      - lab2/configuration.md
+      - lab2/models.md
+      - lab2/services.md
+      - lab2/routes.md
+  - '№2: Потоки. Процессы. Асинхронность':
+      - lab3/task-1.md
+      - lab3/task-2.md
+  - '№3: Упаковка FastAPI приложения в Docker, Работа с источниками данных и Очереди':
+      - lab4/structure.md
+      - lab4/api.md
+      - lab4/celery.md
+      - lab4/docker.md
