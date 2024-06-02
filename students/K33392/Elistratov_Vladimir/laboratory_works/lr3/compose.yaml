@@ -1,0 +1,71 @@
+version: '3.11'
+
+networks:
+  app-network:
+
+services:
+  # celery_app:
+  #   build:
+  #     context: ./lr2-serv
+  #     dockerfile: Dockerfile
+  #   container_name: celery
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     - redis
+
+  # celery_worker:
+  #   build:
+  #     context: ./lr2-serv
+  #   container_name: celery_worker
+  #   command: celery -A celery_worker worker
+  #   restart: always
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     - redis
+  #     - celery_app
+
+  # redis:
+  #   image: redis:7.2.4
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"
+  #   restart: always
+  #   networks:
+  #     - app-network
+
+  app-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: hw
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: from_cell_to_hell
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./volumes/app-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+  
+  app:
+    pull_policy: build
+    build: ./lr1
+    environment:
+      DB_URL: postgresql://hw:admin@app-db:5432/from_cell_to_hell
+    depends_on:
+      app-db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
