@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>main.py - LR1</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">LR1</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href="../page1/" class="nav-link">Time Managment</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../page2/" class="nav-link">models.py</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">main.py</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../page4/" class="nav-link">app/Routes.py</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../page5/" class="nav-link">pydanticModels.py</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../page6/" class="nav-link">conn.py</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../page2/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../page4/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#mainpy" class="nav-link">main.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="mainpy">main.py</h1>
+<pre><code>app = FastAPI(
+    title = &quot;Time Managment&quot;
+)
+
+@app.on_event(&quot;startup&quot;)
+def on_startup():
+    init_db()
+    with Session(engine) as session:
+            create_data(session)
+
+def create_data(session: Session):
+    session.commit()
+
+def main():
+    with Session(engine) as session:
+        create_data(session)
+
+
+app.include_router(user_router) 
+app.include_router(tasks_router) 
+app.include_router(categ_router) 
+app.include_router(timelogs_router) 
+app.include_router(taskscateg_router) 
+app.include_router(add_router) 
+
+
+pwd_context = CryptContext(schemes=[&quot;bcrypt&quot;], deprecated=&quot;auto&quot;)
+
+def hash_password(password: str) -&gt; str:
+    return pwd_context.hash(password)
+
+def verify_password(plain_password: str, hashed_password: str) -&gt; bool:
+    return pwd_context.verify(plain_password, hashed_password)
+
+SECRET_KEY = secrets.token_urlsafe(32)
+ALGORITHM = &quot;HS256&quot;
+
+def create_access_token(data: dict, expires_delta: timedelta = None) -&gt; str:
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({&quot;exp&quot;: expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+@app.post(&quot;/usersReg&quot;)
+def create_user(username: str, password: str, session: Session = Depends(get_session)):
+    hashed_password = hash_password(password) 
+    user = User(username=username, hashed_password=hashed_password)
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user
+
+@app.post(&quot;/token&quot;)
+def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
+    user = authenticate_user(form_data.username, form_data.password, session)
+    if not user:
+        raise HTTPException(status_code=400, detail=&quot;Incorrect username or password&quot;)
+    access_token_expires = timedelta(minutes=30)
+    access_token = create_access_token(
+        data={&quot;sub&quot;: user.username}, expires_delta=access_token_expires
+    )
+    return {&quot;access_token&quot;: access_token, &quot;token_type&quot;: &quot;bearer&quot;}
+
+def authenticate_user(username: str, password: str, session: Session):
+    user = session.query(User).filter(User.username == username).first()
+    if not user:
+        return False
+    if not verify_password(password, user.hashed_password):
+        return False
+    return user
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=&quot;token&quot;) 
+
+def verify_token(token: str, credentials_exception):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[&quot;HS256&quot;])
+        username: str = payload.get(&quot;sub&quot;)
+        if username is None:
+            raise credentials_exception
+        return username
+    except JWTError:
+        raise credentials_exception
+
+def get_current_active_user(token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail=&quot;Could not validate credentials&quot;,
+        headers={&quot;WWW-Authenticate&quot;: &quot;Bearer&quot;},
+    )
+    username = verify_token(token, credentials_exception)
+    user = session.query(User).filter(User.username == username).first()
+    if user is None:
+        raise credentials_exception
+    if not user.is_active:
+        raise HTTPException(status_code=400, detail=&quot;Inactive user&quot;)
+    return user
+
+
+@app.get(&quot;/users/me&quot;)
+def read_current_user(current_user: User = Depends(get_current_active_user)):
+    return current_user
+
+@app.post(&quot;/users/change-password&quot;)
+def change_password(password_change: PasswordChange, current_user: User = Depends(get_current_active_user), session: Session = Depends(get_session)):
+    try:
+        user = session.query(User).filter(User.id == current_user.id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+        if not verify_password(password_change.old_password, user.hashed_password):
+            raise HTTPException(status_code=400, detail=&quot;Incorrect old password&quot;)
+        user.hashed_password = hash_password(password_change.new_password)
+        session.add(user)
+        session.commit()
+        return {&quot;msg&quot;: &quot;Password changed successfully&quot;}
+    except SQLAlchemyError as e:
+        session.rollback()
+
+        raise HTTPException(status_code=500, detail=&quot;Internal Server Error&quot;)
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
