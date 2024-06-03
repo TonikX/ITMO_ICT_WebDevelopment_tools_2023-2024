@@ -1,37 +1,44 @@
 import multiprocessing
 import requests
 from bs4 import BeautifulSoup
-import sqlite3
+import psycopg2
+from psycopg2 import sql
 import time
 
+DATABASE_URL = "postgresql://postgres:23465@localhost/laboratory_work_2"
 
 def create_table_if_not_exists():
-    conn = sqlite3.connect('data_2.db')
+    conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
-    cur.execute('''CREATE TABLE IF NOT EXISTS pages (
-                    id INTEGER PRIMARY KEY,
-                    url TEXT NOT NULL,
-                    title TEXT NOT NULL)''')
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS pages_2 (
+            id SERIAL PRIMARY KEY,
+            url TEXT NOT NULL,
+            title TEXT NOT NULL
+        )
+    ''')
     conn.commit()
+    cur.close()
     conn.close()
-
 
 def parse_and_save(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    title = soup.title.string
+    title = soup.title.string if soup.title else 'No title found'
 
-    conn = sqlite3.connect('data_2.db')
-    cur = conn.cursor()
-
-    cur.execute("INSERT INTO pages (url, title) VALUES (?, ?)", (url, title))
-    conn.commit()
-
-    print(f"Title of {url}: {title}")
-
-    cur.close()
-    conn.close()
-
+    try:
+        conn = psycopg2.connect(DATABASE_URL)
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO pages_2 (url, title) VALUES (%s, %s)",
+            (url, title)
+        )
+        conn.commit()
+        cur.close()
+        conn.close()
+        print(f"Title of {url}: {title}")
+    except psycopg2.Error as e:
+        print(f"Error saving data for {url}: {e}")
 
 def main():
     urls = ["https://github.com/", "https://gitlab.com/", "https://hd.kinopoisk.ru/"]
