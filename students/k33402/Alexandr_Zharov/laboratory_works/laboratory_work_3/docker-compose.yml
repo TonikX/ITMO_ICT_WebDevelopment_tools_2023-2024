@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  main-app:
+    build:
+      context: ./main-app
+      dockerfile: Dockerfile
+    container_name: main-app
+    restart: always
+    depends_on:
+      - db
+      - parser
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+
+  parser:
+    build:
+      context: ./parser
+      dockerfile: Dockerfile
+    container_name: parser
+    restart: always
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - db
+
+  db:
+    image: postgres:14
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: personal_finance
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    ports:
+      - "9000:5432"
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

@@ -48,5 +48,5 @@ if __name__ == "__main__":
     asyncio.run(main())
     end_time = time.time()
     execution_time = end_time - start_time
-    print(f"Execution time: {execution_time} seconds")
+    print(f"Затраченное время: {execution_time}")
 
