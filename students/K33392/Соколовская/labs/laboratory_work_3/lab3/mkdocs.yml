@@ -1,0 +1,6 @@
+site_name: My Docs
+
+nav:
+  - Docker files : docker_files.md
+  - Docker compose : docker_compose.md
+  - Celery : celery.md

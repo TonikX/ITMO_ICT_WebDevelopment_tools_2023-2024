@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    container_name: db
+    environment:
+      POSTGRES_USER: book_crossing
+      POSTGRES_PASSWORD: book_crossing
+      POSTGRES_DB: book_crossing
+    ports:
+      - "5432:5432"
