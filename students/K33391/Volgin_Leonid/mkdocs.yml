@@ -2,6 +2,5 @@ site_name: Volgin Leonid K33391 labs
 nav:
   - "2 лабораторная работа":
       - lr2.md
-      - lr2.md
-  - "2 работа лабораторная":
-      - lr2.md
+  - "Литкод":
+      - leetk.md
