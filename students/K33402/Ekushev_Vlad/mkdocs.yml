@@ -23,3 +23,7 @@ nav:
       - lab2_2/task1.md
       - lab2_2/task2.md
       - lab2_2/results.md
+  - '№2: Упаковка FastAPI приложения в Docker, работа с источниками данных и очереди':
+      - lab3/index.md
+      - lab3/task.md
+      - lab3/results.md
