@@ -1,0 +1,4 @@
+site_name: Report
+nav:
+  - '№2: Упаковка FastAPI приложения в Docker, работа с источниками данных и очереди':
+      - index.md
