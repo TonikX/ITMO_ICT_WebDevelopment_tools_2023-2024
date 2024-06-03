@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=itmo-web-lab3
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    expose:
+      - 5432
+    restart: always
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    command: poetry run python -m uvicorn services.app.main:app --host 0.0.0.0 --port 8000
+    healthcheck:
+      test: ['CMD', 'pg_isready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  parser:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    env_file:
+      - .env
+    ports:
+      - 9000:9000
+    depends_on:
+      - db
+    command: poetry run python -m uvicorn services.parser.main:app --host 0.0.0.0 --port 9000
+    healthcheck:
+      test: ['CMD', 'pg_isready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis
+    expose:
+      - 6379
+    restart: always
+
+  celery_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: poetry run celery -A services.parser.celery_app worker --loglevel=info
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - app

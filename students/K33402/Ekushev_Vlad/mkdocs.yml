@@ -1,0 +1,29 @@
+site_name: Report
+theme:
+  name: material
+markdown_extensions:
+  - attr_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+plugins:
+  - mkdocs-video
+nav:
+  - index.md
+  - '№1: Реализация серверного приложения FastAPI':
+      - lab2/index.md
+      - lab2/db.md
+      - lab2/auth.md
+      - lab2/results.md
+  - '№2: Потоки. Процессы. Асинхронность':
+      - lab2_2/task1.md
+      - lab2_2/task2.md
+      - lab2_2/results.md
+  - '№3: Упаковка FastAPI приложения в Docker, работа с источниками данных и очереди':
+      - lab3/index.md
+      - lab3/task.md
+      - lab3/results.md

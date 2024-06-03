@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "practice"
+version = "0.1.0"
+description = ""
+authors = ["jarvis394 <tarnatovski@gmail.com>"]
+readme = "README.md"
+packages = [{include = "app"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = {extras = ["all"], version = "^0.110.0"}
+sqlmodel = "^0.0.16"
+psycopg2-binary = "^2.9.9"
+alembic = "^1.13.1"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+app = "app.main:start"
