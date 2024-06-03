@@ -1,0 +1,5 @@
+site_name: My Documentation 
+nav:
+  - Lab1: index.md
+
+theme: readthedocs
