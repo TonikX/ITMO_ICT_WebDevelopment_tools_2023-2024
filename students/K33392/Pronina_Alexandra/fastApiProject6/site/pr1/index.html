@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Пр_1 - Лабораторные Прониной Александры</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Лабораторные Прониной Александры</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">№1</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Пр_1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../pr2/" class="nav-link">Пр_2</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../pr3/" class="nav-link">Пр_3</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../pr2/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/7Alexandra8/ITMO_ICT_WebDevelopment_tools_2023-2024/edit/master/docs/pr1.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#_1" class="nav-link">Установка и запуск приложения</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">Установка и запуск приложения</h1>
+<p>Когда я начала работу с FastAPI, первым делом я убедилась, что он не требует длительной установки и настройки приложения. Для запуска приложения мне достаточно выполнить несколько простых операций:</p>
+<ol>
+<li><strong>Установка зависимостей</strong>: В моем виртуальном окружении я установила FastAPI и все сопутствующие библиотеки, выполнив команду:</li>
+</ol>
+<pre><code>
+pip install fastapi[all]
+
+</code></pre>
+<ol>
+<li><strong>Создание основного файла</strong>: Я создала файл <code>main.py</code>, в котором инициализировала экземпляр класса <code>FastAPI</code> и добавила простой эндпоинт для тестирования.</li>
+</ol>
+<pre><code class="language-python"># main.py
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get(&quot;/&quot;)
+def hello():
+    return &quot;Hello, [username]!&quot;
+   ```
+
+Запуск сервера: Для запуска приложения я воспользовалась веб-сервером uvicorn, который поддерживает FastAPI. Я использовала команду:
+</code></pre>
+<p>uvicorn main:app --reload</p>
+<pre><code>Это позволяет мне автоматически перезапускать сервер при изменениях в коде.
+Результат
+После запуска приложения по адресу http://127.0.0.1:8000 я видела приветственное сообщение, которое я задала в функции hello().
+
+Чтобы получить доступ к автоматически сгенерированной документации к моему API, я перешла по адресу http://127.0.0.1:8000/docs.
+## Методы и виртуальная БД
+
+### Создание тестовой БД
+
+Для демонстрации возможностей API внутри FastAPI, мне потребовалось создать временную базу данных. В качестве примера, я использовала упрощенную модель Воинов из предыдущих лабораторных работ.
+
+В файле `main.py` после объявления переменной приложения я создала набор данных в виде переменной, представляющей временную БД:
+
+```python
+temp_bd = [
+    {&quot;id&quot;: 1, &quot;name&quot;: &quot;Воин 1&quot;, &quot;level&quot;: 10, &quot;profession&quot;: &quot;Воин&quot;, &quot;skills&quot;: [&quot;Удар мечом&quot;, &quot;Блокировка&quot;]},
+    {&quot;id&quot;: 2, &quot;name&quot;: &quot;Воин 2&quot;, &quot;level&quot;: 15, &quot;profession&quot;: &quot;Маг&quot;, &quot;skills&quot;: [&quot;Огненный шар&quot;, &quot;Ледяной дождь&quot;]},
+    {&quot;id&quot;: 3, &quot;name&quot;: &quot;Воин 3&quot;, &quot;level&quot;: 20, &quot;profession&quot;: &quot;Лучник&quot;, &quot;skills&quot;: [&quot;Стрела молнии&quot;, &quot;Точный выстрел&quot;]}
+]
+</code></pre>
+<p>Создание API-эндпоинтов
+Для реализации CRUD-API в моем приложении я использовала специальные методы, описывающие HTTP-запросы внутри веб-приложения. Все эти методы вызываются через переменную, представляющую класс FastAPI. Их параметры и возможные виды запросов представлены в документации FastAPI.</p>
+<p>Ниже приведен список методов, необходимых для реализации простого CRUD-интерфейса. Все запросы можно выполнить по адресу 127.0.0.1:8000/docs.</p>
+<p>Запрос всех воинов:</p>
+<pre><code class="language-python">@app.get(&quot;/warriors_list&quot;)
+def warriors_list():
+    return temp_bd
+</code></pre>
+<p>Запрос конкретного воина:</p>
+<pre><code class="language-python">@app.get(&quot;/warrior/{warrior_id}&quot;)
+def warriors_list(warrior_id: int):
+    return [warrior for warrior in temp_bd if warrior.get(&quot;id&quot;) == warrior_id]
+</code></pre>
+<p>Добавление воина:</p>
+<pre><code class="language-python">@app.post(&quot;/warrior&quot;)
+def warriors_list(warrior: dict):
+    temp_bd.append(warrior)
+    return {&quot;status&quot;: 200, &quot;data&quot;: warrior}
+</code></pre>
+<p>Удаление воина:</p>
+<pre><code class="language-python">@app.delete(&quot;/warrior/delete{warrior_id}&quot;)
+def warrior_delete(warrior_id: int):
+    for i, warrior in enumerate(temp_bd):
+        if warrior.get(&quot;id&quot;) == warrior_id:
+            temp_bd.pop(i)
+            break
+    return {&quot;status&quot;: 201, &quot;message&quot;: &quot;deleted&quot;}
+</code></pre>
+<p>Редактирование воина:</p>
+<pre><code class="language-python">
+@app.put(&quot;/warrior{warrior_id}&quot;)
+def warrior_update(warrior_id: int, warrior: dict):
+    for i, war in enumerate(temp_bd):
+        if war.get(&quot;id&quot;) == warrior_id:
+            temp_bd[i] = warrior
+    return temp_bd
+</code></pre>
+<p>Такая реализация имеет некоторые проблемные моменты, такие как возможность передачи данных любого формата и отсутствие возможности идентификации объектов. Эти проблемы решаются при использовании Pydantic для аннотирования и сериализации объектов, о чем будет рассказано далее.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
