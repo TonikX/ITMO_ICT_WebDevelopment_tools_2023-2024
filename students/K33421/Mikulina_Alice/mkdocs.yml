@@ -1,0 +1,95 @@
+site_name: My Docs
+dev_addr: '127.0.0.1:8002'
+
+site_name: "Лабораторные работы"
+theme:
+  name: material
+  features:
+    - navigation.indexes
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github-alt
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/lightbulb
+        name: Переключиться на тёмную тему
+    - media: "(prefers-color-scheme: dark)"
+      primary: cyan
+      scheme: slate
+      toggle:
+        icon: material/lightbulb-outline
+        name: Переключиться на светлую тему
+  language: ru
+repo_url: https://github.com/Alisa-Mikulina/ITMO_ICT_WebDevelopment_tools_2023-2024
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      restrict_base_path: False
+  - pymdownx.superfences
+  - pymdownx.keys
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+plugins:
+  - glightbox:
+      auto_caption: true
+extra_css:
+- css/custom.css
+- css/palette.scss
+nav:
+  - "Laboratory work 1": 
+      - lab1/index.md
+      - "Practice 1":
+          - lab1/pr1/index.md
+          - lab1/pr1/main/index.md # done
+          - lab1/pr1/models/index.md # done
+      - "Practice 2":
+          - lab1/pr2/index.md
+          - lab1/pr2/main/index.md 
+          - lab1/pr2/models/index.md 
+          - lab1/pr2/connection/index.md 
+      - "Practice 3":
+          - lab1/pr3/index.md
+          - lab1/pr3/main/index.md 
+          - lab1/pr3/models/index.md 
+          - lab1/pr3/connection/index.md 
+      - "Lab 1 task":
+          - lab1/laba/index.md
+          - "Endpoints":
+              - lab1/laba/endpoints/index.md
+              - lab1/laba/endpoints/auth/index.md # done
+              - lab1/laba/endpoints/book_genre/index.md # done
+              - lab1/laba/endpoints/books/index.md # done
+              - lab1/laba/endpoints/genres/index.md # done
+              - lab1/laba/endpoints/requests/index.md # done
+              - lab1/laba/endpoints/users/index.md
+          - lab1/laba/main/index.md # done
+          - lab1/laba/models/index.md # done
+          - "Security":
+              - lab1/laba/security/index.md
+              - lab1/laba/security/jwt_process/index.md # done
+              - lab1/laba/security/password_encoder/index.md # done
+  - "Laboratory work 2":
+      - lab2/index.md
+      - "Task 1":
+        - lab2/task1/index.md
+        - lab2/task1/async/index.md
+        - lab2/task1/multiprocessing/index.md
+        - lab2/task1/threading/index.md
+        - lab2/task1/summary/index.md
+      - "Task 2":
+        - lab2/task2/index.md
+        - lab2/task2/async/index.md
+        - lab2/task2/multiprocessing/index.md
+        - lab2/task2/threading/index.md
+        - lab2/task2/summary/index.md
