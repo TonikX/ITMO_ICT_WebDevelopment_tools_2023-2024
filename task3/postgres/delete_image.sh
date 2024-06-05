@@ -1,0 +1,1 @@
+sudo docker image rm "postgre_image"

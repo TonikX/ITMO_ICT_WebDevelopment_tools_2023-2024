@@ -1,0 +1,1 @@
+sudo docker image rm "app_main_image"

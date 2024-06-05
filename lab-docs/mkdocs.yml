@@ -1,0 +1,24 @@
+site_name: Kozlov-docs
+
+theme:
+  name: readthedocs
+
+nav:
+  - "Лабораторная работа 1":
+    - lab1/main.md
+    - "Код":
+      - lab1/practice.md
+      - lab1/models.md
+      - lab1/db.md
+      - lab1/endpoints.md
+      - lab1/auth.md
+  - "Лабораторная работа 2":
+    - "Задание1":
+      - lab2/task1.md
+    - lab2/main.md
+    - "Код":
+      - lab2/task2_auxilary.md
+      - lab2/task2_threading.md
+      - lab2/task2_multiprocessing.md
+      - lab2/task2_asyncio.md
+      - lab2/task2_conclusion.md

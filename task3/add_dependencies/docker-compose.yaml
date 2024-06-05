@@ -1,0 +1,9 @@
+services:
+  alpine:
+    image: image/
+    volumes:
+      - dependencies:/folder
+
+volumes:
+  dependencies:
+    external: true

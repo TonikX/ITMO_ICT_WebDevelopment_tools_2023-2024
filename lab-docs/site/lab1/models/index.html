@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Модели - Kozlov-docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041c\u043e\u0434\u0435\u043b\u0438";
+        var mkdocs_page_input_path = "lab1\\models.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Kozlov-docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Лабораторная работа 1</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../main/">backend для планера задач на fastAPI</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Код</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../practice/">Практика</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Модели</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Схема БД</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">Код для моделей</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../db/">Соединение с БД</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../endpoints/">Endpoints</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../auth/">Аутентификация</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Лабораторная работа 2</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >Задание1</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task1/">Задание 1</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../lab2/main/">Асинхронный парсер notion API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Код</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_auxilary/">Вспомогательные модули</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_threading/">Task2 threading</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_multiprocessing/">Реализация через multiprocessing</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_asyncio/">Реализация через AsyncIO</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_conclusion/">Выводы</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Kozlov-docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Лабораторная работа 1</li>
+          <li class="breadcrumb-item">Код</li>
+      <li class="breadcrumb-item active">Модели</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">Модели</h1>
+<h2 id="_2">Схема БД</h2>
+<p><img alt="Схема БД" src="../static/db.png" /></p>
+<h2 id="_3">Код для моделей</h2>
+<pre><code class="language-python">from sqlmodel import SQLModel,Field, select, Relationship
+import pydantic
+from db import get_session_func
+from enum import Enum
+from typing import Optional, Type, List
+import datetime
+
+
+def is_in_table(model: Type[SQLModel], field, unique_value):
+    with get_session_func() as session:
+        statement = select(model).where(field == unique_value)
+        result = list(session.exec(statement))
+        return len(result) &gt; 0
+
+
+class Role(Enum):
+    admin = 'admin'
+    viewer = 'viewer'
+
+
+class Priority(Enum):
+    low = 0
+    medium = 1
+    high = 2
+
+
+
+class ProjectUserLink(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key='user.id')
+    user: 'User' = Relationship()
+    project_id: int = Field(foreign_key='project.id')
+    project: 'Project' = Relationship()
+    role: Role
+
+
+class UserInProjectForm(SQLModel):
+    user_id: int
+    role: Role
+
+
+class UserSuperBase(SQLModel):
+    username: str = Field(unique=True)
+    email: str
+
+    @pydantic.field_validator('email')
+    @classmethod
+    def validate_email(cls, value: str) -&gt; str:
+        pydantic.EmailStr._validate(value)
+        return value
+
+    @pydantic.field_validator('username')
+    @classmethod
+    def validate_username(cls, value: str) -&gt; str:
+        if is_in_table(User, User.username, value):
+            raise ValueError('username is not unique')
+        return value
+
+
+class UserBase(UserSuperBase):
+    hashed_password: str
+
+class UserRegister(UserSuperBase):
+    password: str
+
+class UserLogin(SQLModel):
+    username: str
+    password: str
+
+class UserGet(SQLModel):
+    username: str
+    email: str
+
+
+class UserChangePassword(SQLModel):
+    current_password: str
+    new_password: str
+    new_password_verification: str
+
+
+class User(UserBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    projects: List['Project'] = Relationship(back_populates='users', link_model=ProjectUserLink)
+
+
+class ProjectBase(SQLModel):
+    title: str
+    description: Optional[str]
+
+
+class Project(ProjectBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    users: List[User] = Relationship(back_populates='projects', link_model=ProjectUserLink)
+    categories: List['Category'] = Relationship(back_populates='project')
+
+
+class ProjectWithCalendarEntries(ProjectBase):
+    categories: List['CategoryWithEntries']
+
+
+class CategoryBase(SQLModel):
+    title: str
+    description: Optional[str]
+
+
+class Category(CategoryBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    # отвечает за реальное поле в таблице
+    project_id: int = Field(foreign_key='project.id')
+    # отвечает за category.project и project.categories
+    project: Project = Relationship(back_populates='categories')
+    tasks: List['Task'] = Relationship(back_populates='category')
+
+
+class CategoryWithBaseTasks(CategoryBase):
+    tasks: List['TaskBase']
+
+
+class CategoryWithEntries(CategoryBase):
+    tasks: List['TaskWithEntries']
+
+
+class TaskBase(SQLModel):
+    title: str
+    description: Optional[str]
+    deadline: Optional[int]
+    priority: Priority
+    approximate_time: datetime.time
+
+
+class Task(TaskBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    category_id: int = Field(foreign_key='category.id')
+    category: Category = Relationship(back_populates='tasks')
+    calendar_entries: List['CalendarEntry'] = Relationship(back_populates='task')
+
+
+class TaskGet(TaskBase):
+    Category: Category
+
+
+
+class CalendarEntryBase(SQLModel):
+    start_time: datetime.datetime
+    end_time: datetime.datetime
+
+
+class CalendarEntry(CalendarEntryBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    task_id: int = Field(foreign_key='task.id')
+    task: Task = Relationship(back_populates='calendar_entries')
+
+
+class CalendarEntryWithId(CalendarEntryBase):
+    id: int
+
+
+class TaskWithEntries(TaskBase):
+    calendar_entries: List[CalendarEntryWithId]
+
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../practice/" class="btn btn-neutral float-left" title="Практика"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../db/" class="btn btn-neutral float-right" title="Соединение с БД">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../practice/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../db/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

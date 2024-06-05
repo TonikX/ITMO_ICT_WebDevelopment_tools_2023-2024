@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Реализация через AsyncIO - Kozlov-docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u0420\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u044f \u0447\u0435\u0440\u0435\u0437 AsyncIO";
+        var mkdocs_page_input_path = "lab2\\task2_asyncio.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Kozlov-docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Лабораторная работа 1</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../lab1/main/">backend для планера задач на fastAPI</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Код</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab1/practice/">Практика</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab1/models/">Модели</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab1/db/">Соединение с БД</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab1/endpoints/">Endpoints</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab1/auth/">Аутентификация</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Лабораторная работа 2</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Задание1</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../task1/">Задание 1</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../main/">Асинхронный парсер notion API</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Код</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../task2_auxilary/">Вспомогательные модули</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../task2_threading/">Task2 threading</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../task2_multiprocessing/">Реализация через multiprocessing</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Реализация через AsyncIO</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../task2_conclusion/">Выводы</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Kozlov-docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Лабораторная работа 2</li>
+          <li class="breadcrumb-item">Код</li>
+      <li class="breadcrumb-item active">Реализация через AsyncIO</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="asyncio">Реализация через AsyncIO</h1>
+<p>Код:</p>
+<pre><code class="language-python">
+from dotenv import dotenv_values
+from pathlib import Path
+from notion_client import AsyncClient
+from dataclasses import dataclass
+from datetime import datetime
+import models
+from sqlalchemy import select
+from db_connection import get_session_context
+import asyncio
+import requests
+from elapsed_logging import logger
+from uuid import UUID
+
+
+exercise2_path = Path(__file__).parent.parent
+env_path = exercise2_path / &quot;.env&quot;
+config = dotenv_values(env_path)
+notion_secret = config[&quot;notion_secret&quot;]
+db_id = &quot;7401d3f130414235ab1abb429d41a31e&quot;
+headers = {
+    &quot;Authorization&quot;: &quot;Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjM0NTQ4NzUsImlhdCI6MTcxNTQ1NDg3NSwic3ViIjoidXNlcjEifQ.u4I3i-utbj3gwwlLc9ABIfvKneg-Ri3VzZVkmoNh-Wc&quot;
+}
+
+
+notion = AsyncClient(auth=notion_secret)
+
+
+async def get_task_pages(db_id: str):
+    &quot;&quot;&quot;Получает все id страниц, которые находятся в БД
+
+    Args:
+        db_id (str): id БД в notion
+
+    Returns:
+        list[str]: Список id страниц
+    &quot;&quot;&quot;
+    response = await notion.databases.query(db_id)
+    entries_list = response[&quot;results&quot;]
+    page_ids = []
+    for entry in entries_list:
+        if entry[&quot;object&quot;] == &quot;page&quot;:
+            page_id = entry[&quot;id&quot;]
+            page_ids.append(page_id)
+
+    return page_ids
+
+class TaskParser:
+    def __init__(self, task_notion: dict) -&gt; None:
+        self.task_notion = task_notion
+
+
+    def get_title(self) -&gt; str | None:
+        title_list = self.get_value_or_none(
+            self.task_notion,
+            [&quot;Name&quot;, &quot;title&quot;]
+        )
+        if len(title_list) == 0:
+            return None
+        title_object = title_list[0]
+        title = self.get_value_or_none(
+            title_object,
+            ['plain_text']
+        )
+        return title
+
+
+    def get_category_title(self) -&gt; str | None:
+        title = self.get_value_or_none(
+            self.task_notion, 
+            (&quot;Tasks&quot;, &quot;select&quot;, &quot;name&quot;)
+        )
+        return title
+
+    def get_description(self) -&gt; str | None:
+        return None
+
+    def get_deadline(self) -&gt; str | None:
+        deadline = self.get_value_or_none(
+            self.task_notion, 
+            (&quot;due&quot;, &quot;date&quot;, &quot;start&quot;)
+        )
+        return deadline
+
+
+    def get_priority(self) -&gt; models.Priority | None:
+        urgent_flag = self.get_value_or_none(
+            self.task_notion,
+            ['Urgent', 'checkbox']
+        )
+        if urgent_flag:
+            return models.Priority.high
+        return models.Priority.low
+
+    def get_approximate_time(self) -&gt; int | None:
+        approximate_time = self.get_value_or_none(
+            self.task_notion,
+            [&quot;Aproximate time&quot;, 'number']
+        )
+        if approximate_time is not None:
+            approximate_time = int(approximate_time)
+        return approximate_time
+
+    @staticmethod
+    def get_value_or_none(d, keys_tuple):
+        for key in keys_tuple:
+            if d is None:
+                return None
+            if key not in keys_tuple:
+                return None
+
+            d = d[key]
+        return d
+
+class TaskWriter: 
+    def __init__(self, project_id, category_none_id) -&gt; None:
+        self.project_id = project_id
+        self.category_none_id = category_none_id
+
+    async def write_task_to_db(self, task_notion_id):
+        task_notion = await notion.pages.retrieve(task_notion_id)
+        task_notion = task_notion[&quot;properties&quot;]
+        task_notion = TaskParser(task_notion)
+
+        if task_notion.get_title() is None:
+            return
+
+        async with get_session_context() as session:
+            category_id = await self._get_category_id(session, task_notion)
+
+            task_data = {
+                &quot;category_id&quot;: category_id,  # Будем заполнять ниже
+                &quot;title&quot;: task_notion.get_title(),
+                &quot;description&quot;: None,
+                &quot;deadline&quot;: task_notion.get_deadline(),
+                &quot;priority&quot;: task_notion.get_priority(),
+                &quot;approximate_time&quot;: task_notion.get_approximate_time(),
+            }
+            task_object = models.Task.model_validate(task_data)
+            session.add(task_object)
+            await session.commit()
+            await session.refresh(task_object)
+
+
+    async def _get_category_id(self, session, task_notion: TaskParser):
+        category_title = task_notion.get_category_title()
+
+        if category_title is None:
+            return self.category_none_id
+
+        # try to find category with that name
+        category_obj = await self._find_category_obj(
+            session,
+            category_title,
+        )
+
+        if category_obj is None:
+            category_obj = await self._create_category_obj(session, category_title)
+        # Attribute error
+        try:
+            category_id = category_obj.id
+        except AttributeError as e:
+            print(category_obj)
+            raise e
+        return category_id
+
+
+
+    async def _find_category_obj(self, session, category_title):
+        query = (
+            select(models.Category)
+            .where(models.Category.title == category_title)
+            .where(models.Category.project_id == self.project_id)
+        )
+        results = await session.exec(query)
+        category_obj = results.first()
+        if category_obj is not None:
+            category_obj = category_obj[0]
+        return category_obj
+
+    async def _create_category_obj(self, session, category_title):
+        category_data = {
+            &quot;project_id&quot;: self.project_id,
+            &quot;title&quot;: category_title,
+            &quot;description&quot;: None,
+        }
+        category_obj = models.Category.model_validate(category_data)
+        session.add(category_obj)
+        await session.commit()
+        await session.refresh(category_obj)
+        return category_obj
+
+async def create_project():
+    url = &quot;http://127.0.0.1:13213/project/&quot;
+    json_data = {
+        &quot;title&quot;: &quot;Notion tasks project async&quot;,
+        &quot;description&quot;: &quot;Async notion tasks&quot;,
+    }
+
+    response = requests.post(url, headers=headers, json=json_data).json()
+    project_id = response[&quot;object&quot;][&quot;id&quot;]
+    return project_id
+
+
+async def create_none_category(project_id):
+    url = f&quot;http://127.0.0.1:13213/project/{project_id}/category/&quot;
+    json_data = {
+        &quot;title&quot;: &quot;None category&quot;,
+        &quot;description&quot;: &quot;If no category, it falls here&quot;,
+    }
+    response = requests.post(url, headers=headers, json=json_data).json()
+    category_id = response[&quot;object&quot;][&quot;id&quot;]
+    return category_id
+
+
+async def main():
+    logger.info(&quot;Начал выполнение&quot;)
+    project_id = await create_project()
+    category_none_id = await create_none_category(project_id)
+    logger.info(&quot;Создал проект и none task&quot;)
+    task_pages = await get_task_pages(db_id)
+    logger.info(&quot;Получил id страниц тасков&quot;)
+    task_writer = TaskWriter(project_id, category_none_id)
+    async with asyncio.TaskGroup() as task_group:
+        for task_id in task_pages:
+            coroutine = task_writer.write_task_to_db(task_id)
+            task_group.create_task(coroutine)
+    logger.info(&quot;Собрал все данные и записал их в БД&quot;)
+
+
+
+if __name__ == &quot;__main__&quot;:
+    logger.reset_time()
+    asyncio.run(main())
+
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../task2_multiprocessing/" class="btn btn-neutral float-left" title="Реализация через multiprocessing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../task2_conclusion/" class="btn btn-neutral float-right" title="Выводы">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../task2_multiprocessing/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../task2_conclusion/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

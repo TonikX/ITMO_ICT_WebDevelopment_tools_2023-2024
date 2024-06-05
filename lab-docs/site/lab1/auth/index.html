@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Аутентификация - Kozlov-docs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u0410\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u044f";
+        var mkdocs_page_input_path = "lab1\\auth.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Kozlov-docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Лабораторная работа 1</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../main/">backend для планера задач на fastAPI</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Код</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../practice/">Практика</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../models/">Модели</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../db/">Соединение с БД</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../endpoints/">Endpoints</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Аутентификация</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Инструменты</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">Конечные точки</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Лабораторная работа 2</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >Задание1</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task1/">Задание 1</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../lab2/main/">Асинхронный парсер notion API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Код</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_auxilary/">Вспомогательные модули</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_threading/">Task2 threading</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_multiprocessing/">Реализация через multiprocessing</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_asyncio/">Реализация через AsyncIO</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../lab2/task2_conclusion/">Выводы</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Kozlov-docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Лабораторная работа 1</li>
+          <li class="breadcrumb-item">Код</li>
+      <li class="breadcrumb-item active">Аутентификация</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">Аутентификация</h1>
+<h2 id="_2">Инструменты</h2>
+<pre><code class="language-python">from passlib.context import CryptContext
+from jose import JWTError, jwt
+from pathlib import Path
+from dotenv import dotenv_values
+import datetime
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
+from typing import Annotated
+import db_queries
+
+#dotenv setup
+env_path = Path(__file__).parent / '.env'
+config = dotenv_values(env_path)
+# jwt setup
+SECRET_KEY = config['JWT_SECRET_KEY']
+ALGORITHM = &quot;HS256&quot;
+ACCESS_TOKEN_EXPIRE_MINUTES = 800000
+# hasher setup
+crypto_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+# auth scheme setup
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=&quot;token&quot;)
+
+
+def verify_password(provided_password, actual_hash):
+    return crypto_context.verify(provided_password, actual_hash)
+
+
+def get_password_hash(password):
+    return crypto_context.hash(password)
+
+
+def generate_token(username):
+    to_encode = {
+        'exp': datetime.datetime.now() + datetime.timedelta(
+            minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+        ),
+        'iat': datetime.datetime.now(),
+        'sub': username
+    }
+    return jwt.encode(
+        to_encode,
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    )
+
+
+def decode_token(token):
+    return jwt.decode(
+        token,
+        SECRET_KEY,
+        ALGORITHM
+    )
+
+
+def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+    return get_user_by_token(token)
+
+
+def get_user_by_token(token):
+    token_data = decode_token(token)
+    username = token_data['sub']
+    return db_queries.get_user_by_username(username)
+
+</code></pre>
+<h2 id="_3">Конечные точки</h2>
+<pre><code class="language-python">@app.post('/token/', status_code=200, tags=[Tags.user])
+def create_api_token(
+        user_login: models.UserLogin
+) -&gt; tp.TypedDict('token_response', {'access_token': str, 'token_type': str}):
+    try:
+        user_db = db_queries.get_user_by_username(user_login.username)
+    except ValueError:
+        raise HTTPException(status_code=400, detail=f'no user with username {user_login.username}')
+
+    is_password_correct = auth.verify_password(user_login.password, user_db.hashed_password)
+    if not is_password_correct:
+        raise HTTPException(status_code=400, detail=f'Incorrect password for username: {user_login.username}')
+
+    token = auth.generate_token(user_login.username)
+    return {'access_token': token, 'token_type': 'bearer'}
+
+@app.post('/user/', status_code=201, tags=[Tags.user])
+def create_user(
+        user: models.UserRegister,
+        session:Session=Depends(get_session_depends)
+)-&gt; tp.TypedDict('Created message', {'msg': str}):
+    hashed_password = auth.get_password_hash(user.password)
+    user_data = user.dict()
+    user_data['hashed_password'] = hashed_password
+    user = models.User.model_validate(user_data)
+    tools.add_object_to_db_and_refresh(session, user)
+    return {'msg': &quot;Created&quot;}
+
+
+@app.put('/user/password/', status_code=201, tags=[Tags.user])
+def change_user_password(
+        user_password: models.UserChangePassword,
+        user_db: models.User = Depends(auth.get_current_user),
+        session: Session = Depends(get_session_depends)
+) -&gt; tp.TypedDict('password_put_response', {'msg': str}):
+    is_password_correct = auth.verify_password(user_password.current_password, user_db.hashed_password)
+    if not is_password_correct:
+        raise HTTPException(status_code=400, detail='Incorrect current password')
+
+    if user_password.new_password != user_password.new_password_verification:
+        raise HTTPException(status_code=400, detail='Passwords don\'t match')
+
+    new_hash = auth.get_password_hash(user_password.new_password)
+    user_db.hashed_password = new_hash
+    session.add(user_db)
+    session.commit()
+    return {'msg': 'password changed'}
+
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../endpoints/" class="btn btn-neutral float-left" title="Endpoints"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../lab2/task1/" class="btn btn-neutral float-right" title="Задание 1">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../endpoints/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../lab2/task1/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

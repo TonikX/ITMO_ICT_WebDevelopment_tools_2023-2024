@@ -1,0 +1,1 @@
+sudo docker image build -t "app_main_image" .
