@@ -1,0 +1,80 @@
+version: '3'
+
+services:
+  web:
+    image: finimage:latest
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_NAME: finance_db
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+    depends_on:
+      - db
+      - redis
+    networks:
+      - my_network
+
+  parser:
+    container_name: parser
+    image: parsimage:latest
+    ports:
+      - "8001:8001"
+    environment:
+      DB_HOST: db
+      DB_NAME: finance_db
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+    depends_on:
+      - db
+      - redis
+    networks:
+      - my_network
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: finance_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    networks:
+      - my_network
+    volumes:
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+    networks:
+      - my_network
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+   # command: ['celery', '-A', 'tasks', 'worker', '-l', 'INFO']
+#    command:  ['celery', '-A', ' celery_app', 'worker', '-l', 'info']
+    command: celery -A endpoints.celery_app worker --loglevel=info
+    restart: always
+    volumes:
+      - ./financial_app/:/app
+    depends_on:
+      - redis
+      - parser
+      - web
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    networks:
+      - my_network
+
+volumes:
+  postgres:
+
+networks:
+  my_network:

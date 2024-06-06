@@ -1,0 +1,9 @@
+fastapi
+sqlmodel
+uvicorn
+alembic
+pyJWT
+bcrypt
+passlib
+celery==5.4.0
+redis==5.0.4
