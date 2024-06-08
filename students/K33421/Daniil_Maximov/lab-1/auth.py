@@ -1,29 +1,30 @@
 import datetime
 
 from fastapi import HTTPException, Security, Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials, OAuth2PasswordBearer
 import jwt
 from passlib.context import CryptContext
 
-import os
 from dotenv import load_dotenv
+
+from exceptions.not_auth_exception import NotAuthException
 
 load_dotenv()
 
 from connection import *
 from models.user_models import *
 
-
 class AuthHandler:
-
     security = HTTPBearer()
 
     pwd_context = CryptContext(schemes=['bcrypt'])
-    secret = os.getenv('SECRET')
+    load_dotenv()
+    secret = os.getenv("SECRET")
 
     # хэширование пароля
     def get_hash(self, password):
         return self.pwd_context.hash(password)
+
 
     # валидация пароля
     def verify(self, pwd, hashed_pwd):
@@ -36,6 +37,11 @@ class AuthHandler:
             'iat': datetime.datetime.utcnow(),
             'sub': user_id
         }
+        print("payload", payload)
+
+        testjwt = (jwt.encode(payload, self.secret, algorithm='HS256'))
+        print("decoded", self.decode_token(testjwt))
+
         return jwt.encode(payload, self.secret, algorithm='HS256')
 
     # декодирование токена
@@ -51,10 +57,11 @@ class AuthHandler:
     # получение текущего пользователя в сессии
     def current_user(self, auth: HTTPAuthorizationCredentials = Security(security),
                      session=Depends(get_session)) -> User:
+        print("auth", auth.credentials)
         id = self.decode_token(auth.credentials)
         if not id:
-            raise HTTPException(status_code=401, detail="User not authorized")
+            raise NotAuthException
         db_user = session.get(User, id)
         if not db_user:
-            raise HTTPException(status_code=401, detail="User not authorized")
+            raise NotAuthException
         return db_user

@@ -3,6 +3,9 @@ from enum import Enum
 from sqlmodel import SQLModel, Field, Relationship
 from typing_extensions import Optional, List
 
+from models.location_model import Location
+
+
 class StatusType(Enum):
     open = "open"
     closed = "closed"
@@ -11,7 +14,21 @@ class StatusType(Enum):
 
 class TripDefault(SQLModel):
     status: StatusType = StatusType.open
-    member_amount: Optional[int] = Field(default=None, ge=0)
+    member_limit: Optional[int] = Field(default=2, ge=0)
+
+
+class TripInput(SQLModel):
+    status: str = "open"
+    member_limit: Optional[int]
+
+
+class TripDetailed(TripDefault):
+    members: Optional[List["UserTripLinkUsers"]] = None
+    # transportType: Optional[str] = None
+    location: Optional[List[Location]] = None
+#    todo доделать тут
+# помнить про ковычки
+# сделать методы для добавления локации и транспорта
 
 
 class Trip(TripDefault, table=True):
@@ -20,8 +37,5 @@ class Trip(TripDefault, table=True):
     members: Optional[List["UserTripLink"]] = Relationship(back_populates="trip",
                                                            sa_relationship_kwargs={"cascade": "all, delete"})
 
-    # steps: Optional[List["Step"]] = Relationship(back_populates="trip",
-    #                                              sa_relationship_kwargs={"cascade": "all, delete"})
 
-from models.user_trip_link_models import UserTripLink
-Trip.model_rebuild(_types_namespace={"UserTripLink": UserTripLink})
+from models.user_trip_link_models import UserTripLink, UserTripLinkUsers

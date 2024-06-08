@@ -1,7 +1,14 @@
-from typing import Optional
+from enum import Enum
+from typing import Optional, List
 
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlmodel import SQLModel, Field, Relationship, UniqueConstraint
+
+
+
+class Role(Enum):
+    owner = "owner"
+    member = "member"
 
 
 class UserTripLinkDefault(SQLModel):
@@ -11,7 +18,7 @@ class UserTripLinkDefault(SQLModel):
     trip_id: Optional[int] = Field(sa_column=Column(Integer,
                                                     ForeignKey("trip.id", ondelete='CASCADE'), default=None))
 
-    role: Optional[str]
+    role: Optional[str] = Field(Role.member)
 
 
 class UserTripLink(UserTripLinkDefault, table=True):
@@ -20,9 +27,23 @@ class UserTripLink(UserTripLinkDefault, table=True):
     user: "User" = Relationship(back_populates="trips")
     trip: "Trip" = Relationship(back_populates="members")
 
+class UserTripLinkUsers(SQLModel):
+    role: Optional[str]
+    user: "UserDefault" = None
 
-from models.user_models import User
-from models.trip_models import Trip
-UserTripLink.model_rebuild(_types_namespace={"User": User, "Trip": Trip})
-# UserTripLinkTrips.model_rebuild(_types_namespace={"TripDetailed": TripDetailed})
-# UserTripLinkUsers.model_rebuild(_types_namespace={"UserDefault": UserDefault})
+
+class UserTripLinkTrips(SQLModel):
+    role: Optional[str]
+    trip: "TripDetailed" = None
+
+
+# class TripDetailed(UserTripLinkDefault):
+#     members: Optional[List["UserTripLinkUsers"]] = None
+#
+#
+# class UserDetailed(UserTripLinkDefault):
+#     trips: Optional[List["UserTripLinkTrips"]] = None
+
+
+from models.user_models import User, UserDefault
+from models.trip_models import Trip, TripDetailed
