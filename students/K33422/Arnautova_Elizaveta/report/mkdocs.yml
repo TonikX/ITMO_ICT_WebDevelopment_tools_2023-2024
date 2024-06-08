@@ -1,0 +1,16 @@
+site_name: Отчет по лабораторным работам
+theme:
+  name: readthedocs
+nav:
+  - Home: index.md
+  - Lab 1:
+      - Body: lab1/body.md
+      - Screens: lab1/screens.md
+  - Lab 2:
+      - Task 1: lab2/task1.md
+      - Task 2: lab2/task2.md
+  - Lab 3:
+      - Task 1: lab3/task1.md
+      - Task 2: lab3/task2.md
+      - Task 3: lab3/task3.md
+      - Весь код: lab3/all.md
