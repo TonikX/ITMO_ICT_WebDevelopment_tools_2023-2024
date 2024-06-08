@@ -14,6 +14,7 @@ services:
     build: .
     depends_on:
       - db
+      - redis
     environment:
       DATABASE_URL: postgresql://postgres:12345678@db:5432/recipes
     ports:
@@ -24,9 +25,35 @@ services:
     build: .
     depends_on:
       - db
+      - redis
     environment:
       DATABASE_URL: postgresql://postgres:12345678@db:5432/recipes
     command: ["python", "parser.py"]
 
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
+  worker:
+    build: .
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgresql://postgres:12345678@db:5432/recipes
+    command: ["celery", "-A", "tasks.celery_app", "worker", "--loglevel=info"]
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
 volumes:
   postgres_data:
+

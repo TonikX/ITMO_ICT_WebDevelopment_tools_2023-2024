@@ -1,3 +1,14 @@
+**Подзадача 2: Вызов парсера из FastAPI**
+- Эндпоинт в FastAPI для вызова парсера:
+Необходимо добавить в FastAPI приложение ендпоинт, который будет принимать запросы с URL для парсинга от клиента, отправлять запрос парсеру (запущенному в отдельном контейнере) и возвращать ответ с результатом клиенту.
+
+**Зачем:** Это позволит интегрировать функциональность парсера в ваше веб-приложение, предоставляя возможность пользователям запускать парсинг через API.
+
+<hr>
+<hr>
+
+Парсер выведен в отдельный файл **parser.py** и, закономерно, прописан без использования sql уже.
+```
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -79,3 +90,38 @@ def parse_and_save(url: str, db: Session):
 
         except AttributeError as e:
             print(f"Failed to parse block: {e}")
+```
+
+В **main.py** добавлен следующий путь:
+```
+@app.post("/parse/")
+def parse_url(url: str, db: Session = Depends(get_db)):
+    try:
+        parse_and_save(url, db)
+        return {"message": "Parser ran successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+```
+
+Где-то здесь для оценки происходящего (и того, что все действительно работает) сначала в main.py появился следующий путь
+```
+@app.get("/сount/")
+def count_titles(db: Session = Depends(get_db)):
+    titles = db.query(Title).all()
+    return {"message": f"Found {len(titles)} recipes"}
+```
+Чтобы убеждаться, что количество строк увеличилось => парсер действительно отработал. 
+
+А потом мне стало интересно подглядывать, что вообще собирается, и потому добавила возможность открывать pgAdmin. Для этого в docker-compose.yml добавлено следующее:
+
+```
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+```

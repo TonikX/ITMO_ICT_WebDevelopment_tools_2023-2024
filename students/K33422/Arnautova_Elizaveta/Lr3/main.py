@@ -5,6 +5,8 @@ from models import Base, Author, Title, Category
 from dtos import AuthorDTO, TitleOutputDTO, CategoryDTO, UpdateAuthorDTO, UpdateCategoryDTO, UpdateTitleDTO
 from typing import List
 from parser import parse_and_save
+from tasks import parse_url_task
+import time
 
 app = FastAPI()
 
@@ -143,8 +145,6 @@ def delete_category(category_id: int, db: Session = Depends(get_db)):
 
 @app.post("/parse/")
 def parse_url(url: str, db: Session = Depends(get_db)):
-    # parse_and_save(url, db)
-    # return {"message": "Parsing and saving completed successfully"}
     try:
         parse_and_save(url, db)
         return {"message": "Parser ran successfully"}
@@ -156,3 +156,35 @@ def parse_url(url: str, db: Session = Depends(get_db)):
 def count_titles(db: Session = Depends(get_db)):
     titles = db.query(Title).all()
     return {"message": f"Found {len(titles)} recipes"}
+
+
+# @app.post("/parse/one/async/")
+# def parse_url_async(url: str):
+#     task = parse_url_task.delay(url)
+#     return {"message": "Parsing task started", "task_id": task.id}
+
+
+@app.post("/parse/async/")
+def parse_urls_async(urls: List[str]):
+    start_time = time.time()
+
+    task_ids = []
+    for url in urls:
+        task = parse_url_task.delay(url)
+        task_ids.append(task.id)
+
+    end_time = time.time()
+    timer = end_time - start_time
+    return {"message": "Parsing tasks started", "task_ids": task_ids, "Execution time": f"{timer:.2f}"}
+
+
+@app.post("/parse/naive/")
+def parse_urls_async(urls: List[str], db: Session = Depends(get_db)):
+    start_time = time.time()
+
+    for url in urls:
+        parse_and_save(url, db)
+
+    end_time = time.time()
+    timer = end_time - start_time
+    return {"message": "Parsing tasks started", "Execution time": f"{timer:.2f}"}

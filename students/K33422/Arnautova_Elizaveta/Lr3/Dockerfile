@@ -1,9 +1,5 @@
-#FROM python:3.10.1
-
-# Use the official image as a parent image
 FROM python:3.9-slim
 
-# Set the working directory
 WORKDIR /app
 
 # Copy the requirements file into the container

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel
 from typing import List, Optional
 
 
@@ -74,8 +74,8 @@ class TitleOutputDTO(BaseModel):
     servings: int
     cook_time: Optional[str]
     cur_url: Optional[str]
-    author: Optional[AuthorDTO]  # Nested schema
-    categories: List[CategoryDTO] = []  # Nested schema
+    author: Optional[AuthorDTO]
+    categories: List[CategoryDTO] = []
 
     class Config:
         from_attributes = True
