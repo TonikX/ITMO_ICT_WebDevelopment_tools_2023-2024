@@ -28,6 +28,11 @@ markdown_extensions:
 nav:
   - "lab 1":
       - lab-1/index.md
+      - lab-1/db.md
+      - lab-1/models.md
+      - lab-1/endpoints.md
+      - lab-1/auth.md
+
 
   - "lab 2":
       - lab-2/index.md
