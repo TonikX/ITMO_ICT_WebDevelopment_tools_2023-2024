@@ -33,3 +33,12 @@ def authenticate(session: Session, username: str, password: str) -> Union[User, 
     if not verify_password(password, user.pass_hash):
         return None
     return user
+
+def change_password(session: Session, user: User, old_password: str, new_password: str) -> bool:
+    if not verify_password(old_password, user.pass_hash):
+        return False
+    user.pass_hash = get_password_hash(new_password)
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return True

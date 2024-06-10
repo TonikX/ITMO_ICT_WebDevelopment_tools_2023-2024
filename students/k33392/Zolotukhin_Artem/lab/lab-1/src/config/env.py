@@ -8,3 +8,4 @@ SECRET_KEY = "dsanfsdklf0412lk12je1902oivnervner923hsfdkjdfkjsfhh3k2hfkj2ksfdjkf
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 BOOKS_SEARCH_COUNT_DEFAULT = 10
+ 

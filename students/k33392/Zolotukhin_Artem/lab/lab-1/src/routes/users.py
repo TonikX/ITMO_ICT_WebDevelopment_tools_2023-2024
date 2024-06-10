@@ -1,7 +1,6 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends, HTTPException
 from typing import Annotated
-from fastapi import Depends, HTTPException
-from src.models import User, UserCreate, Token, UserGetWithRelations
+from src.models import User, UserCreate, Token, UserGetWithRelations, UserChangePassword
 from src.config import db
 from src.services import users as users_service, auth as auth_service
 from fastapi.security import OAuth2PasswordRequestForm
@@ -41,5 +40,18 @@ async def get_self_user(
 ) -> UserGetWithRelations:
     return current_user  # type: ignore
 
+
+@router.post("/change-password", status_code=status.HTTP_200_OK)
+def change_password(
+    change_password: UserChangePassword,
+    session: Session = Depends(db.get_session),
+    current_user: User = Depends(auth_service.get_current_user),
+) -> bool:
+    success = users_service.change_password(
+        session=session, user=current_user, old_password=change_password.old_password, new_password=change_password.new_password
+    )
+    if not success:
+        raise HTTPException(status_code=400, detail="Invalid old password")
+    return success
 
 router.include_router(wishlists.router, prefix="/wishlists", tags=["wishlists"])

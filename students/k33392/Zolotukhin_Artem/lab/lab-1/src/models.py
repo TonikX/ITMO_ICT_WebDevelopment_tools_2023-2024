@@ -95,6 +95,11 @@ class UserCreate(SQLModel):
     bio: Optional[str] = None
 
 
+class UserChangePassword(SQLModel):
+    old_password: str
+    new_password: str
+
+
 class WishlistAdd(SQLModel):
     book_id: int
 
