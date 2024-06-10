@@ -2,7 +2,7 @@
 name = "task-2"
 version = "0.1.0"
 description = ""
-authors = ["TUTOR03 <stukalov.dev@gmail.com>"]
+authors = ["ArtemZolotukh1n <artem.zolotukhin.303@gmail.com>"]
 readme = "README.md"
 packages = [{include = "src"}]
 

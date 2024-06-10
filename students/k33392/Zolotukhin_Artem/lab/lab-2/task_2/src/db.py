@@ -4,7 +4,9 @@ from typing import Optional
 from enum import Enum
 from .config import DB_URL, DB_URL_ASYNC
 from sqlalchemy.ext.asyncio import create_async_engine
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class User(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
