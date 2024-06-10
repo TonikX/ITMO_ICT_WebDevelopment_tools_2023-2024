@@ -7,7 +7,6 @@ from models.trip_models import Trip
 
 class TransportDefault(SQLModel):
     name: str
-    description: str
     avalible_seats: int
     price: int
 
