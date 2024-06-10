@@ -1,0 +1,90 @@
+version: "3.8"
+services:
+  async_lab:
+    build: ./async_lab
+    ports:
+      - "9090:8080"
+    expose:
+      - "9090"
+    environment:
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: db
+    depends_on:
+      - db
+
+  fast_api_lab:
+    build: ./fast_api_lab
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    command: uvicorn main:app --host 0.0.0.0 --port 8080
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/warriors_db
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+        - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: warriors_db
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  celery_worker:
+    build: ./fast_api_lab
+    depends_on:
+      - redis
+      - fast_api_lab
+      - db
+    command: celery -A worker:celery_app worker --loglevel=info --pool=solo
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/warriors_db
+
+  celery_beat:
+    build: ./fast_api_lab
+    depends_on:
+      - redis
+      - fast_api_lab
+      - db
+    command: celery -A worker:celery_app beat --loglevel=info
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/warriors_db
+
+
+  celery_dashboard:
+    build: ./fast_api_lab
+    command: celery --broker=redis://redis:6379/0 flower --port=5555
+    ports:
+      - 5556:5555
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - fast_api_lab
+      - redis
+      - celery_worker
+
+volumes:
+    postgres_data:
+    redis_data:
