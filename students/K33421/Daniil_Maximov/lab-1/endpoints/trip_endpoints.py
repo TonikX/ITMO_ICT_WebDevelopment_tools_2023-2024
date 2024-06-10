@@ -8,9 +8,9 @@ from auth import AuthHandler
 from connection import get_session
 from exceptions.forbbiden_exception import ForbiddenException
 from exceptions.user_not_found_exception import UserNotFoundException
-from models.trip_models import Trip, TripDefault, TripInput
+from models.trip_models import Trip, TripDefault, TripInput, TripPublic
 from models.user_models import User
-from models.user_trip_link_models import TripDetailed, UserTripLink, UserTripLinkDefault, UserTripLinkTrips
+from models.user_trip_link_models import UserTripLink, UserTripLinkDefault, UserTripLinkTrips
 
 trip_router = APIRouter(tags=['Trips'])
 auth_handler = AuthHandler()
@@ -28,7 +28,7 @@ def user_in_members(trip_id: int, user_id: int) -> bool:
     return user.id in [mem.user.id for mem in trip.members]
 
 
-@trip_router.get("/trip/all", response_model=List[TripDetailed])
+@trip_router.get("/trip/all", response_model=List[TripPublic])
 def trip_list(session: Session = Depends(get_session)) -> Sequence[Trip]:
     return session.exec(select(Trip)).all()
 
@@ -41,7 +41,7 @@ def trip_my(session=Depends(get_session),
     if not user:
         raise UserNotFoundException
     roles = [link.role for link in user.trips]
-    trips = [TripDetailed.model_validate(link.trip) for link in user.trips]
+    trips = [TripPublic.model_validate(link.trip) for link in user.trips]
     users_trips = [UserTripLinkTrips(role=r, trip=t) for r, t in zip(roles, trips)]
     if not user:
         raise HTTPException(status_code=404, detail="User has no trips")

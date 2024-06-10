@@ -18,6 +18,7 @@ def trip_list(session: Session = Depends(get_session)) -> Sequence[Location]:
 
 @location_router.post("/location/create")
 def create_location(location: LocationDefault, session: Session = Depends(get_session)) -> Location:
+
     location = Location.model_validate(location)
     session.add(location)
     session.commit()

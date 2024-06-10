@@ -19,8 +19,6 @@ class User(UserDefault, table=True):
     trips: Optional[List["UserTripLink"]] = Relationship(back_populates="user",
                                                          sa_relationship_kwargs={"cascade": "all, delete"})
 
-# class UserTrip(UserDefault):
-#     trips: Optional[List[UserTripLinkTrips]] = None
 
 class UserInput(SQLModel):
     username: str = Field(index=True, unique=True)

@@ -34,16 +34,8 @@ class UserTripLinkUsers(SQLModel):
 
 class UserTripLinkTrips(SQLModel):
     role: Optional[str]
-    trip: "TripDetailed" = None
-
-
-# class TripDetailed(UserTripLinkDefault):
-#     members: Optional[List["UserTripLinkUsers"]] = None
-#
-#
-# class UserDetailed(UserTripLinkDefault):
-#     trips: Optional[List["UserTripLinkTrips"]] = None
+    trip: "TripPublic" = None
 
 
 from models.user_models import User, UserDefault
-from models.trip_models import Trip, TripDetailed
+from models.trip_models import Trip, TripPublic
