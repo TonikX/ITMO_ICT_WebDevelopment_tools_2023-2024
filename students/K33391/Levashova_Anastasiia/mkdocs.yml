@@ -1,0 +1,35 @@
+site_name: Levashova labs
+
+theme:
+  name: material
+
+nav:
+  - "Лабораторная работа 1":
+    - laba_1/main.md
+    - "Код":
+      - laba_1/page1.md
+      - laba_1/page2.md
+      - laba_1/page3.md
+      - laba_1/page4.md
+      - laba_1/page5.md
+      - laba_1/page6.md
+      - laba_1/page7.md
+  - "Лабораторная работа 2":
+    - laba_2/main.md
+    - "Код":
+      - laba_2/page1.md
+      - laba_2/page2.md
+      - laba_2/page3.md
+      - laba_2/page4.md
+      - laba_2/page5.md
+      - laba_2/page6.md
+      - laba_2/page7.md
+      - laba_2/page8.md
+      - laba_2/page9.md
+  - "Лабораторная работа 3":
+      - laba_3/main.md
+      - "Код":
+          - laba_3/page1.md
+          - laba_3/page2.md
+          - laba_3/page3.md
+          - laba_3/page4.md
