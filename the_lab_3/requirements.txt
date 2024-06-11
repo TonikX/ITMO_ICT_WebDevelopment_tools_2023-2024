@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pydantic
+sqlmodel
+psycopg2-binary
+python-dotenv
+requests
+sqlalchemy
+passlib
+python-jose
+celery
+redis

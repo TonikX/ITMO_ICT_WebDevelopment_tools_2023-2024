@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=M1m1m1m1
+      - POSTGRES_DB=library
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "5434:5432"
+
+  web:
+    build:
+      context: .
+      dockerfile: /app/Dockerfile
+    restart: always
+    depends_on:
+      - db
+      - web_parser
+      - redis
+      - celery_worker
+    environment:
+      DB_ADMIN: postgresql://postgres:M1m1m1m1@db/library
+    command: sh -c "sleep 10 && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+
+  web_parser:
+    build:
+      context: .
+      dockerfile: /web_parser/Dockerfile
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_ADMIN: postgresql://postgres:M1m1m1m1@db/library
+    command: sh -c "sleep 10 && uvicorn web_parser.main:app --host 0.0.0.0 --port 8002"
+    ports:
+      - "8002:8002"
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: /web_parser/Dockerfile
+    command: celery -A web_parser.async_parser worker --loglevel=info
+    depends_on:
+      - redis
+      - db
