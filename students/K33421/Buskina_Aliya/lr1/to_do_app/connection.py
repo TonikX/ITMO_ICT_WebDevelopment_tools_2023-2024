@@ -1,0 +1,14 @@
+from sqlmodel import SQLModel, Session, create_engine
+from config import DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME
+
+db_url = f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+engine = create_engine(db_url, echo=True)
+
+
+def init_db():
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
