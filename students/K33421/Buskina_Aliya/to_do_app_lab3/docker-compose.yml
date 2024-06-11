@@ -1,10 +1,29 @@
-version: "3.10"
+version: "3.8"
+
 services:
-  postgres:
-    image: postgres:14.12
+  db:
+    image: postgres:14
+    container_name: db_app
+    ports:
+      - "5433:5432"
     environment:
       POSTGRES_DB: todo
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Aliya2103
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi_app
     ports:
-      - "5433:5432"
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:Aliya2103@db:5432/todo
+
+volumes:
+  postgres_data:
