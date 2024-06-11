@@ -1,9 +1,13 @@
 from sqlmodel import SQLModel, Session, create_engine
-#from models import User
-from models import User, Account, ExpenseCategory, SourceOfIncome, Income, Expense
+import os
+from user_repo.user_models import User
+from models import *
+from dotenv import load_dotenv
+# loading variables from .env file
+load_dotenv()
 
 
-db_url = 'postgresql+psycopg2://postgres:271120@localhost:5433/finance'
+db_url = os.getenv('DB_ADDRESS')
 engine = create_engine(db_url, echo=True)
 
 
