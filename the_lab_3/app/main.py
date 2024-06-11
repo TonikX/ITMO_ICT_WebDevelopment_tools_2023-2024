@@ -217,8 +217,22 @@ def book_parser(session: Session = Depends(get_session)):
         )
         response.raise_for_status()
         return {"message": "Parsing successful"}
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except:
+        raise HTTPException(status_code=500, detail="Parsing unsuccessful")
+
+
+@app.post("/celery_parse_books/")
+def celery_book_parser(session: Session = Depends(get_session)):
+    headers = {"accept": "application/json"}
+    try:
+        response = requests.post(
+            "http://web_parser:8002/celery_parse_books",
+            headers=headers,
+        )
+        response.raise_for_status()
+        return {"message": "Parsing successful"}
+    except:
+        raise HTTPException(status_code=500, detail="Parsing unsuccessful")
 
 
 @app.get("/books/", response_model=List[BookResponse])

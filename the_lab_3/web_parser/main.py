@@ -32,6 +32,14 @@ def parse(session: Session = Depends(get_session)):
         thread.join()
 
 
+@app.post("/celery_parse_books")
+def parse_books(session: Session = Depends(get_session)):
+    urls = fetch_random_book_ids(20)
+    for url in urls:
+        celery_parse_and_save.delay(url)
+    return {"message": "Parsing started"}
+
+
 @app.get("/books/", response_model=List[BookResponse])
 def get_books(session: Session = Depends(get_session)):
     books = session.query(Book).options(joinedload(Book.genres)).all()

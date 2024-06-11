@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 import warnings
+from .celery_parser import celery_app
 from sqlalchemy import exc as sa_exc
 from .models import Book
 
@@ -71,6 +72,15 @@ async def fetch_book_details(
 
 
 def parse_and_save(url):
+    book_details = get_book_details(url)
+    print("BOOKS:")
+    if book_details:
+        save_to_db([book_details])
+        print(f"Saved book: {book_details['title']}")
+
+
+@celery_app.task
+def celery_parse_and_save(url):
     book_details = get_book_details(url)
     print("BOOKS:")
     if book_details:

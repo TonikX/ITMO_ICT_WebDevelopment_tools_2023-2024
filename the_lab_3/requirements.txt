@@ -8,3 +8,5 @@ requests
 sqlalchemy
 passlib
 python-jose
+celery
+redis
