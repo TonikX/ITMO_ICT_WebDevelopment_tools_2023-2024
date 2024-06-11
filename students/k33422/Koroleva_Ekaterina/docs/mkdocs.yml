@@ -24,3 +24,7 @@ nav:
   - Лабораторная работа №2:
       - Задание 1: 'lr_2/task_1.md'
       - Задание 2: 'lr_2/task_2.md'
+  - Лабораторная работа №3:
+      - Dockerfile: 'lr_3/dockerfile.md'
+      - Docker-compose: 'lr_3/docker-compose.md'
+      - Celery: 'lr_3/celery.md'
