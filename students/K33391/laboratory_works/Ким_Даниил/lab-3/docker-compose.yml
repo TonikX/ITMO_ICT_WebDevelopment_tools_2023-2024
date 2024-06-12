@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    depends_on:
+      - redis
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/personal_finance_web_lab
+
+  parser:
+    build:
+      context: .
+      dockerfile: Dockerfile1
+    depends_on:
+      - redis
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/personal_finance_web_lab
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile1
+    command: celery -A celery_worker worker --loglevel=info
+    depends_on:
+      - redis
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/personal_finance_web_lab
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
