@@ -1,11 +1,9 @@
 import datetime
-
 from fastapi import Security, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from passlib.context import CryptContext
 import jwt
 from starlette import status
-
 from user_repo.user_functions import find_user
 
 

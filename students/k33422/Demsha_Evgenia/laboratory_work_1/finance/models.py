@@ -1,16 +1,21 @@
 from enum import Enum
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import date
-from typing import ForwardRef
 
-User = ForwardRef("User")
+from user_repo.user_models import User
 
 class ExpenseType(str, Enum):
     goal = "goal"
     expense = "expense"
     debt = "debt"
 
-class ExpenseCategory(SQLModel, table=True):
+class BaseCategory(SQLModel):
+    id: int | None
+    name: str
+    type: ExpenseType
+    limit_of_expenses: int | None
+
+class ExpenseCategory(BaseCategory, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str
     type: ExpenseType
@@ -19,6 +24,10 @@ class ExpenseCategory(SQLModel, table=True):
 
     user: User | None = Relationship(back_populates="categories")
     expenses: list["Expense"] | None = Relationship(back_populates="category")
+
+
+class CategoryWithExpense(BaseCategory):
+    expenses: list["Expense"] = []
 
 
 class SourceOfIncome(SQLModel, table=True):
@@ -66,3 +75,4 @@ class Income(SQLModel, table=True):
     user: User | None = Relationship(back_populates="incomes")
     account: Account | None = Relationship(back_populates="incomes")
     source: SourceOfIncome | None = Relationship(back_populates="incomes")
+

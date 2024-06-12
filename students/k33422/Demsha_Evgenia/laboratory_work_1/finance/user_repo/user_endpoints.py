@@ -1,5 +1,4 @@
 from fastapi import APIRouter, HTTPException, Depends
-
 from user_repo.auth import AuthHandler
 from sqlalchemy.orm import Session
 from connections import get_session
@@ -38,7 +37,7 @@ def login(user: UserLogin):
 
 @user_router.get('/users/me', tags=['users'])
 def get_current_user(user: User = Depends(auth_handler.get_current_user)):
-    return user
+    return {"id": user.id, "username": user.username, "email": user.email, "is_admin": user.is_admin}
 
 
 @user_router.get("/users", tags=['users'])

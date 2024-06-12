@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from connections import get_session
-from models import ExpenseCategory
+from models import ExpenseCategory, CategoryWithExpense
 from user_repo.user_endpoints import auth_handler
-from sqlalchemy.orm import joinedload
+from typing import List
 
 expense_category_router = APIRouter(dependencies=[Depends(auth_handler.auth_wrapper)])
 
@@ -20,19 +20,12 @@ async def create_expense_category(category: ExpenseCategory, session: Session = 
 
 
 # Get all expense categories for a specific user
-@expense_category_router.get("/expense_categories/list", tags=['expense_categories'])
+@expense_category_router.get("/expense_categories/list", tags=['expense_categories'], response_model=List[CategoryWithExpense])
 async def get_expense_categories(session: Session = Depends(get_session),
                                  user=Depends(auth_handler.get_current_user)):
-    user_categories = session.query(ExpenseCategory).options(joinedload(ExpenseCategory.expenses)).filter(
-        ExpenseCategory.user_id == user.id).all()
 
-    categories_with_expenses = []
-    for category in user_categories:
-        category_data = category.dict()
-        category_data["expenses"] = [expense.dict() for expense in category.expenses]
-        categories_with_expenses.append(category_data)
-
-    return {"user_id": user.id, "categories": categories_with_expenses}
+    user_categories = session.query(ExpenseCategory).filter(ExpenseCategory.user_id == user.id).all()
+    return user_categories
 
 
 # Update an existing expense category using PATCH method

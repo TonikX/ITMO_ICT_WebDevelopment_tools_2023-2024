@@ -22,7 +22,6 @@ async def create_account(account: Account, session: Session = Depends(get_sessio
 async def get_accounts(session: Session = Depends(get_session),
                        user=Depends(auth_handler.get_current_user)):
     user_accounts = session.query(Account).filter(Account.user_id == user.id).all()
-    gems = select(Gem, GemProperties).join(GemProperties)
     return {"user_id": user.id, "accounts": user_accounts}
 
 
