@@ -1,0 +1,12 @@
+alembic==1.13.1
+fastapi==0.111.0
+passlib==1.7.4
+psycopg2==2.9.9
+pydantic==2.7.3
+PyJWT==2.8.0
+python-dotenv==1.0.1
+requests==2.32.3
+SQLAlchemy==2.0.30
+sqlmodel==0.0.19
+typing==3.7.4.3
+uvicorn==0.30.1

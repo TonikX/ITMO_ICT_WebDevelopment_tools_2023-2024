@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+
+  fastapi:
+    container_name: fastapi
+    build:
+      context: ./app_books
+      dockerfile: books.Dockerfile
+    env_file:
+      - ./app_books/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - celery
+
+  parser:
+    container_name: parser
+    build:
+      context: ./app_parse
+      dockerfile: parser.Dockerfile
+    env_file:
+      - ./app_parse/.env
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+
+  celery:
+    container_name: celery_worker
+    build:
+      context: ./app_parse
+      dockerfile: parser.Dockerfile
+    command: [ "python", "-m", "celery", "-A", "celery_conf.app", "worker", "-l", "info", "--beat" ]
+    env_file:
+      - ./app_parse/.env
+    depends_on:
+      - db
+      - redis
+    healthcheck:
+      test: [ "CMD", "celery", "-A", "celery_conf.app", "status" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  db:
+    image: postgres:14
+    container_name: db
+    env_file:
+      - .env
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
