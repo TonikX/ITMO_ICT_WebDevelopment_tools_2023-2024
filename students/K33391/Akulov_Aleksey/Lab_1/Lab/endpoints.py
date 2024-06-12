@@ -1,24 +1,48 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
+from sqlmodel import Session, select
+from sqlalchemy.orm import joinedload
+from models import Balance, Category, Transaction, TransactionsCreate, TransactionsUpdate, UserRead, BalanceRead, CategoryRead, TransactionRead, User
 
-from sqlmodel import Session
-
-from user_endpoints import auth_handler
-from models import Balance, Category, Transaction, TransactionsCreate, TransactionsUpdate
 from db import session
+from user_endpoints import auth_handler
 
 main_router = APIRouter()
 
+@main_router.get("/users/{user_id}", response_model=UserRead)
+def get_user_with_balance_and_categories(user_id: int):
+    user = (session.query(User)
+            .options(joinedload(User.balance)
+                     .joinedload(Balance.categories)
+                     .joinedload(Category.transactions))
+            .filter(User.id == user_id)
+            .first())
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
 
-@main_router.get("/balances/{user_id}", response_model=Balance)
-def get_balance(user_id: int):
-    balance = session.get(Balance, user_id)
+@main_router.get("/balances/{user_id}", response_model=BalanceRead)
+def get_balance_with_categories(user_id: int):
+    balance = (session.query(Balance)
+               .options(joinedload(Balance.categories)
+                        .joinedload(Category.transactions))
+               .filter(Balance.user_id == user_id)
+               .first())
     if not balance:
         raise HTTPException(status_code=404, detail="Balance not found")
     return balance
 
+@main_router.get("/categories/{category_id}", response_model=CategoryRead)
+def get_category_with_transactions(category_id: int):
+    category = (session.query(Category)
+                .options(joinedload(Category.transactions))
+                .filter(Category.id == category_id)
+                .first())
+    if not category:
+        raise HTTPException(status_code=404, detail="Category not found")
+    return category
 
-@main_router.post("/transactions/", response_model=Transaction)
+@main_router.post("/transactions/", response_model=TransactionRead)
 def create_transaction(transaction: TransactionsCreate, user=Depends(auth_handler.auth_wrapper)):
     db_transaction = Transaction(**transaction.dict())
     session.add(db_transaction)
@@ -26,8 +50,7 @@ def create_transaction(transaction: TransactionsCreate, user=Depends(auth_handle
     session.refresh(db_transaction)
     return db_transaction
 
-
-@main_router.put("/transactions/{transaction_id}", response_model=Transaction)
+@main_router.put("/transactions/{transaction_id}", response_model=TransactionRead)
 def update_transaction(transaction_id: int, transaction_data: TransactionsUpdate, user=Depends(auth_handler.auth_wrapper)):
     transaction = session.get(Transaction, transaction_id)
     if transaction is None:
@@ -38,7 +61,6 @@ def update_transaction(transaction_id: int, transaction_data: TransactionsUpdate
     session.commit()
     return transaction
 
-
 @main_router.delete("/transactions/{transaction_id}")
 def delete_transaction(transaction_id: int, user=Depends(auth_handler.auth_wrapper)):
     transaction = session.get(Transaction, transaction_id)
@@ -48,7 +70,7 @@ def delete_transaction(transaction_id: int, user=Depends(auth_handler.auth_wrapp
     session.commit()
     return {"message": "Transaction deleted"}
 
-@main_router.post("/balances/{balance_id}/categories/", response_model=Category)
+@main_router.post("/balances/{balance_id}/categories/", response_model=CategoryRead)
 def create_category(balance_id: int, category: Category, user=Depends(auth_handler.auth_wrapper)):
     db_balance = session.get(Balance, balance_id)
     if not db_balance:
@@ -59,7 +81,7 @@ def create_category(balance_id: int, category: Category, user=Depends(auth_handl
     session.refresh(new_category)
     return new_category
 
-@main_router.put("/categories/{category_id}", response_model=Category)
+@main_router.put("/categories/{category_id}", response_model=CategoryRead)
 def update_category(category_id: int, category_data: Category, user=Depends(auth_handler.auth_wrapper)):
     category = session.get(Category, category_id)
     if not category:

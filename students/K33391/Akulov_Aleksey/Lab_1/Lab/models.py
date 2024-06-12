@@ -72,3 +72,32 @@ class TransactionsUpdate(SQLModel):
     category_id: int
     type: TransactionType
     value: int
+
+
+class TransactionRead(SQLModel):
+    id: int
+    category_id: int
+    type: TransactionType
+    value: int
+    created_at: datetime.datetime
+
+
+class CategoryRead(SQLModel):
+    id: int
+    name: str
+    limit: Optional[int]
+    transactions: List[TransactionRead]
+
+
+class BalanceRead(SQLModel):
+    id: int
+    total_budget: int
+    saving_target: int
+    categories: List[CategoryRead]
+
+
+class UserRead(SQLModel):
+    id: int
+    username: str
+    balance: BalanceRead
+    created_at: datetime.datetime
