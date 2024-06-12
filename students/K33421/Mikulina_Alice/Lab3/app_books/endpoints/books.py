@@ -15,6 +15,7 @@ class GenreResponse(BaseModel):
     id: int
     name: str
 
+
 class BookResponse(BaseModel):
     id: int
     title: str
@@ -26,11 +27,13 @@ class BookResponse(BaseModel):
     last_updated_at: str
     genres: List[GenreResponse]
 
+
 class ParseRequest(BaseModel):
     url: str
 
 
 router = APIRouter()
+PARSER_URL = "http://parser:8001"
 
 
 @router.get("/search", response_model=list[BookResponse])
@@ -134,14 +137,27 @@ def create_book(book: BookDefault, session: Session = Depends(get_session), curr
 async def parse_books(request: ParseRequest, current_user: AppUser = Depends(get_current_user), session: Session = Depends(get_session)):
     try:
         response = requests.post(
-            "http://parser/parse",
+            f"{PARSER_URL}/parse",
             json={"url": request.url, "user_id": current_user.id}
         )
         response.raise_for_status()
-        return {"message": "Books parsing initiated"}
+        return response.json()
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+
+@router.get("/parse/status")
+async def parse_state(task_id: str):
+    try:
+        response = requests.get(
+            f"{PARSER_URL}/parse/status",
+            params={"task_id": task_id}
+        )
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.put("/{book_id}", response_model=Book)
 def update_book(book_id: int, book: BookDefault, session: Session = Depends(get_session), current_user: AppUser = Depends(get_current_user)):

@@ -17,7 +17,16 @@ config = context.config
 section = config.config_ini_section
 
 load_dotenv()
-config.set_section_option(section, "DB_ADMIN", os.getenv("DB_ADMIN"))
+
+db_name = os.getenv('POSTGRES_DB')
+db_user = os.getenv('POSTGRES_USER')
+db_pass = os.getenv('POSTGRES_PASSWORD')
+db_host = os.getenv('POSTGRES_HOST')
+db_port = os.getenv('POSTGRES_PORT')
+
+db_url = f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
+
+config.set_section_option(section, "DB_ADMIN", db_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

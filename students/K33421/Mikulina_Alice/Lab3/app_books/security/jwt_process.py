@@ -1,13 +1,14 @@
 from datetime import datetime, timedelta, timezone
 from typing import Union
 
+import os
 import jwt
 import time
 from fastapi import HTTPException, status
 from jwt.exceptions import InvalidTokenError
 
 
-SECRET_KEY = "c2ey7mPHmM21BrduVUvvJGMLSDTCfnBnaJEyTnigQP2TYgYQEgLVq2i55WuEhCcP"
+SECRET_KEY = os.getenv("JWT_SECRET")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60*24
 

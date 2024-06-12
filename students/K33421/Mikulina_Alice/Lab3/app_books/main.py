@@ -25,9 +25,11 @@ app.include_router(genres_router, prefix="/genres", tags=["genres"])
 app.include_router(book_genre_router, prefix="/bookgenre", tags=["bookgenre"])
 app.include_router(requests_router, prefix="/requests", tags=["requests"])
 
+
 @app.get("/")
 def hello():
     return "Hello, [username]!"
+
 
 if __name__ == "__main__":
     init_db()
