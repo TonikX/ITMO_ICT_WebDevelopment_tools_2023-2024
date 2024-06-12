@@ -1,0 +1,42 @@
+site_name: Demsha Docs
+theme:
+  name: material
+  features:
+    - navigation.indexes
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/lightbulb
+        name: Переключиться на тёмную тему
+    - media: "(prefers-color-scheme: dark)"
+      primary: black
+      scheme: slate
+      toggle:
+        icon: material/lightbulb-outline
+        name: Переключиться на светлую тему
+  language: ru
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.keys
+extra_css:
+- css/custom.css
+- css/palette.scss
+nav:
+  - index.md
+  - "Cерверное приложение с FastAPI":
+      - lab1/models.md
+      - lab1/auth.md
+      - lab1/endpoints.md
+      - lab1/migrations.md
