@@ -1,0 +1,30 @@
+site_name: Документация
+
+theme:
+  name: 'material'
+
+nav:
+  - Главная: index.md
+  - Лабораторная работа №1:
+      - Описание задания:
+        - Тематика: 'lr_1/description/theme.md'
+        - Цели: 'lr_1/description/objectives.md'
+      - Обзор функционала:
+          - Создание профилей: 'lr_1/features/profiles.md'
+          - Создание поездок: 'lr_1/features/trips.md'
+          - Поиск попутчиков: 'lr_1/features/find.md'
+          - Управление поездками: 'lr_1/features/manage.md'
+      - База данных:
+          - Схема: 'lr_1/database/schema.md'
+      - Функционал на 15 баллов:
+          - Авторизация и регистрация: 'lr_1/advanced_features/auth.md'
+          - Генерация JWT-токенов: 'lr_1/advanced_features/jwt.md'
+          - Хеширование паролей: 'lr_1/advanced_features/hash.md'
+          - Доп. эндпоинты для работы с пользователем: 'lr_1/advanced_features/user.md'
+  - Лабораторная работа №2:
+      - Задание 1: 'lr_2/task_1.md'
+      - Задание 2: 'lr_2/task_2.md'
+  - Лабораторная работа №3:
+      - Dockerfile: 'lr_3/dockerfile.md'
+      - Docker-compose: 'lr_3/docker-compose.md'
+      - Celery: 'lr_3/celery.md'
