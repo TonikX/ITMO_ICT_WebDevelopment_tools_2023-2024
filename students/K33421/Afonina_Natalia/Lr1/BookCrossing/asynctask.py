@@ -19,7 +19,7 @@ from sqlalchemy.orm import sessionmaker
 from models import Author
 
 
-DATABASE_URL = "postgresql+asyncpg://postgres:qwerty@localhost:5432/bookcrossing_db"
+DATABASE_URL = "postgresql+asyncpg://postgres:qwerty@postgres:5432/bookcrossing_db"
 engine = create_async_engine(DATABASE_URL, echo=True)
 Session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 

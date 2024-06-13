@@ -11,6 +11,9 @@ import datetime
 import jwt
 from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import FastAPI, HTTPException
+from typing import List
+from celery_app import parse_and_save_authors_task
 
 from asynctask import main_async
 app = FastAPI()
@@ -22,11 +25,19 @@ def on_startup():
     init_db()
 
 
+# @app.post("/parse")
+# async def parse(urls: List[str]):
+#     try:
+#         await main_async(urls)
+#         return {"message": "Parsing completed"}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/parse")
 async def parse(urls: List[str]):
     try:
-        await main_async(urls)
-        return {"message": "Parsing completed"}
+        task = parse_and_save_authors_task.delay(urls)
+        return {"message": "Parsing started", "task_id": task.id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

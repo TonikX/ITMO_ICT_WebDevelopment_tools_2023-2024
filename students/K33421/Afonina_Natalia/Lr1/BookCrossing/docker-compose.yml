@@ -8,6 +8,7 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
+      - redis
     environment:
       - DATABASE_URL=postgresql://postgres:qwerty@postgres:5432/bookcrossing_db
 
@@ -19,3 +20,18 @@ services:
       POSTGRES_PASSWORD: qwerty
     ports:
       - "5432:5432"
+
+  redis:
+    image: redis:6.0-alpine
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build: .
+    command: celery -A celery_app worker --loglevel=info
+    depends_on:
+      - redis
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://postgres:qwerty@postgres:5432/bookcrossing_db
+      - PYTHONPATH=/BookCrossing

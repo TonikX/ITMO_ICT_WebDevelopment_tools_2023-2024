@@ -5,44 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b9185aa1-755a-486d-8a6f-6d962e65b3a4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dockerfile.parser" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/desktop.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/pythonProject.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Dockerfile.parser" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Lab2/task_1_async.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Lab2/task_1_multiprocessing.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Lab2/task_1_simple.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/Lab2/task_1_threading.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/alembic.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/asynctask.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/auth.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/connection.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/migrations/README" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/migrations/env.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/migrations/script.py.mako" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/migrations/versions/03b22e7f5d84_fix_user_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/migrations/versions/e339e44273b0_fix_user_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/multiprocessingtask.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Lr3/pythonProject/BookCrossing/threadingtask.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab2/task_1_threading.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab2/task_1_threading.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/celery_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/asynctask.py" beforeDir="false" afterPath="$PROJECT_DIR$/asynctask.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

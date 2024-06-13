@@ -12,10 +12,13 @@ WORKDIR /BookCrossing
 COPY requirements.txt .
 
 # Install any dependencies
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the content of the local src directory to the working directory
 COPY . .
+
+# Set PYTHONPATH
+ENV PYTHONPATH=/BookCrossing
 
 # Run uvicorn when the container starts
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
