@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Лабораторная часть - Малютина Екатерина K33402</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Малютина Екатерина K33402</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">№1: Реализация серверного приложения FastAPI</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href=".." class="dropdown-item">Домашняя страница</a>
+</li>
+                                    
+<li>
+    <a href="../pr1/" class="dropdown-item">Практика</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Лабораторная часть</a>
+</li>
+                                    
+<li>
+    <a href="../leetcode/" class="dropdown-item">Leetcode</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">№2: Потоки. Процессы. Асинхронность.</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../lr2/" class="dropdown-item">Лабораторная часть</a>
+</li>
+                                    
+<li>
+    <a href="../leetcode2/" class="dropdown-item">Решения задач</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../pr1/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../leetcode/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">Лабораторная часть</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#routerscustomerspy" class="nav-link">routers/customers.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#modelscustomerspy" class="nav-link">models/customers.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#dbpy" class="nav-link">db.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#mainpy" class="nav-link">main.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#migrationsenvpy" class="nav-link">migrations/env.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#screenshots" class="nav-link">Screenshots</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">Лабораторная часть</h1>
+<p>Был выбран вариант с кошельком и учетом финансов.
+Ниже представлен код с подробными комментариями и скрины рабочие.</p>
+<h2 id="routerscustomerspy">routers/customers.py</h2>
+<pre><code class="language-python">from typing import List
+
+from fastapi import APIRouter, Depends, HTTPException
+from db import get_session
+from models.customers import Customer, CustomerCategory
+
+customerRouter = APIRouter(prefix=&quot;&quot;, tags=[&quot;customer&quot;])  # отвечает за swagger
+
+
+@customerRouter.get(&quot;/customers/&quot;, response_model=list[CustomerCategory])
+async def get_customers(session=Depends(get_session)) -&gt; List[Customer]:
+    customers = session.query(Customer).all()
+    return customers
+
+
+@customerRouter.get(&quot;/customers/{username_id}&quot;, response_model=CustomerCategory)
+async def get_customer(username_id: int, session=Depends(get_session)) -&gt; Customer:
+    customer = session.get(Customer, username_id)  # выполняется запрос на выборку с фильтром по id и берется запись. Если каким-то образом несколько записей с таким id, вернутся все
+    return customer
+
+
+@customerRouter.post(&quot;/customers/&quot;)
+async def create_customer(customer: Customer, session=Depends(get_session)):
+    customer = Customer.validate(customer)
+    customer.id = None
+    session.add(customer)
+    session.commit()
+    session.refresh(customer)
+    return customer
+
+
+@customerRouter.patch(&quot;/customers/{username_id}&quot;)
+async def update_customer(customer: Customer, username_id: int, session=Depends(get_session)):
+    customer = Customer.validate(customer)
+    customer_from_db = session.query(Customer).filter_by(id=username_id).first()
+    if customer_from_db is None:  # если запись с переданным id не найдена, то возвращаем исключение
+        raise HTTPException(status_code=404, detail=&quot;No such customer&quot;)
+    customer_data = customer.model_dump(exclude_unset=True)
+    for key, value in customer_data.items():
+        if value is None:
+            continue
+        setattr(customer_from_db, key, value)
+    session.add(customer_from_db)
+    session.commit()
+    session.refresh(customer_from_db)
+    return customer_from_db
+
+
+@customerRouter.delete(&quot;/customers/{username_id}&quot;)
+async def delete_customer(username_id: int, session=Depends(get_session)):
+    session.query(Customer).filter_by(id=username_id).delete()
+    session.commit()
+    return &quot;Deleted&quot;
+</code></pre>
+<h2 id="modelscustomerspy">models/customers.py</h2>
+<pre><code class="language-python">from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
+
+from models.categories import Category
+
+
+class User(SQLModel): # создаем класс пользователя и передаем стандартную SQLModel без флага таблицы
+    username: str = Field(unique=True, index=True, nullable=False)  # поле уникальное недопускающее null значения и по которому строится индекс
+    password: str = Field(nullable=False)
+    favourite_category_id: Optional[int] = Field(default=None, foreign_key=&quot;category.id&quot;)  # один-ко-многим, опциональное поле с внешним ключом к category.id
+
+
+class Customer(User, table=True): # создаем класс потребителя на основе пользователя и передаем флаг таблицы - будет содержать свои поля и поля пользователя
+    id: Optional[int] = Field(default=None, primary_key=True)  # поле с первичным ключом
+    balance: float = Field(default=0.0, nullable=False)
+    favourite_category: Optional[Category] = Relationship(back_populates=&quot;favourite_category&quot;)  # один-ко-многим, один пользователь может иметь одну любимую категорию, но одну категорию может выбрать множество пользлователей
+
+
+class CustomerCategory(User):  # класс наследник от дефолтного пользователя - служит для отображения категории целиком дополнительно к id
+    favourite_category: Optional[Category] = None
+</code></pre>
+<h2 id="dbpy">db.py</h2>
+<pre><code class="language-python">from sqlmodel import SQLModel, Session, create_engine
+from dotenv import load_dotenv
+import os
+
+load_dotenv('.env')  # загрузка переменных среды (энвы) из файла .env
+db_url = os.getenv('DB_ADMIN')  # получение переменной с ключом DB_ADMIN
+engine = create_engine(db_url, echo=True)  # создание &quot;движка БД&quot; - экземпляр со всем необходимым для работы с БД
+# echo=True включает вывод всех осуществляемых SQL-запросов в командную строку
+
+
+def init_db():
+    SQLModel.metadata.create_all(engine)  # создание всех табличек из контекста (пометка table=True)
+
+
+def get_session():
+    with Session(engine) as session:  # создание сессии из движка
+        yield session  # возврат генератора - функция вычисления значения на лету (выполнился и не хранится в памяти)
+</code></pre>
+<h2 id="mainpy">main.py</h2>
+<pre><code class="language-python">from fastapi import FastAPI
+
+from db import *
+from routers import customers, categories, operations, transactions
+
+app = FastAPI()  # создаем приложение
+
+app.include_router(customers.customerRouter)  # включаем роутер пользователей
+app.include_router(categories.categoryRouter)  # включаем роутер категорий
+app.include_router(operations.operationRouter)  # включаем роутер операций
+app.include_router(transactions.transactionRouter)  # включаем роутер транзакций
+
+
+@app.on_event(&quot;startup&quot;)  # при событии запуска сервера выполняется эта функция
+def on_startup():
+    init_db()  # вызов функции из файла db.py
+</code></pre>
+<h2 id="migrationsenvpy">migrations/env.py</h2>
+<pre><code class="language-python">import os
+from logging.config import fileConfig
+
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
+
+from alembic import context
+from dotenv import load_dotenv
+from sqlmodel import SQLModel
+from models import *
+
+# this is the Alembic Config object, which provides
+# access to the values within the .ini file in use.
+config = context.config
+
+# Interpret the config file for Python logging.
+# This line sets up loggers basically.
+if config.config_file_name is not None:
+    fileConfig(config.config_file_name)
+
+
+load_dotenv('.env')  # загрузка переменных среды (энвы)
+db_url = os.getenv('DB_ADMIN')  # получение ссылки
+config.set_main_option('sqlalchemy.url', db_url)  # устанавливаем в конфиг опцию sqlalchemy.url равный нашей ссылке из энв файла
+# по этой доке https://alembic.sqlalchemy.org/en/latest/api/config.html
+
+# add your model's MetaData object here
+# for 'autogenerate' support
+# from myapp import mymodel
+# target_metadata = mymodel.Base.metadata
+target_metadata = SQLModel.metadata  # устанавливаем метадату с нашей БД
+
+
+# other values from the config, defined by the needs of env.py,
+# can be acquired:
+# my_important_option = config.get_main_option(&quot;my_important_option&quot;)
+# ... etc.
+
+
+def run_migrations_offline() -&gt; None:
+    &quot;&quot;&quot;Run migrations in 'offline' mode.
+
+    This configures the context with just a URL
+    and not an Engine, though an Engine is acceptable
+    here as well.  By skipping the Engine creation
+    we don't even need a DBAPI to be available.
+
+    Calls to context.execute() here emit the given string to the
+    script output.
+
+    &quot;&quot;&quot;
+    url = config.get_main_option(&quot;sqlalchemy.url&quot;)
+    context.configure(
+        url=url,
+        target_metadata=target_metadata,
+        literal_binds=True,
+        dialect_opts={&quot;paramstyle&quot;: &quot;named&quot;},
+    )
+
+    with context.begin_transaction():
+        context.run_migrations()
+
+
+def run_migrations_online() -&gt; None:
+    &quot;&quot;&quot;Run migrations in 'online' mode.
+
+    In this scenario we need to create an Engine
+    and associate a connection with the context.
+
+    &quot;&quot;&quot;
+    connectable = engine_from_config(
+        config.get_section(config.config_ini_section, {}),
+        prefix=&quot;sqlalchemy.&quot;,
+        poolclass=pool.NullPool,
+    )
+
+    with connectable.connect() as connection:
+        context.configure(
+            connection=connection, target_metadata=target_metadata
+        )
+
+        with context.begin_transaction():
+            context.run_migrations()
+
+
+if context.is_offline_mode():
+    run_migrations_offline()
+else:
+    run_migrations_online()
+</code></pre>
+<h1 id="screenshots">Screenshots</h1>
+<p><img alt="get_categories.png" src="../src/get_categories.png" />
+<img alt="get_customer.png" src="../src/get_customer.png" />
+<img alt="get_operation.png" src="../src/get_operation.png" />
+<img alt="patch_customer.png" src="../src/patch_customer.png" />
+<img alt="post_categories.png" src="../src/post_categories.png" />
+<img alt="post_customer.png" src="../src/post_customer.png" />
+<img alt="post_operation.png" src="../src/post_operation.png" />
+<img alt="post_transaction.png" src="../src/post_transaction.png" /></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
