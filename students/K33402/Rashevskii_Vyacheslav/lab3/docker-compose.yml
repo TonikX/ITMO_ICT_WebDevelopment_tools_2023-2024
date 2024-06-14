@@ -1,0 +1,64 @@
+version: '3.9'
+
+services:
+  celery_app:
+    build:
+      context: ./celery
+      dockerfile: Dockerfile
+    container_name: celery_app
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  celery_worker:
+    build:
+      context: ./celery
+    env_file:
+      - .env
+    container_name: celery_worker
+    command: celery -A celery_worker worker -l info -E
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - celery_app
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  app:
+    build: ./app
+    container_name: app
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - celery_app
+    links:
+      - "db:database"
+
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

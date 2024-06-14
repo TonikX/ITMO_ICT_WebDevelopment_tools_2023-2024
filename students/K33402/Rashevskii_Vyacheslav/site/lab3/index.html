@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Lab 3 - Рашевский_Вячеслав_K33402</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Рашевский_Вячеслав_K33402</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">№1: Реализация серверного приложения FastAPI.</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href=".." class="dropdown-item">Practice</a>
+</li>
+                                    
+<li>
+    <a href="../lab/" class="dropdown-item">Lab</a>
+</li>
+                                    
+<li>
+    <a href="../leetcode/" class="dropdown-item">Leetcode</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">№2: Потоки. Процессы. Асинхронность.</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../lab2/" class="dropdown-item">Lab 2</a>
+</li>
+                                    
+<li>
+    <a href="../leetcode2/" class="dropdown-item">Leetcode</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">№3: Упаковка FastAPI приложения в Docker, Работа с источниками данных и Очереди</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Lab 3</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../leetcode2/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#lab-3" class="nav-link">Lab 3</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#docker-composeyml" class="nav-link">Общий docker-compose.yml</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#app-code-screenshots" class="nav-link">App - code &amp;&amp; screenshots</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#celery-code-screenshots" class="nav-link">Celery - code &amp;&amp; screenshots</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="lab-3">Lab 3</h1>
+<p>Приложения были упакованы в Dockerfile, объединены в docker-compose, добавлена очередь celery с хранилищем redis.</p>
+<p>Код был местами переработан для корректной работы контейнеризации.</p>
+<p>Наблюдение за контейнерами было через Services внутри PyCharm.</p>
+<p>Приложение app - результат ЛР1. </p>
+<p>Приложение сelery - результат работы ЛР2+ЛР3.</p>
+<p>Ниже приведены переработанные и написанные файлы в рамках данной работы.</p>
+<h2 id="docker-composeyml">Общий docker-compose.yml</h2>
+<pre><code class="language-yaml">version: '3.9'
+
+services:
+  celery_app:
+    build:
+      context: ./celery
+      dockerfile: Dockerfile
+    container_name: celery_app
+    restart: unless-stopped
+    ports:
+      - &quot;8081:8081&quot;
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  celery_worker:
+    build:
+      context: ./celery
+    env_file:
+      - .env
+    container_name: celery_worker
+    command: celery -A celery_worker worker -l info -E
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - celery_app
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - &quot;6379:6379&quot;
+    restart: unless-stopped
+
+  app:
+    build: ./app
+    container_name: app
+    ports:
+      - &quot;8080:8080&quot;
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - celery_app
+    links:
+      - &quot;db:database&quot;
+
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - &quot;5432:5432&quot;
+    expose:
+      - &quot;5432:5432&quot;
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+</code></pre>
+<h2 id="app-code-screenshots">App - code &amp;&amp; screenshots</h2>
+<h3 id="dockerfile">Dockerfile</h3>
+<p>Описываем докерфайл для приложения по учету финансов из ЛР1. 
+1. Из образа python:3.12 строим этот контейнер
+2. Указываем рабочую директорию, где будут исполняться следующие команды
+3. Копируем зависимости
+4. Устанавливаем их
+5. Копируем остальные файлы
+6. Прокидываем наверх порт 8080
+7. Выполняем команду "uvicorn main:app --host 0.0.0.0 --port 8080"</p>
+<pre><code class="language-dockerfile">FROM python:3.12
+
+WORKDIR /app
+
+COPY ../requirements.txt /app/requirements.txt
+
+RUN pip install -r /app/requirements.txt
+
+COPY . /app
+
+EXPOSE 8080
+
+CMD [&quot;uvicorn&quot;, &quot;main:app&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8080&quot;]
+</code></pre>
+<h3 id="mainpy">main.py</h3>
+<pre><code class="language-python">from fastapi import FastAPI
+
+import categories
+import customers
+import operations
+import transactions
+from db import *
+from contextlib import asynccontextmanager
+
+
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    init_db()
+    get_session()
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
+app.include_router(customers.customerRouter)
+app.include_router(categories.categoryRouter)
+app.include_router(operations.operationRouter)
+app.include_router(transactions.transactionRouter)
+</code></pre>
+<h3 id="_1">Рабочие скриншоты</h3>
+<p><img alt="3get_customers.png" src="../src/3get_customers.png" />
+<img alt="3post_categories.png" src="../src/3post_categories.png" />
+<img alt="3post_customers.png" src="../src/3post_customers.png" /></p>
+<h2 id="celery-code-screenshots">Celery - code &amp;&amp; screenshots</h2>
+<h3 id="dockerfile_1">Dockerfile</h3>
+<pre><code class="language-dockerfile">FROM python:3.12
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+COPY . .
+
+EXPOSE 8081
+
+CMD [&quot;uvicorn&quot;, &quot;main:app&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8081&quot;]
+</code></pre>
+<h3 id="mainpy_1">main.py</h3>
+<pre><code class="language-python">from fastapi import FastAPI, BackgroundTasks
+from pydantic import BaseModel
+from tasks import parse_and_save_threading
+from celery_app import celery_app
+
+# URLs = [
+#     'https://github.com/TonikX/ITMO_ICT_WebDevelopment_tools_2023-2024/pulls?page=1&amp;q=is%3Apr+is%3Aopen',
+#     'https://github.com/TonikX/ITMO_ICT_WebDevelopment_tools_2023-2024/pulls?page=2&amp;q=is%3Apr+is%3Aopen',
+#     'https://github.com/TonikX/ITMO_ICT_WebDevelopment_tools_2023-2024/pulls?page=3&amp;q=is%3Apr+is%3Aopen',
+#     'https://github.com/TonikX/ITMO_ICT_WebDevelopment_2022-2023/pulls?page=1&amp;q=is%3Apr+is%3Aopen',
+#     'https://github.com/TonikX/ITMO_ICT_WebDevelopment_2022-2023/pulls?page=2&amp;q=is%3Apr+is%3Aopen',
+#     'https://github.com/TonikX/ITMO_ICT_WebDevelopment_2022-2023/pulls?page=3&amp;q=is%3Apr+is%3Aopen',
+# ]
+
+app = FastAPI()
+
+
+class URL(BaseModel):
+    url: str
+
+
+@app.post(&quot;/&quot;)
+async def parse_url(item: URL, background_tasks: BackgroundTasks):
+    background_tasks.add_task(parse_and_save_threading, item.url)
+    celery_app.send_task('tasks.parse_and_save_threading', args=[item.url])
+    return {&quot;message&quot;: &quot;started&quot;}
+    # https://github.com/TonikX/ITMO_ICT_WebDevelopment_tools_2023-2024/pulls?page=1&amp;q=is%3Apr+is%3Aopen
+    # redis-cli lrange main-queue 0 1000
+
+
+@app.get(&quot;/&quot;)
+async def get():
+    print(&quot;get&quot;)
+    return {&quot;message&quot;: &quot;got main page&quot;}
+</code></pre>
+<h3 id="taskspy">tasks.py</h3>
+<pre><code class="language-python">import requests
+from bs4 import BeautifulSoup
+from db import DB
+from celery_app import celery_app
+
+
+@celery_app.task
+def parse_and_save_threading(url):
+    con = DB.connect()
+    page = requests.get(url)
+    page.raise_for_status()
+    soup = BeautifulSoup(page.text, 'html.parser')
+    prs = soup.find_all('div', class_='Box-row Box-row--focus-gray p-0 mt-0 js-navigation-item js-issue-row')
+    for pr in prs:
+        title = (pr.find('a',
+                         class_='Link--primary v-align-middle no-underline h4 js-navigation-open markdown-title').
+                 text)
+        span_text = pr.find('span', class_='opened-by').text.split()
+        date = span_text[2] + ' ' + span_text[3][:-1] + ' ' + span_text[4]
+        author = span_text[6]
+        with con.cursor() as cursor:
+            cursor.execute(DB.INSERT_SQL, (title, date, author))
+    con.commit()
+    con.close()
+</code></pre>
+<h3 id="celery_apppy">celery_app.py</h3>
+<pre><code class="language-python">import celery
+
+celery_app = celery.Celery(
+    &quot;worker&quot;,
+    broker=&quot;redis://redis:6379/0&quot;,
+    backend=&quot;redis://redis:6379/0&quot;,
+)
+
+celery_app.conf.update(
+    task_serializer='json',
+    accept_content=['json'],
+    result_serializer='json',
+    timezone='UTC',
+    enable_utc=True,
+    task_routes={
+        &quot;tasks.parse_and_save_threading&quot;: &quot;main-queue&quot;,
+    },
+)
+</code></pre>
+<h3 id="celery_workerpy">celery_worker.py</h3>
+<pre><code class="language-python">from celery_app import celery_app
+from dotenv import load_dotenv
+import os
+
+if __name__ == '__main__':
+    load_dotenv()
+    redis_url = os.getenv(&quot;CELERY_REDIS_URL&quot;)
+    celery_app.broker_transport_options = {redis_url}
+    celery_app.start()
+</code></pre>
+<h3 id="_2">Рабочие скриншоты</h3>
+<p><img alt="3redis_get.png" src="../src/3redis_get.png" />
+<img alt="3get_celery.png" src="../src/3get_celery.png" /></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
