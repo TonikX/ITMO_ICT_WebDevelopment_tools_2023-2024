@@ -1,16 +1,18 @@
 from multiprocessing import Process, Pool
-import requests
-from bs4 import BeautifulSoup
+import time
+from common import URLS, parse_and_save
 
-def parse_and_save(url):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    title = soup.find('title').text if soup.find('title') else 'No title found'
-    print(f'Processed {url}: {title}')
 
-def main_multiprocessing(urls):
-    with Pool(processes=4) as pool:
-        pool.map(parse_and_save, urls)
+def main(urls):
+    num_process = len(urls) if len(urls) < 4 else 4
+    pool = Pool(processes=num_process)
+    pool.map(parse_and_save, urls)
 
-urls = ['https://example.com', 'https://example.org', 'https://example.net']
-main_multiprocessing(urls)
+
+if __name__ == "__main__":
+    start_time = time.time()
+    main(URLS)
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    print(f"Mutiprocessing time: {execution_time}")
