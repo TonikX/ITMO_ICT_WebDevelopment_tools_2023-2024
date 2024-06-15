@@ -26,6 +26,8 @@ markdown_extensions:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 nav:
+  - index.md
+
   - "lab 1":
       - lab-1/index.md
       - lab-1/db.md
@@ -38,3 +40,8 @@ nav:
       - lab-2/index.md
       - lab-2/task1.md
       - lab-2/task2.md
+
+  - "lab 3":
+      - lab-3/index.md
+      - lab-3/task1.md
+      - lab-3/task2.md
