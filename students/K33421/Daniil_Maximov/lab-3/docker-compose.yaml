@@ -1,0 +1,52 @@
+version: '3.11'
+services:
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    env_file:
+      - ./app/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  parse_app:
+    build:
+      context: ./parser/pars_app
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    depends_on:
+      - parser_db
+
+  request_app:
+    build:
+      context: ./parser/request_app
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    depends_on:
+      - parser_db
+      - parse_app
+
+  db:
+    image: postgres:16.2
+    container_name: postgres_db
+    environment:
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_USER: postgres
+      POSTGRES_DB: lab1
+    ports:
+      - "5432:5432"
+
+  parser_db:
+    image: postgres:16.2
+    container_name: parser_postgres_db
+    environment:
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_USER: postgres
+      POSTGRES_DB: lab2
+      PGPORT: 5433
+    ports:
+      - "5433:5433"
