@@ -145,3 +145,101 @@ class Solution:
 
 # Чтоб не быть голословным
 ![Результат](images/15.jpg)
+
+## Задача №5
+![Результат](images/51.jpg)
+### Код
+# Definition for singly-linked list.
+    # class ListNode:
+    #     def __init__(self, val=0, next=None):
+    #         self.val = val
+    #         self.next = next
+    class Solution:
+        def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+            sum1 = 0
+            i = 0
+            while not(l1 is None):
+                sum1 = sum1 + l1.val * (10 ** i)
+                i = i + 1
+                l1 = l1.next
+            
+            sum2 = 0
+            i = 0
+            while not(l2 is None):
+                sum2 = sum2 + l2.val * (10 ** i)
+                i = i + 1
+                l2 = l2.next
+                
+            ans = sum1 + sum2
+            
+            answer = ListNode()
+            
+            if ans == 0:
+                return answer
+            
+            answer.val = ans%10
+            ans = ans // 10
+            
+            if ans > 0:
+                step = ListNode()
+                answer.next = step
+                
+                
+            while ans > 0:
+                
+                step.val = ans%10
+                ans = ans // 10
+                if ans > 0:
+                    next_step = ListNode()
+                    step.next = next_step
+                    step = next_step
+                
+            return answer
+            
+
+## Задача №6
+![Результат](images/52.jpg)
+### Код
+    # Definition for singly-linked list.
+    # class ListNode:
+    #     def __init__(self, val=0, next=None):
+    #         self.val = val
+    #         self.next = next
+    class Solution:
+        def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+            
+            if head is None:
+                return None
+            
+            if head.next is None:
+                return head
+            
+            list1 = ListNode()
+            list2 = ListNode()
+            
+            start1 = list1
+            start2 = list2
+            i = 0
+            while not(head is None):
+                if i%2 == 0:
+                    list1.val = head.val
+                    head = head.next
+                    if not(head is None):
+                        if not(head.next is None):
+                            l1 = ListNode()
+                            list1.next = l1
+                            list1 = l1
+                else:
+                    list2.val = head.val
+                    head = head.next
+                    if not(head is None):
+                        if not(head.next is None):
+                            l2 = ListNode()
+                            list2.next = l2
+                            list2 = l2                
+                i = i + 1
+            list1.next = start2
+            return start1
+
+# Чтоб не быть голословным 2
+![Результат](images/53.jpg)
