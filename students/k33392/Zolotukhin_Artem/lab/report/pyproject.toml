@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "report"
+version = "0.1.0"
+description = ""
+authors = ["ArtemZolotukh1n <uselles@niuitmo.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+mkdocs = "^1.5.3"
+mkdocstrings = "^0.23.0"
+mkdocs-material = "^9.4.6"
+mkdocstrings-python = "^1.7.3"
+mkdocs-glightbox = "^0.3.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

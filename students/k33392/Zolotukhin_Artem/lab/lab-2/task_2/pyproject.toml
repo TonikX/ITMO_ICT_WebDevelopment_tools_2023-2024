@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "task-2"
+version = "0.1.0"
+description = ""
+authors = ["ArtemZolotukh1n <artem.zolotukhin.303@gmail.com>"]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+httpx = "^0.27.0"
+beautifulsoup4 = "^4.12.3"
+lxml = "^5.2.1"
+sqlmodel = "^0.0.18"
+python-dotenv = "^1.0.1"
+psycopg2-binary = "^2.9.9"
+psycopg = "^3.1.19"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+threaded = "src.threaded:start"
+multiprocess = "src.multiprocess:start"
+async = "src.async:start"
+drop = "src.drop:start"

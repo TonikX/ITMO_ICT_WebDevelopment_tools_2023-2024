@@ -1,0 +1,17 @@
+threaded.py urls = 20
+real    0m2.288s
+user    0m2.175s
+sys     0m0.202s
+------------------------------
+
+multiprocess.py urls = 20
+real    0m2.340s
+user    0m1.670s
+sys     0m0.614s
+------------------------------
+
+async.py urls = 20
+real    0m2.476s
+user    0m1.144s
+sys     0m0.128s
+------------------------------

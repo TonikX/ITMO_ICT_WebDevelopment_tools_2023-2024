@@ -1,0 +1,8 @@
+FROM python:3.10-alpine3.19
+
+WORKDIR /lab_1
+
+COPY . .
+RUN pip3 install -r requirements.txt
+
+CMD uvicorn src.main:app --host localhost --port 8000
