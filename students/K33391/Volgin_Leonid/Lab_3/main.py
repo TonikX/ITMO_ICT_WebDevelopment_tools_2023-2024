@@ -10,7 +10,7 @@ radio_names = ('radio-ermitazh', 'radio-shanson', 'monte-karlo', 'eldoradio', 'j
 
 
 @app.get("/parse_radio/{radio_name}")
-async def parse_radio(radio_name: str):
+def parse_radio(radio_name: str):
     if radio_name not in radio_names:
         raise HTTPException(status_code=404, detail="Radio not found")
     else:
