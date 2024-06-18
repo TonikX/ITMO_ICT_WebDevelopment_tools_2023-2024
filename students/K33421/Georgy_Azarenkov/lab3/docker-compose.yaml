@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  task1_db:
+    image: postgres:16.2
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_USER: postgres
+      POSTGRES_DB: db
+      PGPORT: 10000
+
+  task1_server:
+    build:
+      context: ..
+      dockerfile: lab3/task1/Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - task1/.env
+    depends_on:
+      - task1_db
+
+  task2_db:
+    image: postgres:16.2
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_USER: postgres
+      POSTGRES_DB: db
+      PGPORT: 10001
+    ports:
+      - "10001:10001"
+
+  task2_parser:
+    build:
+      context: ..
+      dockerfile: lab3/task2_parser/Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - task2_db
+
+  task2_proxy:
+    build:
+      context: ..
+      dockerfile: lab3/task2_proxy/Dockerfile
+    ports:
+      - "8082:8082"
+    depends_on:
+      - task2_parser
+      - task2_db

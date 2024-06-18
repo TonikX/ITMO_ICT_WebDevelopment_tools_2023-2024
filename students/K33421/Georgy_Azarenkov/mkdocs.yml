@@ -1,0 +1,40 @@
+site_name: Лабораторные работы
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/git-alt
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.keys
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+nav:
+  - "lab 1":
+      - lab-1/index.md
+      - lab-1/db.md
+      - lab-1/models.md
+      - lab-1/endpoints.md
+      - lab-1/auth.md
+
+  - "lab 2":
+      - lab-2/index.md
+      - lab-2/task1.md
+      - lab-2/task2.md
+
+  - "lab 3":
+      - lab-3/index.md
+      - lab-3/task1.md
+      - lab-3/task2.md
