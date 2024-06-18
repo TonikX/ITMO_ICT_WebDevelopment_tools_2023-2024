@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+requests
+sqlalchemy
+psycopg2-binary
+beautifulsoup4
+passlib
+celery[redis]
+redis
