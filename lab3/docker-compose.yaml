@@ -1,0 +1,77 @@
+version: '3.9'
+services:
+  main_db:
+    container_name: main_db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=1
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=web_data
+      - POSTGRES_PORT=5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  app:
+    container_name: app
+    build:
+      context: ./app
+    env_file: .env
+    depends_on:
+      - main_db
+      - redis
+    ports:
+      - "8000:8000"
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    networks:
+      - backend
+    restart: always
+
+  celery_run:
+    container_name: celery_run
+    build:
+      context: ./run_celery
+    env_file: .env
+    depends_on:
+      - main_db
+      - redis
+    ports:
+      - "8001:8001"
+    command: uvicorn main:app --host 0.0.0.0 --port 8001
+    networks:
+      - backend
+    restart: always
+
+  celery_start:
+    build:
+      context: ./run_celery
+    container_name: celery_start
+    command: celery -A celery_start worker --loglevel=info
+    restart: always
+    depends_on:
+      - redis
+      - app
+      - main_db
+    networks:
+      - backend
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+     driver: bridge
+
+

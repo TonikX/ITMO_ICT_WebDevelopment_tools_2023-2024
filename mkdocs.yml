@@ -1,0 +1,23 @@
+site_name: Web Development Tools Docs
+
+theme:
+  name: readthedocs
+
+nav:
+  - Главная страница: index.md
+  - Lab1:
+      - Аутентификация: LR1/auth.md
+      - База данных: LR1/db.md
+      - Эндпоинты: LR1/endpoints.md
+      - Схемы: LR1/schemas.md
+      - Приложение: LR1/main.md
+      - Leetcode: LR1/leetcode.md
+  - Lab2:
+      - Задание 1: LR2/task1.md
+      - Задание 2: LR2/task2.md
+      - Leetcode: LR2/leetcode.md
+  - Lab3:
+      - Задание 1: LR3/task1.md
+      - Задание 2: LR3/task2.md
+      - Задание 3: LR3/task3.md
+      - Leetcode: LR3/leetcode.md
