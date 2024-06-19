@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>ПР 1.2 - Tishalovich Leonid. K33392. Docs</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Tishalovich Leonid. K33392. Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Лабораторная раб. 1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../%D0%9B%D0%A02/" class="nav-link">Лабораторная раб. 2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../%D0%9B%D0%B8%D1%82%D0%BA%D0%BE%D0%B4/" class="nav-link">Отработка</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../%D0%9F%D0%A01.1/" class="nav-link">ПР 1.1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">ПР 1.2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../%D0%9F%D0%A01.3/" class="nav-link">ПР 1.3</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../%D0%9F%D0%A01.1/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%D0%9F%D0%A01.3/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#12" class="nav-link">ПР 1.2</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link">Ход выполнения</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link">Роутеры</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="12">ПР 1.2</h1>
+<h2 id="_1">Ход выполнения</h2>
+<h3 id="mainpy">main.py</h3>
+<pre><code>from fastapi import FastAPI
+import uvicorn
+from database import init_db
+from routers.task_router import router as tasks_router
+from routers.participant_router import router as participant_router
+from routers.submission_router import router as submission_router
+from routers.team_member_router import router as team_member_router
+from routers.team_router import router as team_router
+
+app = FastAPI()
+
+app.include_router(participant_router, prefix=&quot;/participants&quot;)
+app.include_router(team_member_router, prefix=&quot;/team_members&quot;)
+app.include_router(team_router, prefix=&quot;/teams&quot;)
+app.include_router(tasks_router, prefix=&quot;/tasks&quot;)
+app.include_router(submission_router, prefix=&quot;/submissions&quot;)
+
+@app.on_event(&quot;startup&quot;)
+def on_startup():
+    init_db()
+</code></pre>
+<h3 id="databasepy">database.py</h3>
+<pre><code>from sqlmodel import SQLModel, Session, create_engine
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+db_url = os.getenv('DB_ADMIN')
+engine = create_engine(db_url, echo=True)
+
+
+def init_db():
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+</code></pre>
+<h3 id="schemaspy">schemas.py</h3>
+<pre><code>import datetime
+from pydantic import BaseModel
+from enum import Enum
+from typing import Optional, List
+from sqlmodel import SQLModel, Field, Relationship
+
+class Urgency(Enum):
+    emergency = 'emergency'
+    urgently = 'urgently'
+    no_hurry = 'no_hurry'
+    one_day = 'one_day'
+
+
+class TeamMemberDefault(SQLModel):
+    participant_id:  Optional[int] = Field(default=None, foreign_key=&quot;participant.id&quot;)
+    team_id:  Optional[int] = Field(default=None, foreign_key=&quot;team.id&quot;)
+
+
+class TeamMember(TeamMemberDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+
+    participants: Optional[&quot;Participant&quot;] = Relationship(back_populates=&quot;teammembers&quot;)
+    teams: Optional[&quot;Team&quot;] = Relationship(back_populates=&quot;teammembers&quot;)
+
+
+class SubmissionDefault(SQLModel):
+    task_id:  Optional[int] = Field(default=None, foreign_key=&quot;task.id&quot;)
+    team_id: Optional[int] = Field(default=None, foreign_key=&quot;team.id&quot;)
+    work_link: str
+    urgency: Urgency
+
+class Submission(SubmissionDefault, table=True):
+
+    id: int = Field(default=None, primary_key=True)
+
+    tasks: Optional[&quot;Task&quot;] = Relationship(back_populates=&quot;submissions&quot;)
+    teams: Optional[&quot;Team&quot;] = Relationship(back_populates=&quot;submissions&quot;)
+
+
+
+class ParticipantDefault(SQLModel):
+    username: str
+    email: str
+    password: str
+    contact_number: str
+
+
+class Participant(ParticipantDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+
+    teams: Optional[List[&quot;Team&quot;]] = Relationship(
+        back_populates=&quot;participants&quot;, link_model=TeamMember
+    )
+    teammembers: Optional[List[&quot;TeamMember&quot;]] = Relationship(back_populates=&quot;participants&quot;)
+
+
+
+class TeamDefault(SQLModel):
+    name: str
+    description: str
+
+class Team(TeamDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+
+    participants: Optional[List[&quot;Participant&quot;]] = Relationship(
+        back_populates=&quot;teams&quot;, link_model=TeamMember
+    )
+    teammembers: Optional[List[&quot;TeamMember&quot;]] = Relationship(back_populates=&quot;teams&quot;)
+
+    tasks: Optional[List[&quot;Task&quot;]] = Relationship(
+        back_populates=&quot;teams&quot;, link_model=Submission
+    )
+    submissions: Optional[List[&quot;Submission&quot;]] = Relationship(back_populates=&quot;teams&quot;)
+
+class TaskDefault(SQLModel):
+    title: str
+    description: str
+    requirements: str
+    evaluation_criteria: str
+
+class Task(TaskDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+
+    teams: Optional[List[&quot;Team&quot;]] = Relationship(
+        back_populates=&quot;tasks&quot;, link_model=Submission
+    )
+    submissions: Optional[List[&quot;Submission&quot;]] = Relationship(back_populates=&quot;tasks&quot;)
+
+
+
+class ParticipantDisplay(ParticipantDefault):
+    teams: Optional[List[&quot;Team&quot;]] = None
+    teammembers: Optional[List[&quot;TeamMember&quot;]] = None
+
+class TeamDisplay(TeamDefault):
+    participants: Optional[List[&quot;Participant&quot;]] = None
+    teammembers: Optional[List[&quot;TeamMember&quot;]] = None
+    tasks: Optional[List[&quot;Task&quot;]] = None
+    submissions: Optional[List[&quot;Submission&quot;]] = None
+
+class TaskDisplay(TaskDefault):
+    teams: Optional[List[&quot;Team&quot;]] = None
+    submissions: Optional[List[&quot;Submission&quot;]] = None
+
+
+class Login(SQLModel):
+    username: str
+    password: str
+class ChangePassword(SQLModel):
+    old_password: str
+    new_password: str
+</code></pre>
+<h2 id="_2">Роутеры</h2>
+<h3 id="participant_routerpy">participant_router.py</h3>
+<pre><code>from fastapi import APIRouter, HTTPException
+from fastapi import Depends, status
+from schemas import Participant, ParticipantDefault, ParticipantDisplay
+from database import get_session
+from typing_extensions import TypedDict
+
+router = APIRouter(tags=[&quot;Participant&quot;])
+
+@router.post(&quot;/participant-create&quot;, status_code=status.HTTP_201_CREATED)
+def participant_create(participant: ParticipantDefault, session=Depends(get_session)) -&gt; Participant:
+    participant = Participant.model_validate(participant)
+    session.add(participant)
+    session.commit()
+    session.refresh(participant)
+    return participant
+
+
+@router.get(&quot;/list-participants&quot;, status_code=status.HTTP_200_OK)
+def participants_list(session=Depends(get_session)) -&gt; list[Participant]:
+    return session.query(Participant).all()
+
+
+@router.get(&quot;/participant/{participant_id}&quot;, status_code=status.HTTP_200_OK, response_model=ParticipantDisplay)
+def participant_get(participant_id: int, session=Depends(get_session)):
+    obj = session.get(Participant, participant_id)
+    if obj is None:
+        raise HTTPException(status_code=404, detail=&quot;participant not found&quot;)
+    return obj
+
+
+@router.patch(&quot;/participant/update/{participant_id}&quot;, status_code=status.HTTP_202_ACCEPTED)
+def participant_update(participant_id: int, participant: ParticipantDefault, session=Depends(get_session)) \
+        -&gt; Participant:
+    db_participant = session.get(Participant, participant_id)
+    if not db_participant:
+        raise HTTPException(status_code=404, detail=&quot;participant not found&quot;)
+
+    participant_data = participant.model_dump(exclude_unset=True)
+    for key, value in participant_data.items():
+        setattr(db_participant, key, value)
+    session.add(db_participant)
+    session.commit()
+    session.refresh(db_participant)
+    return db_participant
+
+
+@router.delete(&quot;/participant/delete/{participant_id}&quot;, status_code=status.HTTP_204_NO_CONTENT)
+def participant_delete(participant_id: int, session=Depends(get_session)):
+    participant = session.get(Participant, participant_id)
+    if not participant:
+        raise HTTPException(status_code=404, detail=&quot;participant not found&quot;)
+    session.delete(participant)
+    session.commit()
+    return {&quot;ok&quot;: True}
+</code></pre>
+<h3 id="submission_routerpy">submission_router.py</h3>
+<pre><code>from fastapi import APIRouter, HTTPException
+from fastapi import Depends, status
+from schemas import Submission, SubmissionDefault
+from database import get_session
+from typing_extensions import TypedDict
+
+router = APIRouter(tags=[&quot;Submissions&quot;])
+
+@router.post(&quot;/submission-create&quot;, status_code=status.HTTP_201_CREATED)
+def submission_create(submission: SubmissionDefault, session=Depends(get_session)) -&gt; Submission:
+    submission = Submission.model_validate(submission)
+    session.add(submission)
+    session.commit()
+    session.refresh(submission)
+    return submission
+
+
+@router.get(&quot;/list-submissions&quot;, status_code=status.HTTP_200_OK)
+def submissions_list(session=Depends(get_session)) -&gt; list[Submission]:
+    return session.query(Submission).all()
+
+
+@router.get(&quot;/submission/{submission_id}&quot;, status_code=status.HTTP_200_OK)
+def submission_get(submission_id: int, session=Depends(get_session)) -&gt; Submission:
+    obj = session.get(Submission, submission_id)
+    if obj is None:
+        raise HTTPException(status_code=404, detail=&quot;submission not found&quot;)
+    return obj
+
+
+@router.patch(&quot;/submission/update/{submission_id}&quot;, status_code=status.HTTP_202_ACCEPTED)
+def submission_update(submission_id: int, submission: SubmissionDefault, session=Depends(get_session)) \
+        -&gt; Submission:
+    db_submission = session.get(Submission, submission_id)
+    if not db_submission:
+        raise HTTPException(status_code=404, detail=&quot;submission not found&quot;)
+
+    submission_data = submission.model_dump(exclude_unset=True)
+    for key, value in submission_data.items():
+        setattr(db_submission, key, value)
+    session.add(db_submission)
+    session.commit()
+    session.refresh(db_submission)
+    return db_submission
+
+
+@router.delete(&quot;/submission/delete/{submission_id}&quot;, status_code=status.HTTP_204_NO_CONTENT)
+def submission_delete(submission_id: int, session=Depends(get_session)):
+    submission = session.get(Submission, submission_id)
+    if not submission:
+        raise HTTPException(status_code=404, detail=&quot;submission not found&quot;)
+    session.delete(submission)
+    session.commit()
+    return {&quot;ok&quot;: True}
+</code></pre>
+<h3 id="task-routerpy">task-router.py</h3>
+<pre><code>from fastapi import APIRouter, HTTPException
+from fastapi import Depends, status
+from schemas import Task, TaskDefault, TaskDisplay
+from database import get_session
+from typing_extensions import TypedDict
+
+router = APIRouter(tags=[&quot;Task&quot;])
+
+@router.post(&quot;/task-create&quot;, status_code=status.HTTP_201_CREATED)
+def task_create(task: TaskDefault, session=Depends(get_session)) -&gt; Task:
+    task = Task.model_validate(task)
+    session.add(task)
+    session.commit()
+    session.refresh(task)
+    return task
+
+
+@router.get(&quot;/list-tasks&quot;, status_code=status.HTTP_200_OK)
+def tasks_list(session=Depends(get_session)) -&gt; list[Task]:
+    return session.query(Task).all()
+
+
+@router.get(&quot;/task/{task_id}&quot;, status_code=status.HTTP_200_OK, response_model=TaskDisplay)
+def task_get(task_id: int, session=Depends(get_session)) -&gt; Task:
+    obj = session.get(Task, task_id)
+    if obj is None:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+    return obj
+
+
+@router.patch(&quot;/task/update/{task_id}&quot;, status_code=status.HTTP_202_ACCEPTED)
+def task_update(task_id: int, task: TaskDefault, session=Depends(get_session)) \
+        -&gt; Task:
+    db_task = session.get(Task, task_id)
+    if not db_task:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+
+    task_data = task.model_dump(exclude_unset=True)
+    for key, value in task_data.items():
+        setattr(db_task, key, value)
+    session.add(db_task)
+    session.commit()
+    session.refresh(db_task)
+    return db_task
+
+
+@router.delete(&quot;/task/delete/{task_id}&quot;, status_code=status.HTTP_204_NO_CONTENT)
+def task_delete(task_id: int, session=Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+    session.delete(task)
+    session.commit()
+    return {&quot;ok&quot;: True}
+</code></pre>
+<h3 id="team_member_routerpy">team_member_router.py</h3>
+<pre><code>from fastapi import APIRouter, HTTPException
+from fastapi import Depends, status
+from schemas import Task, TaskDefault, TaskDisplay
+from database import get_session
+from typing_extensions import TypedDict
+
+router = APIRouter(tags=[&quot;Task&quot;])
+
+@router.post(&quot;/task-create&quot;, status_code=status.HTTP_201_CREATED)
+def task_create(task: TaskDefault, session=Depends(get_session)) -&gt; Task:
+    task = Task.model_validate(task)
+    session.add(task)
+    session.commit()
+    session.refresh(task)
+    return task
+
+
+@router.get(&quot;/list-tasks&quot;, status_code=status.HTTP_200_OK)
+def tasks_list(session=Depends(get_session)) -&gt; list[Task]:
+    return session.query(Task).all()
+
+
+@router.get(&quot;/task/{task_id}&quot;, status_code=status.HTTP_200_OK, response_model=TaskDisplay)
+def task_get(task_id: int, session=Depends(get_session)) -&gt; Task:
+    obj = session.get(Task, task_id)
+    if obj is None:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+    return obj
+
+
+@router.patch(&quot;/task/update/{task_id}&quot;, status_code=status.HTTP_202_ACCEPTED)
+def task_update(task_id: int, task: TaskDefault, session=Depends(get_session)) \
+        -&gt; Task:
+    db_task = session.get(Task, task_id)
+    if not db_task:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+
+    task_data = task.model_dump(exclude_unset=True)
+    for key, value in task_data.items():
+        setattr(db_task, key, value)
+    session.add(db_task)
+    session.commit()
+    session.refresh(db_task)
+    return db_task
+
+
+@router.delete(&quot;/task/delete/{task_id}&quot;, status_code=status.HTTP_204_NO_CONTENT)
+def task_delete(task_id: int, session=Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+    session.delete(task)
+    session.commit()
+    return {&quot;ok&quot;: True}
+</code></pre>
+<h3 id="team_routerpy">team_router.py</h3>
+<pre><code>from fastapi import APIRouter, HTTPException
+from fastapi import Depends, status
+from schemas import Team, TeamDefault, TeamDisplay
+from database import get_session
+from typing_extensions import TypedDict
+
+router = APIRouter(tags=[&quot;Team&quot;])
+
+@router.post(&quot;/team-create&quot;, status_code=status.HTTP_201_CREATED)
+def team_create(team: TeamDefault, session=Depends(get_session)) -&gt; Team:
+    team = Team.model_validate(team)
+    session.add(team)
+    session.commit()
+    session.refresh(team)
+    return team
+
+
+@router.get(&quot;/list-teams&quot;, status_code=status.HTTP_200_OK)
+def teams_list(session=Depends(get_session)) -&gt; list[Team]:
+    return session.query(Team).all()
+
+
+@router.get(&quot;/team/{team_id}&quot;, status_code=status.HTTP_200_OK, response_model=TeamDisplay)
+def team_get(team_id: int, session=Depends(get_session)) -&gt; Team:
+    obj = session.get(Team, team_id)
+    if obj is None:
+        raise HTTPException(status_code=404, detail=&quot;team not found&quot;)
+    return obj
+
+
+@router.patch(&quot;/team/update/{team_id}&quot;, status_code=status.HTTP_202_ACCEPTED)
+def team_update(team_id: int, team: TeamDefault, session=Depends(get_session)) \
+        -&gt; Team:
+    db_team = session.get(Team, team_id)
+    if not db_team:
+        raise HTTPException(status_code=404, detail=&quot;team not found&quot;)
+
+    team_data = team.model_dump(exclude_unset=True)
+    for key, value in team_data.items():
+        setattr(db_team, key, value)
+    session.add(db_team)
+    session.commit()
+    session.refresh(db_team)
+    return db_team
+
+
+@router.delete(&quot;/team/delete/{team_id}&quot;, status_code=status.HTTP_204_NO_CONTENT)
+def team_delete(team_id: int, session=Depends(get_session)):
+    team = session.get(Team, team_id)
+    if not team:
+        raise HTTPException(status_code=404, detail=&quot;team not found&quot;)
+    session.delete(team)
+    session.commit()
+    return {&quot;ok&quot;: True}
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

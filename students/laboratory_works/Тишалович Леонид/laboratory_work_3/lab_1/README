@@ -1,0 +1,7 @@
+1) вставляешь свою ссылку в .env без кавычек
+2) из консоли запускаешь alembic.ini
+3) заменяешь файл env.py в папке migrations на ENV_TO_REPLACE (только переименуй)
+4) в script.py.mako первыми строчками импортишь sqlalchemy и sqlmodel
+5) запускаешь через uvicorn
+
+профит
