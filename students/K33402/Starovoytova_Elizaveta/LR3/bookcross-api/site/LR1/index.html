@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>LR1 - Docs</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">LR1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../PR1/" class="nav-link">PR1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../PR2/" class="nav-link">PR2</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../PR3/" class="nav-link">PR3</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../PR1/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#models" class="nav-link">Models</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#book-instance" class="nav-link">Book instance</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#author" class="nav-link">Author</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#book" class="nav-link">Book</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#user" class="nav-link">User</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#book-exchange" class="nav-link">Book exchange</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#endpointes" class="nav-link">Endpointes</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#user_1" class="nav-link">user</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#database-connection" class="nav-link">Database connection</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#jwt" class="nav-link">Хэширование паролей, кодирование и декодирование JWT, проверка аунтефикации, получение текущего пользователя</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="models">Models</h1>
+<h2 id="book-instance">Book instance</h2>
+<pre><code>class BookInstanceBase(SQLModel):
+    book_id: Optional[int] = Field(default=None, foreign_key=&quot;book.id&quot;)
+    date: datetime.datetime
+    publisher: str
+    features: str
+
+
+class BookInstance(BookInstanceBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    owner_id: Optional[int] = Field(default=None, foreign_key=&quot;user.id&quot;)
+    requests: Optional[List[&quot;BookExchange&quot;]] = Relationship(
+        back_populates=&quot;book_instance&quot;,
+        sa_relationship_kwargs=dict(foreign_keys=&quot;[BookExchange.book_instance_id]&quot;),
+    )
+    book: Optional[&quot;Book&quot;] = Relationship(back_populates=&quot;instances&quot;)
+    owner: Optional[&quot;User&quot;] = Relationship(back_populates=&quot;instances&quot;)
+
+
+class BookInstanceRead(BookInstanceBase):
+    id: int
+    owner_id: int
+
+
+class BookInstanceWithBook(BookInstanceRead):
+    book: &quot;BookRead&quot; = None
+
+
+class BookInstanceReadFull(BookInstanceWithBook):
+    requests: list[&quot;BookExchangeRead&quot;] = []
+    owner: &quot;UserBase&quot; = None
+
+</code></pre>
+<h2 id="author">Author</h2>
+<pre><code>class AuthorBase(SQLModel):
+    name: str
+    bio: str
+
+
+class Author(AuthorBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    books: Optional[List[&quot;Book&quot;]] = Relationship(back_populates=&quot;author&quot;)
+
+
+class AuthorRead(AuthorBase):
+    id: int
+
+
+class AuthorReadFull(AuthorRead):
+    books: list[&quot;BookRead&quot;] = []
+</code></pre>
+<h2 id="book">Book</h2>
+<pre><code>class BookBase(SQLModel):
+    title: str
+    description: str
+    author_id: Optional[int] = Field(default=None, foreign_key=&quot;author.id&quot;)
+
+
+class Book(BookBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    author: Optional[Author] = Relationship(back_populates=&quot;books&quot;)
+    owners: Optional[List[&quot;User&quot;]] = Relationship(back_populates=&quot;books&quot;, link_model=BookInstance)
+    instances: Optional[List[&quot;BookInstance&quot;]] = Relationship(back_populates=&quot;book&quot;)
+
+
+class BookRead(BookBase):
+    id: int
+
+
+class BookReadFull(BookRead):
+    author: AuthorRead = None
+    owners: list[&quot;UserBase&quot;] = []
+    instances: list[&quot;BookInstanceRead&quot;] = []
+</code></pre>
+<h2 id="user">User</h2>
+<pre><code>class UserBase(SQLModel):
+    id: int = Field(primary_key=True)
+    username: str = Field(index=True)
+    name: str
+    about: str
+    email: EmailStr = Field(unique=True, index=True, sa_type=AutoString)
+
+
+class User(UserBase, table=True):
+    password: str = Field(max_length=256, min_length=6)
+    created_at: datetime.datetime = datetime.datetime.now()
+    books: Optional[List[&quot;Book&quot;]] = Relationship(back_populates=&quot;owners&quot;, link_model=BookInstance)
+    sender_requests: Optional[List[&quot;BookExchange&quot;]] = Relationship(
+        back_populates=&quot;sender&quot;,
+        sa_relationship_kwargs=dict(foreign_keys=&quot;[BookExchange.sender_id]&quot;),
+    )
+    receiver_requests: Optional[List[&quot;BookExchange&quot;]] = Relationship(
+        back_populates=&quot;receiver&quot;,
+        sa_relationship_kwargs=dict(foreign_keys=&quot;[BookExchange.receiver_id]&quot;),
+    )
+    instances: Optional[List[&quot;BookInstance&quot;]] = Relationship(back_populates=&quot;owner&quot;)
+
+
+class UserReadFull(UserBase):
+    sender_requests:  list[&quot;BookExchangeRead&quot;] = []
+    receiver_requests:  list[&quot;BookExchangeRead&quot;] = []
+    instances: list[&quot;BookInstanceWithBook&quot;] = []
+
+
+class UserInput(SQLModel):
+    name: str
+    about: str
+    username: str
+    password: str = Field(max_length=256, min_length=6)
+    password2: str
+    email: EmailStr = Field(unique=True, index=True, sa_type=AutoString)
+
+    @validator('password2')
+    def password_match(cls, v, values, **kwargs):
+        if 'password' in values and v != values['password']:
+            raise ValueError('passwords don\'t match')
+        return v
+
+
+class UserLogin(SQLModel):
+    username: str
+    password: str
+
+
+class UserPassword(SQLModel):
+    old_password: str
+    new_password: str
+
+
+</code></pre>
+<h2 id="book-exchange">Book exchange</h2>
+<pre><code>class BookExchangeBase(SQLModel):
+    book_instance_id: Optional[int] = Field(default=None, foreign_key=&quot;bookinstance.id&quot;)
+    status: ExchangeStatus
+    date_start: datetime.datetime
+    date_end: datetime.datetime
+
+
+class BookExchange(BookExchangeBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    sender_id: Optional[int] = Field(default=None, foreign_key=&quot;user.id&quot;)
+    receiver_id: Optional[int] = Field(default=None, foreign_key=&quot;user.id&quot;)
+
+    sender: Optional[&quot;User&quot;] = Relationship(
+        back_populates=&quot;sender_requests&quot;,
+        sa_relationship_kwargs=dict(foreign_keys=&quot;[BookExchange.sender_id]&quot;),
+    )
+    receiver: Optional[&quot;User&quot;] = Relationship(
+        back_populates=&quot;receiver_requests&quot;,
+        sa_relationship_kwargs=dict(foreign_keys=&quot;[BookExchange.receiver_id]&quot;),
+    )
+    book_instance: Optional[&quot;BookInstance&quot;] = Relationship(
+        back_populates=&quot;requests&quot;,
+        sa_relationship_kwargs=dict(foreign_keys=&quot;[BookExchange.book_instance_id]&quot;),
+    )
+
+
+class BookExchangeChangeStatus(SQLModel):
+    status: ExchangeStatus
+
+
+class BookExchangeRead(BookExchangeBase):
+    id: int
+    sender_id: int
+    receiver_id: int
+
+
+class BookExchangeReadFull(BookExchangeRead):
+    sender: &quot;UserBase&quot; = None
+    receiver: &quot;UserBase&quot; = None
+    book_instance: &quot;BookInstanceWithBook&quot; = None
+
+</code></pre>
+<h1 id="endpointes">Endpointes</h1>
+<h2 id="user_1">user</h2>
+<pre><code>from fastapi import FastAPI, HTTPException, Depends, APIRouter
+from psycopg2._psycopg import List
+from sqlmodel import select
+from models import User, UserInput, UserBase, UserLogin, UserReadFull, UserPassword
+from auth.auth import AuthHandler
+from database.conn import get_session
+
+user_router = APIRouter()
+auth_handler = AuthHandler()
+
+
+@user_router.post('/register', status_code=201, description='Register new user')
+def register(user: UserInput, session=Depends(get_session)):
+    users = session.exec(select(User)).all()
+    if any(x.username == user.username for x in users):
+        raise HTTPException(status_code=400, detail='Username is taken')
+    if any(x.email == user.email for x in users):
+        raise HTTPException(status_code=400, detail='Email is taken')
+    hashed_pwd = auth_handler.get_password_hash(user.password)
+    user = User(username=user.username, password=hashed_pwd, email=user.email, name=user.name, about=user.about)
+    session.add(user)
+    session.commit()
+    return {&quot;status&quot;: 201, &quot;message&quot;: &quot;New user is created!&quot;}
+
+
+@user_router.get('/users')
+def get_users(session=Depends(get_session)) -&gt; list[User]:
+    users = session.exec(select(User)).all()
+    return users
+
+
+@user_router.post('/login')
+def login(user: UserLogin, session=Depends(get_session)):
+    user_found = session.exec(select(User).where(User.username == user.username)).first()
+    if not user_found:
+        raise HTTPException(status_code=401, detail='Invalid username or password')
+    verified = auth_handler.verify_password(user.password, user_found.password)
+    if not verified:
+        raise HTTPException(status_code=401, detail='Invalid username or password')
+    token = auth_handler.encode_token(user_found.username)
+    return {'token': token}
+
+
+@user_router.get('/users/me')
+def get_current_user(user: User = Depends(auth_handler.get_current_user)) -&gt; UserReadFull:
+    return user
+
+
+@user_router.patch('/users/me/change-password')
+def change_password(passwords: UserPassword, user: User = Depends(auth_handler.get_current_user),
+                    session=Depends(get_session)):
+    # Проверяем, что текущий пароль пользователя верный
+    if not auth_handler.verify_password(passwords.old_password, user.password):
+        raise HTTPException(status_code=400, detail=&quot;Current password is incorrect&quot;)
+
+    # Хешируем новый пароль
+    hashed_new_password = auth_handler.get_password_hash(passwords.new_password)
+
+    # Обновляем пароль пользователя в базе данных
+    user.password = hashed_new_password
+    session.add(user)
+    session.commit()
+
+    return {&quot;message&quot;: &quot;Password updated successfully&quot;}
+
+
+@user_router.get(&quot;/users/{user_id}&quot;)
+def get_user_by_id(user_id: int, session=Depends(get_session)) -&gt; UserReadFull:
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+    return user
+
+</code></pre>
+<h4 id="register">Register</h4>
+<p><img alt="alt text" src="../register.png" /></p>
+<h4 id="login">Login</h4>
+<p><img alt="alt text" src="../login.png" /></p>
+<h4 id="get-current-user">Get current user</h4>
+<p><img alt="alt text" src="../getcurruser.png" /></p>
+<h4 id="get-user-by-id">Get user by id</h4>
+<p><img alt="alt text" src="../getuserbyid.png" /></p>
+<h4 id="get-all-users">Get all users</h4>
+<p><img alt="alt text" src="../getalluser.png" /></p>
+<h4 id="change-password">Change password</h4>
+<p><img alt="alt text" src="../changepassword.png" /></p>
+<h2 id="database-connection">Database connection</h2>
+<pre><code>from sqlmodel import SQLModel, Session, create_engine
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+db_url = os.getenv(&quot;DB_URL&quot;)
+engine = create_engine(db_url, echo=True)
+
+
+def init_db():
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+</code></pre>
+<h2 id="jwt">Хэширование паролей, кодирование и декодирование JWT, проверка аунтефикации, получение текущего пользователя</h2>
+<pre><code>import datetime
+from fastapi import Security, HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from passlib.context import CryptContext
+import jwt
+from starlette import status
+from database.conn import get_session
+from models import User
+from sqlmodel import select
+
+
+class AuthHandler:
+    security = HTTPBearer()
+    pwd_context = CryptContext(schemes=['bcrypt'])
+    SECRET_KEY = 'SECRET_KEY'
+
+    def get_password_hash(self, password):
+        return self.pwd_context.hash(password)
+
+    def verify_password(self, pwd, hashed_pwd):
+        return self.pwd_context.verify(pwd, hashed_pwd)
+
+    def encode_token(self, username):
+        payload = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=8),
+            'iat': datetime.datetime.utcnow(),
+            'sub': username
+        }
+        return jwt.encode(payload, self.SECRET_KEY, algorithm='HS256')
+
+    def decode_token(self, token):
+        try:
+            payload = jwt.decode(token, self.SECRET_KEY, algorithms=['HS256'])
+            return payload['sub']
+        except jwt.ExpiredSignatureError:
+            raise HTTPException(status_code=401, detail='Expired signature')
+        except jwt.InvalidTokenError:
+            raise HTTPException(status_code=401, detail='Invalid token')
+
+    def auth_wrapper(self, auth: HTTPAuthorizationCredentials = Security(security)):
+        return self.decode_token(auth.credentials)
+
+    def get_current_user(self, auth: HTTPAuthorizationCredentials = Security(security), session=Depends(get_session)):
+        credentials_exception = HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Could not validate credentials'
+        )
+        username = self.decode_token(auth.credentials)  # Получить имя пользователя из токена
+        if username is None:
+            raise credentials_exception
+        user = session.exec(select(User).where(User.username == username)).first()  # Найти пользователя по имени
+        if user is None:
+            raise credentials_exception
+        return user
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

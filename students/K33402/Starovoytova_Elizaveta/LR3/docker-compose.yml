@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: bookcross_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+  bookcross-api:
+    build:
+      context: ./bookcross-api
+    container_name: bookcross-api
+    ports:
+      - "8001:8001"
+    environment:
+      DB_ADMIN: postgresql://user:password@postgres/bookcross_db
+      PARSER_URL: http://parser:8002
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - postgres
+    command: >
+      sh -c "
+      alembic upgrade head &&
+      uvicorn main:app --host 0.0.0.0 --port 8001
+      "
+    networks:
+      - mynetwork
+
+  parser:
+    build:
+      context: ./parser
+    container_name: parser
+    ports:
+      - "8002:8002"
+    environment:
+      DB_ADMIN: postgresql://user:password@postgres/bookcross_db
+    depends_on:
+      - bookcross-api
+    networks:
+      - mynetwork
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - mynetwork
+
+  celery_worker:
+    build:
+      context: ./parser
+      dockerfile: Dockerfile.celery
+    environment:
+      DB_ADMIN: postgresql://user:password@postgres/bookcross_db
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - mynetwork
+
+volumes:
+  postgres_data:
+
+networks:
+  mynetwork:
+    driver: bridge

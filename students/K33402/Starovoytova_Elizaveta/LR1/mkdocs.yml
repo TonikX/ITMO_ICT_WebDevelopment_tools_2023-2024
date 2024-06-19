@@ -1,0 +1,7 @@
+site_name: Docs
+nav:
+  - LR1: LR1.md
+  - PR1: PR1.md
+  - PR2: PR2.md
+  - PR3: PR3.md
+
