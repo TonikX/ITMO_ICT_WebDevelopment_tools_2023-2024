@@ -241,5 +241,66 @@ class Solution:
             list1.next = start2
             return start1
 
+## Задача №7
+![Результат](images/64.jpg)
+### Код
+    
+    # Definition for singly-linked list.
+    # class ListNode:
+    #     def __init__(self, x):
+    #         self.val = x
+    #         self.next = None
+    
+    class Solution:
+        def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+            
+            len_a = 0
+            len_b = 0
+            
+            A_start = headA
+            B_start = headB
+            
+            while not (A_start is None):
+                len_a = len_a + 1
+                A_start = A_start.next
+                
+            while not (B_start is None):
+                len_b = len_b + 1
+                B_start = B_start.next
+                
+            if len_b < len_a:
+                swap = headB
+                headB = headA
+                headA = swap
+                
+                swap = len_b
+                len_b = len_a
+                len_a = swap
+                
+            for i in range(len_b - len_a):
+                headB = headB.next
+               
+            
+            intersect = None
+            intersect_start = None
+            
+            while not (headA is None):
+                if headA is headB:
+                    
+                    if intersect is None:
+                        intersect = ListNode(headA.val)
+                        intersect_start = intersect
+                        
+                    else:
+                        next_move = ListNode(headA.val)
+                        intersect.next = next_move
+                        intersect = next_move
+                else:
+                    intersect = None
+                    intersect_start = None
+                headA = headA.next
+                headB = headB.next
+            return intersect_start
+
 # Чтоб не быть голословным 2
-![Результат](images/53.jpg)
+![Результат](images/63.jpg)
