@@ -7,3 +7,5 @@ beautifulsoup4
 passlib
 celery[redis]
 redis
+sqlmodel
+PyJWT

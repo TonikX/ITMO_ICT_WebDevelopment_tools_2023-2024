@@ -1,0 +1,8 @@
+txt
+requests
+beautifulsoup4
+psycopg2-binary
+fastapi
+pydantic
+uvicorn
+sqlalchemy
