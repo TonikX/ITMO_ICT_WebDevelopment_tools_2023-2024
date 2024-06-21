@@ -292,7 +292,230 @@ class Solution:
                 headB = headB.next
             return intersect
 
-# Чтоб не быть голословным
+
+## Задача №8
+![Результат](images/81.jpg)
+
+
+### Код
+    class Solution:
+        def letterCombinations(self, digits: str) -> List[str]:
+            dict = {'2':['a','b','c'], '3':['d','e','f'], '4':['g','h','i'], '5':['j','k','l'],'6':['m','n','o'],'7':['p','q','r','s'], "8":['t','u','v'], '9':['w','x','y','z']}
+            if digits == '':
+                return []
+            
+            answ = ['']
+            
+            for digit in digits:
+                new = []
+                for elem in dict[digit]:
+                    for i in answ:
+                        new.append(i+elem)
+                answ = new
+            return answ
+
+## Задача №9
+![Результат](images/82.jpg)
+### Код
+    class Solution:
+        def isHappy(self, n: int) -> bool:
+          seen = set()
+          while n != 1 and n not in seen:
+            seen.add(n)
+            n = sum(int(digit)**2 for digit in str(n))
+          return n == 1
+
+
+## Задача №10
+![Результат](images/83.jpg)
+### Код
+    class Solution:
+        def trailingZeroes(self, n: int) -> int:
+            counter = 0
+            for i in range(1,n+1):
+                if i%5 == 0:
+                    j = i
+                    while True:
+                        if j % 10 == 0 and j!=0:
+                            j = j//10
+                            counter = counter + 1
+                        else:
+                            break
+                    while True:
+                        if j % 5 == 0 and j != 0:
+                            j = j // 5
+                            counter = counter + 1
+                        else:
+                            break
+            return counter
+
+## Задача №11
+![Результат](images/84.jpg)
+### Код
+    class Solution:
+        def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+            alphabet = 'abcdefghijklmnopqrstuvwxyz'
+            signs = {}
+            for sign in alphabet:
+                signs[sign] = 0
+            combinations = {}
+            for word in strs:
+                for sign in word:
+                    signs[sign] = signs.get(sign) + 1
+                slovo = []
+                for sign in signs.keys():
+                    slovo.append(sign)
+                    slovo.append(str(signs[sign]))
+                slovo = ''.join(slovo)
+                arr = combinations.get(slovo, [])
+                arr.append(word)
+                combinations[slovo] = arr
+                for sign in alphabet:
+                    signs[sign] = 0
+            listok = []
+            for combination in combinations.keys():
+                listok.append(combinations[combination])
+            return(listok)
+
+## Задача №12
+![Результат](images/85.jpg)
+### Код
+    class Solution:
+        def lengthOfLongestSubstring(self, s: str) -> int:
+            if len(s) == 1:
+                return 1
+            left = 1
+            maxlen = 0
+            for i in range(1,len(s)):
+                sub = s[left-1:i]
+                #print(s[i], sub)
+                if s[i] in sub:
+                    if maxlen < len(sub):
+                        maxlen = len(sub)
+                    left = left + sub.index(s[i])+1
+                    #print(left)
+                else:
+                    if maxlen < len(sub)+1:
+                        maxlen = len(sub)+1
+                #print(sub)
+            return maxlen
+
+## Задача №13
+![Результат](images/86.jpg)
+### Код
+    class Solution:
+            
+        def expand(self, s, left, right):
+          while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+          return right - left - 1
+    
+        def longestPalindrome(self,s: str) -> str:
+          start = 0
+          end = 0
+    
+          for i in range(len(s)):
+            len1 = self.expand(s, i, i)
+            len2 = self.expand(s, i, i + 1)
+            length = max(len1, len2)
+    
+            if length > (end - start):
+              start = i - (length - 1) // 2
+              end = i + length // 2
+    
+          return s[start:end + 1]
+
+## Задача №14
+![Результат](images/87.jpg)
+### Код
+    class Solution:
+        def increasingTriplet(self, nums: List[int]) -> bool:
+            
+            a1  = nums[0]
+            b1 = None
+            c1 = None
+            flag = False
+            for i in range(1,len(nums)):
+                if b1 is None:
+                    if nums[i]<= a1:
+                        a1 = nums[i]
+                    else:
+                        b1 = nums[i]
+                else:
+                    if nums[i] > b1:
+                        flag = True
+                        break
+                    else:
+                        if nums[i] > a1:
+                            b1 = nums[i]
+                        else:
+                            a1 = nums[i]
+                            
+            if flag:
+                return flag
+            
+            c2 = nums[len(nums)-1]
+            b2 = None
+            a2 = None
+            for i in range(len(nums)-2,-1,-1):
+                if b2 is None:
+                    if nums[i] >= c2:
+                        c2 = nums[i]
+                    else:
+                        b2 = nums[i]
+                else:
+                    if nums[i] < b2:
+                        flag = True
+                        break
+                    else:
+                        if nums[i]<c2:
+                            b2 = nums[i]
+                        else:
+                            c2 = nums[i]
+            return flag
+        
+
+## Задача №15
+![Результат](images/88.jpg)
+### Код
+    class Solution:
+    
+        def helper1(self, n):
+            n_str = str(n)
+            pairs = []
+            prev = n_str[0]
+            count = 1
+            for i in range(1, len(n_str)):
+                if n_str[i] == prev:
+                    count += 1
+                else:
+                    pairs.append([prev, count])
+                    prev = n_str[i]
+                    count = 1
+            pairs.append([prev, count])
+        
+            return pairs
+    
+        def helper2(self, pairs):
+            arr = []
+            for pair in pairs:
+                arr.append(str(pair[1]))
+                arr.append(pair[0])
+    
+            return ''.join(arr)
+    
+        def countAndSay(self, n: int) -> str:
+            num = "1"
+            for i in range(n - 1):
+                pairs = self.helper1(num)
+                num = self.helper2(pairs)
+            return num
+
+
+# Чтобы не быть голословным
 ![Результат](images/15.jpg)
-# Чтоб не быть голословным 2
+# Чтобы не быть голословным 2
 ![Результат](images/63.jpg)
+# Чтобы не быть голословным 3
+![Результат](images/007.jpg)
