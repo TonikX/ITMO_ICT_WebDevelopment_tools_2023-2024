@@ -1,0 +1,51 @@
+version: '3.11'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=money_db
+    ports:
+      - "5434:5433"
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    env_file:
+      - app/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  parser:
+    build:
+      context: ./parser
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+      - app
+
+
+
+#  redis:
+#    image: redis:latest
+#    container_name: redis
+#    ports:
+#      - "6379:6379"
+#
+#  celery_worker:
+#      build: ./parser
+#      command: celery -A parser.celery_app worker --loglevel=info
+#      depends_on:
+#        - redis
+#        - app
+#        - postgres
+#      environment:
+#        - REDIS_URL=redis://redis:6379/0
