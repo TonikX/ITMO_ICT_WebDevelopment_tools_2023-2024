@@ -143,8 +143,6 @@ class Solution:
                         counter = counter + counter
             return div(dividend,divisor,1)
 
-# Чтоб не быть голословным
-![Результат](images/15.jpg)
 
 ## Задача №5
 ![Результат](images/51.jpg)
@@ -294,5 +292,7 @@ class Solution:
                 headB = headB.next
             return intersect
 
+# Чтоб не быть голословным
+![Результат](images/15.jpg)
 # Чтоб не быть голословным 2
 ![Результат](images/63.jpg)
