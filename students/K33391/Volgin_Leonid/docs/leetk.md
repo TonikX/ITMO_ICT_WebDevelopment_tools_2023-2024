@@ -282,25 +282,17 @@ class Solution:
                
             
             intersect = None
-            intersect_start = None
             
             while not (headA is None):
                 if headA is headB:
-                    
                     if intersect is None:
                         intersect = ListNode(headA.val)
-                        intersect_start = intersect
-                        
-                    else:
-                        next_move = ListNode(headA.val)
-                        intersect.next = next_move
-                        intersect = next_move
+                       
                 else:
                     intersect = None
-                    intersect_start = None
                 headA = headA.next
                 headB = headB.next
-            return intersect_start
+            return intersect
 
 # Чтоб не быть голословным 2
 ![Результат](images/63.jpg)
