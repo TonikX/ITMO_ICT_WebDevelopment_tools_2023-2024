@@ -47,7 +47,7 @@ def parse_and_save(url):
             response = requests.get(complete_url)
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            print(f"Ошибка запроса на страницу: {complete_url}\n{e}")
+            print(f"Error req: {complete_url}\n{e}")
             continue
 
         soup = BeautifulSoup(response.text, 'html.parser')

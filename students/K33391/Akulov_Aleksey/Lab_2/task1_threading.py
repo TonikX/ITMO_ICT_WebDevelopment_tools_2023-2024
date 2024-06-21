@@ -31,4 +31,4 @@ if __name__ == "__main__":
     start_time = time.perf_counter()
     main_threading()
     end_time = time.perf_counter()
-    print(f"Время выполнения: {end_time - start_time} секунд")
+    print(f"Time: {end_time - start_time} sec")

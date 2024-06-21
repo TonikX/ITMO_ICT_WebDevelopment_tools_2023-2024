@@ -18,7 +18,7 @@ async def parse_and_save(session, url):
         try:
             text = await fetch(session, complete_url)
         except aiohttp.ClientError as e:
-            print(f"Ошибка запроса на страницу: {complete_url}\n{e}")
+            print(f"Error req: {complete_url}\n{e}")
             continue
 
         soup = BeautifulSoup(text, 'html.parser')
