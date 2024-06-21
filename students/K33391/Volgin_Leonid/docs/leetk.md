@@ -553,7 +553,7 @@ class Solution:
             recurs([[]], nums)
             return answer
             
- ## Задача №18
+## Задача №18
 ![Результат](images/91.jpg)
 ### Код
     class Solution:
