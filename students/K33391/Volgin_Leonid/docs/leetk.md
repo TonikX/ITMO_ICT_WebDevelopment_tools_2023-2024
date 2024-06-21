@@ -512,6 +512,74 @@ class Solution:
                 num = self.helper2(pairs)
             return num
 
+## Задача №16
+![Результат](images/89.jpg)
+### Код
+    class Solution:
+        def generateParenthesis(self, n: int) -> List[str]:
+            variants= []
+            scobs = n
+            def recurs(string, opened, closed):
+                nonlocal variants
+                nonlocal scobs
+                
+                if opened + closed == scobs * 2:
+                    variants.append(string)
+                    return
+                
+                if closed < opened:
+                    recurs(string+')',opened, closed + 1)
+                
+                if opened < scobs:
+                    recurs(string+'(',opened+1, closed)
+                
+            recurs('(',1,0)
+            return variants
+## Задача №17
+![Результат](images/90.jpg)
+### Код
+    class Solution:
+        def permute(self, nums: List[int]) -> List[List[int]]:
+            answer = []
+            def recurs(pridatok, ostatok):
+                nonlocal answer
+                if len(ostatok)==0:
+                    answer  = answer + pridatok
+                    return
+                for elem in pridatok:
+                    for i in range(len(ostatok)):
+                        recurs([elem + [ostatok[i]]], ostatok[:i]+ostatok[i+1:])
+    
+            recurs([[]], nums)
+            return answer
+            
+ ## Задача №18
+![Результат](images/91.jpg)
+### Код
+    class Solution:
+        def subsets(self, nums: List[int]) -> List[List[int]]:
+            answer = []
+            def recurs(pridatok, ostatok):
+                nonlocal answer
+                if len(ostatok)==0:
+                    answer  = answer + pridatok
+                    return
+                for elem in pridatok:
+                    for i in range(len(ostatok)):
+                        recurs([elem + [ostatok[i]]], ostatok[i+1:])
+                    answer  = answer + [elem]
+    
+            recurs([[]], nums)
+            return answer
+        
+            
+        
+            
+            
+        
+            
+            
+
 
 # Чтобы не быть голословным
 ![Результат](images/15.jpg)
@@ -519,3 +587,5 @@ class Solution:
 ![Результат](images/63.jpg)
 # Чтобы не быть голословным 3
 ![Результат](images/007.jpg)
+# Чтобы не быть голословным 4
+![Результат](images/100.jpg)
