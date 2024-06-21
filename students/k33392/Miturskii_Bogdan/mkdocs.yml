@@ -1,4 +1,4 @@
-site_name: Митурский Богдан
+site_name: Митурский Богдан K33392
 theme:
   name: material
   features:
@@ -15,6 +15,15 @@ nav:
       - Задание №3: lab1/task3.md
       - Результат: lab1/result/index.md
       - Вывод: lab1/conclusion.md
+  - Лабораторная работа №2:
+      - Оглавление: lab2/index.md
+      - Задание №1: lab2/task1.md
+      - Задание №2: lab2/task2.md
+      - Вывод: lab2/conclusion.md
+  - Лабораторная работа №3:
+      - Оглавление: lab3/index.md
+      - Задание №1: lab3/task1.md
+      - Вывод: lab3/conclusion.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -22,5 +31,6 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - attr_list
   - md_in_html
+docs_dir: "docs"
 plugins:
   - glightbox
