@@ -1,0 +1,36 @@
+site_name: Отчеты по лабораторным работам
+
+theme:
+  name: material
+  language: ru
+
+nav:
+  - Главная: index.md
+  - Лабораторная 1:
+      - Главная: lab1/index.md
+      - Практические задания: lab1/practices.md
+      - База данных: lab1/db.md
+      - Миграции: lab1/migrations.md
+      - Аутентификация: lab1/auth.md
+      - Пользователи: lab1/user.md
+      - Скиллы: lab1/skill.md
+      - Скиллы пользователей: lab1/userskill.md
+      - Личные проекты: lab1/userproject.md
+      - Команды: lab1/team.md
+      - Члены команды: lab1/userteam.md
+      - Командные проекты: lab1/teamproject.md
+      - Задачи командных проектов: lab1/task.md
+
+  - Лабораторная 2:
+      - Главная: lab2/index.md
+      - Задача 1: lab2/task1.md
+      - Задача 2: lab2/task2.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

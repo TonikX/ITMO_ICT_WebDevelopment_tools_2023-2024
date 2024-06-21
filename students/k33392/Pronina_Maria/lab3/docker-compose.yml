@@ -1,0 +1,43 @@
+services:
+  parser:
+    build:
+      context: .
+      dockerfile: parser.Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
+      - api
+      - redis
+
+  api:
+    build:
+      context: .
+      dockerfile: teamTinder.Dockerfile
+    ports:
+      - "81:81"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:alpine
+    # container_name: redis
+
+  celery:
+    build:
+      context: .
+      dockerfile: celery.Dockerfile
+    depends_on:
+      - postgres
+      - redis
+    # env_file:
+    #   - ./parser/.env
