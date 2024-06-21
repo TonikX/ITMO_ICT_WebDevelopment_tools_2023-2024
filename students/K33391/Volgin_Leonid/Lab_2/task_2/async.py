@@ -3,18 +3,12 @@ import aiohttp
 import time
 import requests
 from bs4 import BeautifulSoup
+from sqlalchemy.dialects.postgresql import asyncpg
 
 from students.K33391.Volgin_Leonid.Lab_2.task_2.conn import init_db, sion
 from models import *
 from urls import URLS
 
-async def save_song(title, song):
-    author = song.find('span', class_='artist').get_text()
-    name = song.find('span', class_='song').get_text()
-    # print(author,': ', name)
-    pesnya = Song(name=name, author=author, title=title)
-    sion.add(pesnya)
-    sion.commit()
 
 async def parse_and_save(url):
     try:
@@ -27,7 +21,31 @@ async def parse_and_save(url):
                 songs = soup.find_all('div', class_="name_track")
                 for song in songs:
                     try:
-                        await save_song(title, song)
+                        author = song.find('span', class_='artist').get_text()
+                        name = song.find('span', class_='song').get_text()
+                        #postgresql://postgres:Scalapendra1219212712192127@localhost:5433/song_database
+                        async with asyncpg.connect(
+                                host='localhost',
+                                port=5433,
+                                user='postgres',
+                                password='Scalapendra1219212712192127',
+                                database='song_database'
+                        ) as conn:
+
+                            async with conn.cursor() as cur:
+                                sql = "INSERT INTO song (title, author, name) VALUES (%s, %s, %s)"
+                                data = [title, author, name]
+                                await cur.execute(sql, data)
+                                #await cur.execute("SELECT * FROM song")
+                                #rows = await cur.fetchall()
+                                #for row in rows:
+                                #    print(row)
+
+
+                        #print(author,': ', name)
+                        #pesnya = Song(name=name, author=author, title=title)
+                        #sion.add(pesnya)
+                        #sion.commit()
                     except Exception as e:
                         pass
     except Exception as ex:
