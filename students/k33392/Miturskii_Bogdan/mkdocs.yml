@@ -13,7 +13,9 @@ nav:
       - Задание №1: lab1/task1.md
       - Задание №2: lab1/task2.md
       - Задание №3: lab1/task3.md
-      - Результат: lab1/result/index.md
+      - Задание №4: lab1/task4.md
+      - Результат работы API: lab1/result/index.md
+      - Swagger скриншоты: lab1/swagger/index.md
       - Вывод: lab1/conclusion.md
   - Лабораторная работа №2:
       - Оглавление: lab2/index.md
