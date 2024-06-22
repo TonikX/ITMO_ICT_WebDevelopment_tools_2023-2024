@@ -1,0 +1,55 @@
+site_name: Митурский Богдан K33392
+theme:
+  name: material
+  features:
+    - navigation.indexes
+  palette:
+    scheme: slate
+    primary: black
+    accent: indigo
+nav:
+  - Лабораторная работа №1:
+      - Оглавление: lab1/index.md
+      - Задание №1: lab1/task1.md
+      - Задание №2: lab1/task2.md
+      - Задание №3: lab1/task3.md
+      - Задание №4: lab1/task4.md
+      - Результат работы API: lab1/result/index.md
+      - Swagger скриншоты: lab1/swagger/index.md
+      - Вывод: lab1/conclusion.md
+  - Лабораторная работа №2:
+      - Оглавление: lab2/index.md
+      - Задание №1: lab2/task1.md
+      - Задание №2: lab2/task2.md
+      - Вывод: lab2/conclusion.md
+  - Лабораторная работа №3:
+      - Оглавление: lab3/index.md
+      - Задание №1: lab3/task1.md
+      - Вывод: lab3/conclusion.md
+  - Leetcode:
+      - Задание №1: leetcode/task1.md
+      - Задание №2: leetcode/task2.md
+      - Задание №3: leetcode/task3.md
+      - Задание №4: leetcode/task4.md
+      - Задание №5: leetcode/task5.md
+      - Задание №6: leetcode/task6.md
+      - Задание №7: leetcode/task7.md
+      - Задание №8: leetcode/task8.md
+      - Задание №9: leetcode/task9.md
+      - Задание №10: leetcode/task10.md
+      - Задание №11: leetcode/task11.md
+      - Задание №12: leetcode/task12.md
+      - Задание №13: leetcode/task13.md
+      - Задание №14: leetcode/task14.md
+      - Задание №15: leetcode/task15.md
+      - Задание №16: leetcode/task16.md
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - attr_list
+  - md_in_html
+docs_dir: "docs"
+plugins:
+  - glightbox
