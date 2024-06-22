@@ -1,6 +1,6 @@
 import threading
-from parser_app.parser.settings import URLS
-from parser_app.parser.parse_utils import parse_and_save
+from parser.settings import URLS
+from parser.parse_utils import parse_and_save
 
 
 def crypto_parse(num):

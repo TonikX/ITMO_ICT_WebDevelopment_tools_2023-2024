@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
-from finance_app.user_repo.auth import AuthHandler
+from user_repo.auth import AuthHandler
 from sqlalchemy.orm import Session
-from finance_app.connections import get_session
-from finance_app.user_repo.user_models import UserInput, User, UserLogin, UserPasswordChange
-from finance_app.user_repo.user_functions import select_all_users, find_user
+from connections import get_session
+from user_repo.user_models import UserInput, User, UserLogin, UserPasswordChange
+from user_repo.user_functions import select_all_users, find_user
 
 user_router = APIRouter()
 auth_handler = AuthHandler()

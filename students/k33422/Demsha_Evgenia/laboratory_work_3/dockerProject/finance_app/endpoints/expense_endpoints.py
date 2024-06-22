@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import cast, Integer
 from sqlalchemy.orm import Session
-from finance_app.connections import get_session
-from finance_app.models import Expense, ExpenseCategory, Account
-from finance_app.user_repo.user_endpoints import auth_handler
+from connections import get_session
+from models import Expense, ExpenseCategory, Account
+from user_repo.user_endpoints import auth_handler
 
 expense_router = APIRouter(dependencies=[Depends(auth_handler.auth_wrapper)])
 

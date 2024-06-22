@@ -2,7 +2,7 @@ from enum import Enum
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import date
 
-from finance_app.user_repo.user_models import User
+from user_repo.user_models import User
 
 class ExpenseType(str, Enum):
     goal = "goal"

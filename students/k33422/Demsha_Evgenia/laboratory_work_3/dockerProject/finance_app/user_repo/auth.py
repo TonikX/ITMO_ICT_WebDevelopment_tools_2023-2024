@@ -4,7 +4,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from passlib.context import CryptContext
 import jwt
 from starlette import status
-from finance_app.user_repo.user_functions import find_user
+from user_repo.user_functions import find_user
 
 
 class AuthHandler:

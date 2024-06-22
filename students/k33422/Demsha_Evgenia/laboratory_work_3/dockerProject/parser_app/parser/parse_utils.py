@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from parser_app.lab1_models.models import SQLModel, Account
+from lab1_models.models import SQLModel, Account
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import os

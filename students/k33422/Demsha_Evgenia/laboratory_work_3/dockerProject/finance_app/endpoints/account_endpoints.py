@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from finance_app.connections import get_session
-from finance_app.models import Account
-from finance_app.user_repo.user_endpoints import auth_handler
+from connections import get_session
+from models import Account
+from user_repo.user_endpoints import auth_handler
 
 account_router = APIRouter(dependencies=[Depends(auth_handler.auth_wrapper)])
 

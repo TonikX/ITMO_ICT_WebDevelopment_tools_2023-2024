@@ -1,7 +1,7 @@
 from sqlmodel import Session, select
 
-from finance_app.connections import engine
-from finance_app.user_repo.user_models import User
+from connections import engine
+from user_repo.user_models import User
 
 
 def select_all_users():
