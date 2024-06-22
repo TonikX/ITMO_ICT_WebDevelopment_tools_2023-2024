@@ -43,3 +43,7 @@ nav:
   - "Потоки, процессы, aсинхронность":
       - lab2/task1.md
       - lab2/task2.md
+  - "Упаковка в Docker, источники данных и очереди":
+      - lab3/docker.md
+      - lab3/parser.md
+      - lab3/queue.md
