@@ -1,0 +1,9 @@
+fastapi
+sqlmodel
+SQLAlchemy
+uvicorn
+alembic
+psycopg2-binary
+python-dotenv
+pyjwt
+passlib[bcrypt]
