@@ -1,0 +1,8 @@
+site_name: My Documentation 
+nav:
+  - Lab1: index.md
+  - '№2: Потоки. Процессы. Асинхронность':
+      - task1.md
+      - task2.md
+
+theme: readthedocs
