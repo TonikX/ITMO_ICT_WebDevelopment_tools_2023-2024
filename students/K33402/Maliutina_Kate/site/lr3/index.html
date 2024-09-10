@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Лабораторная часть - Малютина Екатерина K33402</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Малютина Екатерина K33402</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">№1: Реализация серверного приложения FastAPI <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href=".." class="dropdown-item">Домашняя страница</a>
+</li>
+                                    
+<li>
+    <a href="../pr1/" class="dropdown-item">Практика</a>
+</li>
+                                    
+<li>
+    <a href="../lab1/" class="dropdown-item">Лабораторная часть</a>
+</li>
+                                    
+<li>
+    <a href="../leetcode/" class="dropdown-item">Leetcode</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">№2: Потоки. Процессы. Асинхронность. <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../lr2/" class="dropdown-item">Лабораторная часть</a>
+</li>
+                                    
+<li>
+    <a href="../leetcode2/" class="dropdown-item">Решения задач</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">№3: Упаковка FastAPI приложения в Docker, Работа с источниками данных и Очереди <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="./" class="dropdown-item active">Лабораторная часть</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../leetcode2/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#_1" class="nav-link">Лабораторная часть</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#docker-composeyml" class="nav-link">docker-compose.yml</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#app" class="nav-link">app/...</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#celery" class="nav-link">celery/...</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#celery_apppy" class="nav-link">celery_app.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#celery_workerpy" class="nav-link">celery_worker.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#taskspy" class="nav-link">tasks.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#mainpy" class="nav-link">main.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">Лабораторная часть</h1>
+<p>Ниже представлен код с подробными комментариями и скрины рабочие.</p>
+<p>Сервисы описаны, объединены в одну сеть и docker с помощью docker-compose.</p>
+<h2 id="docker-composeyml">docker-compose.yml</h2>
+<pre><code class="language-yaml">services:
+  celery_app:
+    build:
+      context: ./celery
+      dockerfile: Dockerfile
+    container_name: celery_app
+    restart: unless-stopped
+    ports:
+      - &quot;8081:8081&quot;
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  celery_worker:
+    build:
+      context: ./celery
+    env_file:
+      - .env
+    container_name: celery_worker
+    command: celery -A celery_worker worker -l info -E
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - celery_app
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - &quot;6379:6379&quot;
+    restart: unless-stopped
+
+  app:
+    build: ./app
+    container_name: app
+    ports:
+      - &quot;8080:8080&quot;
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - celery_app
+    links:
+      - &quot;db:database&quot;
+
+  db:
+    image: postgres:latest
+    container_name: db
+    env_file:
+      - .env
+    ports:
+      - &quot;5432:5432&quot;
+    expose:
+      - &quot;5432:5432&quot;
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+</code></pre>
+<h2 id="app">app/...</h2>
+<p>В папке app находится весь код из ЛР1 и дописан Dockerfile</p>
+<pre><code class="language-dockerfile">FROM python:3.12
+
+WORKDIR /app
+
+COPY ../requirements.txt /app/requirements.txt
+
+RUN pip install -r /app/requirements.txt
+
+COPY . /app
+
+EXPOSE 8080
+
+CMD [&quot;uvicorn&quot;, &quot;main:app&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8080&quot;]
+</code></pre>
+<h2 id="celery">celery/...</h2>
+<p>В папке celery находится подключение к redis, где хранятся сообщения, которые попадают туда через очередь celery, а также перенесена часть ЛР2.</p>
+<pre><code class="language-dockerfile">FROM python:3.12
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+COPY . .
+
+EXPOSE 8081
+
+CMD [&quot;uvicorn&quot;, &quot;main:app&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8081&quot;]
+</code></pre>
+<h2 id="celery_apppy">celery_app.py</h2>
+<p>Описана очередь с заданными ссылками и названием, а также указаны некоторые настройки таймзоны, очереди и serializer.</p>
+<pre><code class="language-python">import celery
+
+celery_app = celery.Celery(
+    &quot;worker&quot;,
+    broker=&quot;redis://redis:6379/0&quot;,
+    backend=&quot;redis://redis:6379/0&quot;,
+)
+
+celery_app.conf.update(
+    task_serializer='json',
+    accept_content=['json'],
+    result_serializer='json',
+    timezone='UTC',
+    enable_utc=True,
+    task_routes={
+        &quot;tasks.parse_and_save_threading&quot;: &quot;main-queue&quot;,
+    },
+)
+
+</code></pre>
+<h2 id="celery_workerpy">celery_worker.py</h2>
+<p>Загружаются переменные среды и запускается приложение с указанным URL.</p>
+<pre><code class="language-python">from celery_app import celery_app
+from dotenv import load_dotenv
+import os
+
+if __name__ == '__main__':
+    load_dotenv()
+    redis_url = os.getenv(&quot;CELERY_REDIS_URL&quot;)
+    celery_app.broker_transport_options = {redis_url}
+    celery_app.start()
+
+</code></pre>
+<h2 id="taskspy">tasks.py</h2>
+<p>Описана задача из ЛР2 и помечена декоратором.</p>
+<pre><code class="language-python">import requests
+from bs4 import BeautifulSoup
+from db import DBConn
+from celery_app import celery_app
+
+
+@celery_app.task
+def parse_and_save_threading(url):
+    db_conn = DBConn.connect_to_database()
+    try:  # пробуем, поскольку может упасть исключение
+        page = requests.get(url)  # получаем страницу
+        soup = BeautifulSoup(page.text, 'html.parser')  # создаем парсер
+        books = soup.find_all('div', class_='product-card')  # находим все блоки книг по классу
+        for book in books:  # проходимся в цикле по всем книгам
+            title = book.attrs['data-product-name']  # получаем название книги
+            price = book.attrs['data-product-price-discounted']  # получаем цену книги
+
+            with db_conn.cursor() as cursor:  # через специальный класс cursor получаем доступ к базе данных
+                cursor.execute(DBConn.INSERT_SQL, (title, price))  # выполняем ранее написанную команду и передаем в нее аргументы
+
+        db_conn.commit()  # подтверждаем изменения
+    except Exception as e:  # при получении исключения
+        print(&quot;Ошибка:&quot;, e)  # выводим ошибку
+        db_conn.rollback()  # откатываем изменения
+    finally:
+        db_conn.commit()
+        db_conn.close()
+</code></pre>
+<h2 id="mainpy">main.py</h2>
+<p>Определение приложение я 2-ух эндпоинтов.</p>
+<pre><code class="language-python">from fastapi import FastAPI, BackgroundTasks
+from pydantic import BaseModel
+from tasks import parse_and_save_threading
+from celery_app import celery_app
+
+app = FastAPI()
+
+
+class URL(BaseModel):
+    url: str
+
+
+@app.post(&quot;/&quot;)
+async def parse_url(item: URL, background_tasks: BackgroundTasks):
+    background_tasks.add_task(parse_and_save_threading, item.url)
+    celery_app.send_task('tasks.parse_and_save_threading', args=[item.url])
+    return {&quot;message&quot;: &quot;started&quot;}
+    # redis-cli lrange main-queue 0 1000
+
+
+@app.get(&quot;/&quot;)
+async def get():
+    print(&quot;get&quot;)
+    return {&quot;message&quot;: &quot;got main page&quot;}
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
