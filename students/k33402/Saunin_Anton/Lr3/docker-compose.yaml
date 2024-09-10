@@ -1,0 +1,73 @@
+services:
+  lab_3_bd:
+    container_name: lab_3_bd
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=1122
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=web_data
+      - POSTGRES_PORT=5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  travel_app:
+    container_name: travel_app
+    build:
+      context: ./docker_1
+    env_file: .env
+    depends_on:
+      - lab_3_bd
+    ports:
+      - "8000:8000"
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    networks:
+      - backend
+    restart: always
+
+  docker_2:
+    container_name: docker_2
+    build:
+      context: ./docker_2
+    env_file: .env
+    depends_on:
+      - lab_3_bd
+    ports:
+      - "8001:8001"
+    command: uvicorn main:app --host 0.0.0.0 --port 8001
+    networks:
+      - backend
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
+  celery:
+    build:
+      context: ./docker_2
+    container_name: celery
+    command: celery -A run_celery worker --loglevel=info
+    restart: always
+    depends_on:
+      - redis
+      - lab_3_bd
+    networks:
+      - backend
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    driver: bridge
