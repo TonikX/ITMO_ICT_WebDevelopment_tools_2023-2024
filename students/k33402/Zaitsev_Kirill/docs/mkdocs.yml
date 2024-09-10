@@ -1,0 +1,10 @@
+site_name: "K33402 Зайцев Кирилл"
+nav:
+  - "LR1":
+      - lab.md
+  - "LR2":
+      - lab2.md
+  - "LR3":
+      - lab3.md
+  - "Leetcode":
+      - leetcode.md

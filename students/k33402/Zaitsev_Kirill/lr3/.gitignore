@@ -1,0 +1,7 @@
+.venv
+#hint.txt
+#.env
+.idea
+__pycache__
+.DS_Store
+/.idea1/
