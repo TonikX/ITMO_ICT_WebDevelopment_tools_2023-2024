@@ -1,0 +1,3 @@
+uvicorn endpoints.endpoints:app --reload --port 8100
+
+fastapi run endpoints/endpoints.py --port 8100
