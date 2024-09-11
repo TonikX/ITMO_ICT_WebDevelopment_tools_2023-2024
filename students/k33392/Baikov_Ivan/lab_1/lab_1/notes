@@ -1,0 +1,2 @@
+alembic revision --autogenerate -m "commit name"
+alembic upgrade head

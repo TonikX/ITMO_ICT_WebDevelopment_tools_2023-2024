@@ -1,0 +1,8 @@
+site_name: Baikov Ivan
+nav:
+  -  Lab_1:
+      - lab_1.md
+  -  Lab_2:
+      - lab_2.md
+  -  lab_3:
+      - lab_3.md
