@@ -1,0 +1,1 @@
+QUERY_1 = """INSERT INTO vinil (author, name, cost) VALUES ($1, $2, $3)"""

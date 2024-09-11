@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: db_
+    command: -p 1221
+    expose:
+      - 1221
+    env_file:
+      - .env
+  redis:
+    image: redis:7
+    container_name: redis_
+    command: --port 5370
+    expose:
+      - 5370
+  app:
+    build:
+      context: .
+    env_file:
+      - .env
+    container_name: api_
+    depends_on:
+      - db
+      - redis
+    ports:
+      - 8080:8080
+  celery:
+    build:
+      context: .
+    container_name: celery_
+    env_file:
+      - .env
+    command: ["/lab_3/docker/celery.sh"]
+    depends_on:
+      - app
+      - redis
+      - db
+

@@ -1,0 +1,8 @@
+site_name: Karina Zlotnikova K33392
+nav:
+  -  Lab_1:
+      - first_lab.md
+  -  Lab_2:
+      - second_lab.md
+  -  lab_3:
+      - third_lab.md
