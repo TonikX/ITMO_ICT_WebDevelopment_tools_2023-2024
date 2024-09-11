@@ -1,0 +1,53 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:15
+    container_name: db
+    command: -p 1221
+    expose:
+      - 1221
+    env_file:
+      - .env
+  redis:
+    image: redis:7
+    container_name: redis
+    command: --port 5370
+    expose:
+      - 5370
+  app:
+    build:
+      context: .
+    env_file:
+      - .env
+    container_name: api
+    depends_on:
+      - db
+      - redis
+    ports:
+      - 8080:8080
+  celery:
+    build:
+      context: .
+    container_name: celery
+    env_file:
+      - .env
+    command: ["/lab3/docker/celery.sh"]
+    depends_on:
+      - app
+      - redis
+      - db
+  flower:
+    build:
+      context: .
+    container_name: flower
+    env_file:
+      - .env
+    command: ["/lab3/docker/flower.sh"]
+    depends_on:
+      - app
+      - celery
+      - redis
+      - db
+    ports:
+      - 5555:5555
