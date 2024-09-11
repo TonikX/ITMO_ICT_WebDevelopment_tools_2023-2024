@@ -1,0 +1,21 @@
+services:
+  postgres:
+    container_name: database
+    image: postgres:latest
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+
+  redis:
+    container_name: broker
+    image: redis:latest
+    env_file:
+      - .env
+    ports:
+      - "${REDIS_PORT}:6379"
+
+volumes:
+  pgdata:

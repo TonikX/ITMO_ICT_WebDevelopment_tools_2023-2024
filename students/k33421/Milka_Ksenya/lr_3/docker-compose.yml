@@ -1,0 +1,53 @@
+services:
+  database:
+    container_name: database
+    image: postgres:latest
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+
+  broker:
+    container_name: broker
+    image: redis:latest
+    env_file:
+      - .env
+    ports:
+      - "${REDIS_PORT}:6379"
+
+  queue:
+    container_name: queue
+    build: .
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=database
+      - POSTGRES_PORT=5432
+      - REDIS_HOST=broker
+      - REDIS_PORT=6379
+    depends_on:
+      - broker
+      - database
+    command: python -m celery -A src.queue worker
+
+  app:
+    container_name: app
+    build: .
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=database
+      - POSTGRES_PORT=5432
+      - REDIS_HOST=broker
+      - REDIS_PORT=6379
+    depends_on:
+      - broker
+      - database
+    command: python -m uvicorn src.app:app --host 0.0.0.0 --port 8000
+    ports:
+      - "${APP_PORT}:8000"
+
+volumes:
+  pgdata:
