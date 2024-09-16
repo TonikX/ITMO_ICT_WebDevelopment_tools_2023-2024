@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  finance_app:
+    build: ./finance_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - parser_app
+      - redis
+      - celery_worker
+    environment:
+      DB_ADDRESS: postgresql://postgres:271120@db/finance
+
+  parser_app:
+    build: ./parser_app
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+    environment:
+      DB_ADDRESS: postgresql://postgres:271120@db/finance
+
+  db:
+    image: postgres
+    ports:
+      - "5433:5433"
+    environment:
+      POSTGRES_DB: finance
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 271120
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build: ./parser_app
+    command: celery -A parser.celery_parser worker --loglevel=info
+    depends_on:
+      - redis
+      - db
+    environment:
+      DB_ADDRESS: postgresql://postgres:271120@db/finance
+    volumes:
+      - ./parser_app:/app  # Adjust the volume mapping as needed
