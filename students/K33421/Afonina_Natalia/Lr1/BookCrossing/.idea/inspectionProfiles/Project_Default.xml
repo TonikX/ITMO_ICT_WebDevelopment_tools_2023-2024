@@ -1,0 +1,41 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="6">
+            <item index="0" class="java.lang.String" itemvalue="mypy" />
+            <item index="1" class="java.lang.String" itemvalue="pytest" />
+            <item index="2" class="java.lang.String" itemvalue="pylint" />
+            <item index="3" class="java.lang.String" itemvalue="pygame" />
+            <item index="4" class="java.lang.String" itemvalue="requests" />
+            <item index="5" class="java.lang.String" itemvalue="research" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N802" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="homework05.vkapi.session.data" />
+          <option value="community.community_louvain" />
+          <option value="homework05.tests.tests_research.test_age.research" />
+          <option value="students.k33421.Afonina_Natalia.Lab_1.Task_4.client.message" />
+          <option value="Pr_1.project_first_app.models.Car_owner.DoesNotExist" />
+          <option value="lab_2.hotel.views.hotel" />
+          <option value="lab_2.settings" />
+          <option value="lab_3.hotel.models.Room.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="XmlInvalidId" enabled="false" level="ERROR" enabled_by_default="false" />
+  </profile>
+</component>
