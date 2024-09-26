@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  fastapi_app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  parser_api:
+    build:
+      context: ./parser_api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  celery_worker:
+    build:
+      context: ./parser_api
+      dockerfile: Dockerfile
+    command: ["celery", "-A", "celery_main.celery_app", "worker", "--loglevel=info"]
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+    networks:
+      - backend
+
+  pgadmin:  
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    driver: bridge

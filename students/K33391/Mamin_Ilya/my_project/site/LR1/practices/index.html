@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Практические работы - My Docs</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Welcome to MkDocs</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">LR1</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../" class="dropdown-item">Лабораторная работа 1</a>
+</li>
+                                    
+<li>
+    <a href="../auth/" class="dropdown-item">Модуль аутентификации</a>
+</li>
+                                    
+<li>
+    <a href="../db/" class="dropdown-item">Модуль базы данных</a>
+</li>
+                                    
+<li>
+    <a href="../endpoints/" class="dropdown-item">Модуль эндпоинтов API</a>
+</li>
+                                    
+<li>
+    <a href="../main/" class="dropdown-item">Приложение</a>
+</li>
+                                    
+<li>
+    <a href="../models/" class="dropdown-item">Модели</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Практические работы</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">LR2</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../LR2/task1/" class="dropdown-item">Задача 1. Различия между threading, multiprocessing и async в Python</a>
+</li>
+                                    
+<li>
+    <a href="../../LR2/task2/" class="dropdown-item">Задача 2. Параллельный парсинг веб-страниц с сохранением в базу данных</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">LR3</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../LR3/task1/" class="dropdown-item">Упаковка FastAPI приложения, базы данных и парсера данных в Docker</a>
+</li>
+                                    
+<li>
+    <a href="../../LR3/task2/" class="dropdown-item">Вызов парсера из FastAPI</a>
+</li>
+                                    
+<li>
+    <a href="../../LR3/task3/" class="dropdown-item">Вызов парсера из FastAPI через очередь</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../models/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../LR2/task1/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">Практические работы</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link">Описание</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#1" class="nav-link">ПР1</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#2" class="nav-link">ПР2</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#3" class="nav-link">ПР3</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">Практические работы</h1>
+<h2 id="_2">Описание</h2>
+<p>В рамках работы были также реализованы и практические работы на основе задания лабораторной работы про программу-тайм-менеджера.</p>
+<h2 id="1">ПР1</h2>
+<p>Было необходимо: </p>
+<ol>
+<li>Сделать временную базу для главной таблицы (2-3 записи), по аналогии с практикой (должны иметь одиночный вложенный объект и список объектов)</li>
+<li>Выполнить действия описанные в практике для своего проекта</li>
+<li>Сделать модели и API для вложенного объекта</li>
+</ol>
+<h3 id="dbpy">db.py</h3>
+<pre><code class="language-python">temp_db = [
+    {
+        &quot;task_id&quot;: 1,
+        &quot;task&quot;: &quot;Complete project&quot;,
+        &quot;description&quot;: &quot;Finish the task manager app&quot;,
+        &quot;deadline&quot;: &quot;2022-12-31&quot;,
+        &quot;priority&quot;: &quot;High&quot;,
+        &quot;time_spent&quot;: 120,
+    },
+    {
+        &quot;task_id&quot;: 2,
+        &quot;task&quot;: &quot;Write documentation&quot;,
+        &quot;description&quot;: &quot;Document the task manager app&quot;,
+        &quot;deadline&quot;: &quot;2022-12-31&quot;,
+        &quot;priority&quot;: &quot;Medium&quot;,
+        &quot;time_spent&quot;: 50,
+    },
+    {
+        &quot;task_id&quot;: 3,
+        &quot;task&quot;: &quot;Test application&quot;,
+        &quot;description&quot;: &quot;Test the task manager app&quot;,
+        &quot;deadline&quot;: &quot;2022-12-31&quot;,
+        &quot;priority&quot;: &quot;Low&quot;,
+        &quot;time_spent&quot;: 0,
+    },
+]
+
+</code></pre>
+<h3 id="mainpy">main.py</h3>
+<pre><code class="language-python">from fastapi import FastAPI
+from models import *
+from typing_extensions import TypedDict
+from db import temp_db
+from typing import Optional, List
+import uvicorn
+
+app = FastAPI()
+
+
+@app.get(&quot;/&quot;)
+def hello():
+    return &quot;Hello, user!&quot;
+
+
+@app.post(&quot;/create_task&quot;)
+def create_task(task: Task):
+    temp_db.append(task)
+
+    return {&quot;status&quot;: 200, &quot;data&quot;: task}
+
+
+@app.put(&quot;/update_task/{task_id}&quot;)
+def update_task(task_id: int, task: TaskDefault):
+    for task in temp_db:
+        if task[&quot;task_id&quot;] == task_id:
+            task[&quot;title&quot;] = task[&quot;title&quot;]
+            task[&quot;description&quot;] = task[&quot;description&quot;]
+            task[&quot;deadline&quot;] = task[&quot;deadline&quot;]
+            task[&quot;priority&quot;] = task[&quot;priority&quot;]
+            task[&quot;time_spent&quot;] = task[&quot;time_spent&quot;]
+            return {&quot;status&quot;: 200, &quot;data&quot;: task}
+    else:
+        return {&quot;status&quot;: 404, &quot;data&quot;: &quot;Task not found&quot;}
+
+
+@app.delete(&quot;/delete_task/{task_id}&quot;)
+def delete_task(task_id: int):
+    for task in temp_db:
+        if task[&quot;task_id&quot;] == task_id:
+            temp_db.remove(task)
+            return {&quot;status&quot;: 200, &quot;data&quot;: &quot;Task deleted&quot;}
+    else:
+        return {&quot;status&quot;: 404, &quot;data&quot;: &quot;Task not found&quot;}
+
+
+@app.get(&quot;/tasks&quot;)
+def get_tasks():
+    return temp_db
+
+
+@app.get(&quot;/task/{task_id}&quot;)
+def get_task(task_id: int):
+    for task in temp_db:
+        if task[&quot;task_id&quot;] == task_id:
+            return task
+    return {&quot;status&quot;: 404, &quot;data&quot;: &quot;Task not found&quot;}
+
+
+@app.get(&quot;/tasks/{task_id}/time&quot;)
+def get_task_time(task_id: int):
+    for task in temp_db:
+        if task[&quot;task_id&quot;] == task_id:
+            return task[&quot;time_spent&quot;]
+    return {&quot;status&quot;: 404, &quot;data&quot;: &quot;Task not found&quot;}
+
+
+@app.put(&quot;/tasks/{task_id}/time&quot;)
+def track_time_spent(task_id: int, time_spent: int):
+    for task in temp_db:
+        if task[&quot;task_id&quot;] == task_id:
+            task[&quot;time_spent&quot;] = time_spent
+            return {&quot;status&quot;: 200, &quot;data&quot;: task}
+    return {&quot;status&quot;: 404, &quot;data&quot;: task}
+</code></pre>
+<h3 id="modelspy">models.py</h3>
+<pre><code class="language-python">import datetime
+from pydantic import BaseModel
+from enum import Enum
+from typing import Optional, List
+from sqlmodel import SQLModel, Field, Relationship
+
+
+class Priority(Enum):
+    high = &quot;high&quot;
+    medium = &quot;medium&quot;
+    low = &quot;low&quot;
+    no_priority = &quot;no_priority&quot;
+
+
+class TaskDefault(SQLModel):
+    title: str
+    description: Optional[str] = None
+    deadline: datetime.date
+    priority: Priority = Priority.no_priority
+
+
+class TaskShow(TaskDefault):
+    title: str
+    deadline: datetime.date
+    priority: Priority
+    time_spent: Optional[int] = None
+
+
+class Task(TaskDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+    time_spent: Optional[int] = None
+</code></pre>
+<h2 id="2">ПР2</h2>
+<p>Было необходимо:</p>
+<ol>
+<li>Пошагово реализовать подключение к БД, АПИ и модели, на основании своего варианта основываясь на действиях в практике</li>
+<li>Сделать модели и API для many-to-many связей с вложенным отображением.</li>
+</ol>
+<h3 id="dbpy_1">db.py</h3>
+<pre><code class="language-python">from sqlmodel import SQLModel, Session, create_engine
+
+db_url = 'postgresql://postgres:123@localhost:5432/pr2'
+engine = create_engine(db_url, echo=True)
+
+
+def init_db():
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+</code></pre>
+<h3 id="endpointspy">endpoints.py</h3>
+<pre><code class="language-python">import datetime
+from fastapi import APIRouter, HTTPException, Depends
+from models import *
+from db import get_session
+from typing_extensions import TypedDict
+from sqlmodel import SQLModel, create_engine
+from sqlmodel.sql.expression import select
+
+app_router = APIRouter()
+
+@app_router.post(&quot;/create_task&quot;, tags=[&quot;tasks&quot;])
+def create_task(task: Task, session=Depends(get_session)):
+    session.add(task)
+    session.commit()
+    session.refresh(task)
+
+    return {&quot;status&quot;: 200, &quot;data&quot;: task}
+
+
+@app_router.put(&quot;/update_task/{task_id}&quot;, tags=[&quot;tasks&quot;])
+def update_task(task_id: int, task: TaskUpdate, session=Depends(get_session)):
+    db_task = session.get(Task, task_id)
+    if not db_task:
+        return ({'status': 404, 'data': 'Task not found'})
+
+    task_data = task.model_dump(exclude_unset=True)
+    for key, value in task_data.items():
+        setattr(db_task, key, value)
+    session.add(db_task)
+    session.commit()
+    session.refresh(db_task)
+    return db_task
+
+
+@app_router.delete(&quot;/delete_task/{task_id}&quot;, tags=[&quot;tasks&quot;])
+def delete_task(task_id: int, session=Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        return ({'status': 404, 'data': 'Task not found'})
+    session.delete(task)
+    session.commit()
+    return {&quot;ok&quot;: True}
+
+
+@app_router.get(&quot;/tasks&quot;, tags=[&quot;tasks&quot;],)
+def get_tasks(session=Depends(get_session)):
+    return session.exec(select(Task)).all()
+
+
+@app_router.get(&quot;/task/{task_id}&quot;, tags=[&quot;tasks&quot;])
+def get_task(task_id: int, session=Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        return ({'status': 404, 'data': 'Task not found'})
+    return task
+
+
+@app_router.get(&quot;/tasks/{task_id}/time&quot;, tags=[&quot;tasks&quot;])
+def get_task_time(task_id: int, session=Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        return ({'status': 404, 'data': 'Task not found'})
+    return {&quot;time_spent&quot;: task.time_spent}
+
+
+@app_router.put(&quot;/tasks/{task_id}/time&quot;, tags=[&quot;tasks&quot;])
+def track_time_spent(task_id: int, time_spent: int, session=Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        return ({'status': 404, 'data': 'Task not found'})
+    task.time_spent = time_spent
+    session.add(task)
+    session.commit()
+    session.refresh(task)
+    return task
+
+</code></pre>
+<h3 id="mainpy_1">main.py</h3>
+<pre><code class="language-python">from fastapi import FastAPI
+import uvicorn
+from db import init_db
+from endpoints import app_router
+
+app = FastAPI()
+
+app.include_router(app_router, prefix=&quot;/api&quot;, tags=[&quot;main&quot;])
+
+
+@app.on_event(&quot;startup&quot;)
+def on_startup():
+    init_db()
+
+
+if __name__ == '__main__':
+    uvicorn.run('main:app', host=&quot;localhost&quot;, port=8000, reload=True)
+</code></pre>
+<h3 id="modelspy_1">models.py</h3>
+<pre><code class="language-python">import datetime
+from pydantic import BaseModel
+from enum import Enum
+from typing import Optional, List
+from sqlmodel import SQLModel, Field, Relationship
+
+
+class Priority(Enum):
+    high = &quot;high&quot;
+    medium = &quot;medium&quot;
+    low = &quot;low&quot;
+    no_priority = &quot;no_priority&quot;
+
+
+class TaskDefault(SQLModel):
+    title: str
+    description: Optional[str] = None
+    deadline: datetime.date
+    priority: Priority = Priority.no_priority
+
+
+class TaskShow(TaskDefault):
+    title: str
+    deadline: datetime.date
+    priority: Priority
+    time_spent: Optional[int] = None
+
+
+class Task(TaskDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+    time_spent: Optional[int] = None
+    schedules: Optional[List[&quot;Schedule&quot;]] = Relationship(back_populates=&quot;task&quot;)
+    reminders: Optional[List[&quot;Reminder&quot;]] = Relationship(back_populates=&quot;task&quot;)
+
+
+class ScheduleDefault(SQLModel):
+    task_id: Optional[int] = Field(default=None, foreign_key=&quot;task.id&quot;)
+    date: datetime.date
+    start_time: datetime.time
+    end_time: datetime.time
+
+
+class ScheduleShow(ScheduleDefault):
+    task: Optional[&quot;Task&quot;] = None
+
+
+class Schedule(ScheduleDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+    task: Optional[&quot;Task&quot;] = Relationship(back_populates=&quot;schedules&quot;)
+
+
+class ReminderDefault(SQLModel):
+    task_id: Optional[int] = Field(default=None, foreign_key=&quot;task.id&quot;)
+    remind_at: datetime.datetime
+
+
+class ReminderShow(ReminderDefault):
+    task: Optional[Task] = None
+
+
+class Reminder(ReminderDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+    task_id: Optional[int] = Field(default=None, foreign_key=&quot;task.id&quot;)
+    task: Optional[&quot;Task&quot;] = Relationship(back_populates=&quot;reminders&quot;)
+
+</code></pre>
+<h2 id="3">ПР3</h2>
+<p>Было необходимо:</p>
+<ol>
+<li>Реализовать в своем проекте все улучшения, описанные в практике</li>
+<li>Разобраться как передать в alembic.ini URL базы данных с помощью.env-файла и реализовать подобную передачу.</li>
+</ol>
+<h3 id="dbpy_2">db.py</h3>
+<pre><code class="language-python">from sqlmodel import SQLModel, Session, create_engine
+
+db_url = 'postgresql://postgres:123@localhost:5432/pr3'
+engine = create_engine(db_url, echo=True)
+
+
+def init_db():
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+</code></pre>
+<h3 id="endpointspy_1">endpoints.py</h3>
+<pre><code class="language-python">import datetime
+from fastapi import APIRouter, HTTPException, Depends
+from models import (
+    TaskDefault, Task, TaskShow,
+    ScheduleDefault, ScheduleShow, Schedule,
+    ReminderDefault, ReminderShow, Reminder,
+)
+from db import get_session
+from typing_extensions import TypedDict
+
+logic_router = APIRouter()
+
+@logic_router.post(&quot;/task-create&quot;)
+def task_create(task: TaskDefault, session=Depends(get_session)) -&gt; TypedDict('Response', {&quot;status&quot;: int, &quot;data&quot;: Task}):
+    task = Task.model_validate(task)
+    session.add(task)
+    session.commit()
+    session.refresh(task)
+    return {&quot;status&quot;: 200, &quot;data&quot;: task}
+
+@logic_router.get(&quot;/list-tasks&quot;)
+def tasks_list(session=Depends(get_session)) -&gt; list[Task]:
+    return session.query(Task).all()
+
+@logic_router.get(&quot;/task/{task_id}&quot;, response_model=TaskShow)
+def task_get(task_id: int, session=Depends(get_session)):
+    obj = session.get(Task, task_id)
+    if obj is None:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+    return obj
+
+@logic_router.patch(&quot;/task/update/{task_id}&quot;)
+def task_update(task_id: int, task: TaskDefault, session=Depends(get_session)) -&gt; Task:
+    db_task = session.get(Task, task_id)
+    if not db_task:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+
+    task_data = task.model_dump(exclude_unset=True)
+    for key, value in task_data.items():
+        setattr(db_task, key, value)
+    session.add(db_task)
+    session.commit()
+    session.refresh(db_task)
+    return db_task
+
+@logic_router.delete(&quot;/task/delete/{task_id}&quot;)
+def task_delete(task_id: int, session=Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+    session.delete(task)
+    session.commit()
+    return {&quot;ok&quot;: True}
+
+@logic_router.post(&quot;/schedule-create&quot;)
+def schedule_create(schedule: ScheduleDefault, session=Depends(get_session)) -&gt; TypedDict('Response', {&quot;status&quot;: int, &quot;data&quot;: Schedule}):
+    schedule = Schedule.model_validate(schedule)
+    session.add(schedule)
+    session.commit()
+    session.refresh(schedule)
+    return {&quot;status&quot;: 200, &quot;data&quot;: schedule}
+
+@logic_router.get(&quot;/list-schedules&quot;)
+def schedules_list(session=Depends(get_session)) -&gt; list[Schedule]:
+    return session.query(Schedule).all()
+
+@logic_router.get(&quot;/schedule/{schedule_id}&quot;, response_model=ScheduleShow)
+def schedule_get(schedule_id: int, session=Depends(get_session)):
+    obj = session.get(Schedule, schedule_id)
+    if obj is None:
+        raise HTTPException(status_code=404, detail=&quot;schedule not found&quot;)
+    return obj
+
+@logic_router.patch(&quot;/schedule/update/{schedule_id}&quot;)
+def schedule_update(schedule_id: int, schedule: ScheduleDefault, session=Depends(get_session)) -&gt; Schedule:
+    db_schedule = session.get(Schedule, schedule_id)
+    if not db_schedule:
+        raise HTTPException(status_code=404, detail=&quot;schedule not found&quot;)
+
+    schedule_data = schedule.model_dump(exclude_unset=True)
+    for key, value in schedule_data.items():
+        setattr(db_schedule, key, value)
+    session.add(db_schedule)
+    session.commit()
+    session.refresh(db_schedule)
+    return db_schedule
+
+@logic_router.delete(&quot;/schedule/delete/{schedule_id}&quot;)
+def schedule_delete(schedule_id: int, session=Depends(get_session)):
+    schedule = session.get(Schedule, schedule_id)
+    if not schedule:
+        raise HTTPException(status_code=404, detail=&quot;schedule not found&quot;)
+    session.delete(schedule)
+    session.commit()
+    return {&quot;ok&quot;: True}
+
+@logic_router.post(&quot;/reminder-create&quot;)
+def reminder_create(reminder: ReminderDefault, session=Depends(get_session)) -&gt; TypedDict('Response', {&quot;status&quot;: int, &quot;data&quot;: Reminder}):
+    reminder = Reminder.model_validate(reminder)
+    session.add(reminder)
+    session.commit()
+    session.refresh(reminder)
+    return {&quot;status&quot;: 200, &quot;data&quot;: reminder}
+
+@logic_router.get(&quot;/list-reminders&quot;)
+def reminders_list(session=Depends(get_session)) -&gt; list[Reminder]:
+    return session.query(Reminder).all()
+
+@logic_router.get(&quot;/reminder/{reminder_id}&quot;, response_model=ReminderShow)
+def reminder_get(reminder_id: int, session=Depends(get_session)):
+    obj = session.get(Reminder, reminder_id)
+    if obj is None:
+        raise HTTPException(status_code=404, detail=&quot;reminder not found&quot;)
+    return obj
+
+@logic_router.patch(&quot;/reminder/update/{reminder_id}&quot;)
+def reminder_update(reminder_id: int, reminder: ReminderDefault, session=Depends(get_session)) -&gt; Reminder:
+    db_reminder = session.get(Reminder, reminder_id)
+    if not db_reminder:
+        raise HTTPException(status_code=404, detail=&quot;reminder not found&quot;)
+
+    reminder_data = reminder.model_dump(exclude_unset=True)
+    for key, value in reminder_data.items():
+        setattr(db_reminder, key, value)
+    session.add(db_reminder)
+    session.commit()
+    session.refresh(db_reminder)
+    return db_reminder
+
+@logic_router.delete(&quot;/reminder/delete/{reminder_id}&quot;)
+def reminder_delete(reminder_id: int, session=Depends(get_session)):
+    reminder = session.get(Reminder, reminder_id)
+    if not reminder:
+        raise HTTPException(status_code=404, detail=&quot;reminder not found&quot;)
+    session.delete(reminder)
+    session.commit()
+    return {&quot;ok&quot;: True}
+
+@logic_router.patch(&quot;/task/{task_id}/add-time&quot;)
+def add_time_to_task(task_id: int, time_spent: int, session=Depends(get_session)) -&gt; Task:
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+    if task.time_spent is None:
+        task.time_spent = 0
+    task.time_spent += time_spent
+    session.add(task)
+    session.commit()
+    session.refresh(task)
+    return task
+
+
+@logic_router.post(&quot;/reminder/{reminder_id}/copy-for-task/{task_id}&quot;)
+def copy_reminder_for_task(reminder_id: int, task_id: int, session=Depends(get_session)):
+    reminder = session.get(Reminder, reminder_id)
+    if not reminder:
+        raise HTTPException(status_code=404, detail=&quot;reminder not found&quot;)
+
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=&quot;task not found&quot;)
+
+    new_reminder = Reminder(
+        task_id=task_id,
+        remind_at=reminder.remind_at
+    )
+    session.add(new_reminder)
+    session.commit()
+    session.refresh(new_reminder)
+    return {&quot;status&quot;: 200, &quot;message&quot;: &quot;Reminder copied for new task successfully&quot;}
+</code></pre>
+<h3 id="mainpy_2">main.py</h3>
+<pre><code class="language-python">from fastapi import FastAPI
+import uvicorn
+from db import init_db
+from endpoints import logic_router
+
+
+app = FastAPI()
+
+app.include_router(logic_router, prefix=&quot;/api&quot;, tags=[&quot;main&quot;])
+
+
+@app.on_event(&quot;startup&quot;)
+def on_startup():
+    init_db()
+
+
+if __name__ == &quot;__main__&quot;:
+    uvicorn.run(&quot;main:app&quot;, host=&quot;localhost&quot;, port=8000, reload=True)
+
+</code></pre>
+<h3 id="modelspy_2">models.py</h3>
+<pre><code class="language-python">import datetime
+from pydantic import BaseModel
+from enum import Enum
+from typing import Optional, List
+from sqlmodel import SQLModel, Field, Relationship
+
+
+class Priority(Enum):
+    high = &quot;high&quot;
+    medium = &quot;medium&quot;
+    low = &quot;low&quot;
+    no_priority = &quot;no_priority&quot;
+
+
+class TaskDefault(SQLModel):
+    title: str
+    description: Optional[str] = None
+    deadline: datetime.date
+    priority: Priority = Priority.no_priority
+
+
+class TaskShow(TaskDefault):
+    title: str
+    deadline: datetime.date
+    priority: Priority
+    time_spent: Optional[int] = None
+
+
+class Task(TaskDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+    time_spent: Optional[int] = None
+    schedules: Optional[List[&quot;Schedule&quot;]] = Relationship(back_populates=&quot;task&quot;)
+    reminders: Optional[List[&quot;Reminder&quot;]] = Relationship(back_populates=&quot;task&quot;)
+
+
+class ScheduleDefault(SQLModel):
+    task_id: Optional[int] = Field(default=None, foreign_key=&quot;task.id&quot;)
+    date: datetime.date
+    start_time: datetime.time
+    end_time: datetime.time
+
+
+class ScheduleShow(ScheduleDefault):
+    task: Optional[&quot;Task&quot;] = None
+
+
+class Schedule(ScheduleDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+    task: Optional[&quot;Task&quot;] = Relationship(back_populates=&quot;schedules&quot;)
+
+
+class ReminderDefault(SQLModel):
+    task_id: Optional[int] = Field(default=None, foreign_key=&quot;task.id&quot;)
+    remind_at: datetime.datetime
+
+
+class ReminderShow(ReminderDefault):
+    task: Optional[Task] = None
+
+
+class Reminder(ReminderDefault, table=True):
+    id: int = Field(default=None, primary_key=True)
+    task_id: Optional[int] = Field(default=None, foreign_key=&quot;task.id&quot;)
+    task: Optional[&quot;Task&quot;] = Relationship(back_populates=&quot;reminders&quot;)
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
