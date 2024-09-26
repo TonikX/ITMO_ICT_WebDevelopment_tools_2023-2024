@@ -1,0 +1,6 @@
+site_name: Labs
+nav:
+  - Home: index.md
+  - Lab1: lab_1.md
+  - Lab2: lab_2.md
+  - Lab3: lab_3.md
