@@ -1,0 +1,52 @@
+site_name: Владимир_Барышников_К33391
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - navigation.indexes
+  icon:
+    repo: fontawesome/brands/github-alt
+  palette:
+    scheme: default
+    primary: orange
+    accent: purple
+  language: ru
+repo_url: https://github.com/UnG1n/ITMO_ICT_WebDevelopment_tools_2023-2024
+repo_name: My_GitHub
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      restrict_base_path: False
+  - pymdownx.superfences
+  - pymdownx.keys
+plugins:
+  - glightbox:
+      auto_caption: true
+extra_css:
+- css/custom.css
+- css/palette.scss
+nav:
+  - "Лабораторная №1":
+      - Практика 1: lab1_practic1.md
+      - Практика 2: lab1_practic2.md
+      - Практика 3: lab1_practic3.md
+      - Модели: lab1_models.md
+      - Эндпоинты: lab1_endpoints.md
+      - Swagger: lab1_swagger.md
+      - Вывод: lab1_start.md
+  - "Лабораторная №2":
+      - Задание 1: lab2_task1.md
+      - Задание 2: lab2_task2.md
+  - "Лабораторная №3":
+      - Docker: lab3_docker.md
+
+
+

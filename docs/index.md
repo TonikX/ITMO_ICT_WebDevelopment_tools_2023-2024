@@ -1,0 +1,1 @@
+![](http://ung1n.github.io/ITMO_ICT_WebDevelopment_tools_2023-2024/img/index/FastAPI.png) 

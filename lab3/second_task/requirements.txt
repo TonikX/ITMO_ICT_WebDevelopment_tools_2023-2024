@@ -1,0 +1,13 @@
+celery
+redis
+fastapi
+uvicorn
+python-dotenv
+psycopg2-binary
+jwt
+bcrypt
+requests
+bs4
+aiohttp
+asyncio
+sqlmodel
