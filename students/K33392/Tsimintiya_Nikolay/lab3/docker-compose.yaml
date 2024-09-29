@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=parsing
+
+  api:
+    image: api:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  rabbit:
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    depends_on:
+      - api
+
+  worker:
+    image: worker:latest
+    depends_on:
+      - rabbit

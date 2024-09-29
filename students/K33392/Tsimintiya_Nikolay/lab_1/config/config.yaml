@@ -1,0 +1,13 @@
+postgres:
+  postgres_host: 'localhost'
+  postgres_db_name: 'books'
+  postgres_user_name: 'postgres'
+  postgres_password: '1234'
+  postgres_port: '5433'
+http_server:
+  port: "8080"
+  host: "localhost"
+  timeout: 4s
+  idle_timeout: 60s
+  user: "5433"
+  password: "1234"

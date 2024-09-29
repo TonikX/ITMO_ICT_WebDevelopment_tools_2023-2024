@@ -1,0 +1,14 @@
+Rabbit:
+  url: amqp://guest:guest@rabbit:5672/
+
+Server:
+  host: api
+  port: 8080
+
+Postgres:
+  host: 'postgres'
+  port: '5432'
+  username: 'root'
+  password: 'secret'
+  database: 'parsing'
+
