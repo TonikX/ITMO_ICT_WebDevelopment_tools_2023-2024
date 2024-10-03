@@ -1,0 +1,57 @@
+services:
+  lr1:
+    container_name: lr1
+    build: ./../ЛР1/ЛР
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+    restart: always
+    env_file:
+      - ./../ЛР1/ЛР/.env
+      
+  lr3:
+    container_name: lr3
+    build: .
+    depends_on:
+      - db
+    ports:
+      - 3001:3001
+    restart: always
+    env_file:
+      - .env
+      
+  db:
+    container_name: postgres
+    image: postgres
+    environment:
+      - POSTGRES_DB=lr1
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1
+    ports:
+      - 5432:5432
+    restart: always
+    
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build: .
+    command: celery -A celeryTask worker --loglevel=info
+    depends_on:
+      - redis
+      - db
+
+  flower:
+    build:
+      context: .
+    container_name: flower_app
+    command: celery -A celeryTask flower
+    depends_on:
+      - redis
+      - celery_worker
+    ports:
+      - 5555:5555
+      
