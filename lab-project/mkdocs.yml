@@ -1,0 +1,8 @@
+site_name: My Docs
+nav:
+  - Home: index.md
+  - LR1: lr1.md
+  - LR2: lr2.md
+  - LR3: lr3.md
+theme:
+  name: material

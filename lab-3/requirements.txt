@@ -1,0 +1,9 @@
+fastapi
+aiohttp
+beautifulsoup4
+databases
+asyncpg
+celery
+redis
+uvicorn
+python-dotenv
