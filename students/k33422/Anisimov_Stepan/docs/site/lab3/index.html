@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Lab 3 - Документация Web Development Tools</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Lab 3";
+        var mkdocs_page_input_path = "lab3.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Документация Web Development Tools
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../lab1/">Lab 1</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../lab2/">Lab 2</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Lab 3</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#fastapi-">FastAPI-приложение для парсинга</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#docker">Настройка Docker</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#dockerfile">Dockerfile для приложения</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#dockerfile_1">Dockerfile для парсера</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#docker-compose">Docker Compose</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_1">Эндпоинт для вызова парсера</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">Выводы</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Документация Web Development Tools</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Lab 3</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/kdflr/ITMO_ICT_WebDevelopment_tools_2023-2024/edit/master/docs/lab3.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="no-3">Лабораторная работа № 3</h1>
+<p>Третья лабораторная работа посвящена контейнеризации созданного приложения и налаживанию коммуникации между контейнерами.</p>
+<h2 id="fastapi-">FastAPI-приложение для парсинга</h2>
+<p>Чтобы обращаться к парсеру по http, было создано небольшое приложение на FastAPI.</p>
+<pre><code>parser = FastAPI()
+
+@parser.get(&quot;/parse&quot;)
+def parse(url: str):
+    with requests.Session() as session:
+        response = session.get(url=url, headers={'User-Agent': 'Mozilla/129.0.2'}).json()
+
+    hackathons = []
+
+    for post in response['posts']:
+        hackathon = {}
+
+        title = post['title']
+        descr = post['descr'].replace(&quot;&lt;br /&gt;&quot;, &quot;&quot;).replace(&quot;&amp;nbsp;&quot;, &quot; &quot;)
+
+        hackathon['name'] = title
+        hackathon['description'] = descr
+
+        hackathons.append(hackathon)
+
+    return hackathons
+</code></pre>
+<p>Метод parse получает на вход url и отправляет на него запрос, а из результата в формате json вычленяет необходимые нам данные.</p>
+<h2 id="docker">Настройка Docker</h2>
+<p>Для контейнеризации PostgreSQL был использован готовый образ, взятый с Docker Hub. </p>
+<h3 id="dockerfile">Dockerfile для приложения</h3>
+<pre><code>FROM python:3.11.9
+
+WORKDIR /code
+
+COPY ./app/requirements.txt /code/requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+
+COPY ./app /code/app
+
+EXPOSE 8000
+
+CMD [&quot;uvicorn&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8000&quot;, &quot;app.main:app&quot;]
+</code></pre>
+<p>Данный файл указывает родительский образ - python 3.11.9, копирует локальные директории с приложением в контейнер, устанавливает зависимости, открывает порт 8000 и запускает сервер uvicorn, принимающий подключения с любого адреса.</p>
+<h3 id="dockerfile_1">Dockerfile для парсера</h3>
+<pre><code>FROM python:3.11.9
+
+WORKDIR /code
+
+COPY ./parser/requirements.txt /code/requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+
+COPY ./parser /code/parser
+
+EXPOSE 8000
+
+CMD [&quot;uvicorn&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8000&quot;, &quot;parser.main:parser&quot;]
+</code></pre>
+<p>Данный скрипт аналогичен предыдущему, за исключением наименования директорий.</p>
+<h3 id="docker-compose">Docker Compose</h3>
+<p>Docker Compose поможет нам оркестрировать созданные контейнеры и связать их в одну сеть, чтобы они могли беспрепятственно коммуницировать.</p>
+<pre><code>services:
+  web:
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    container_name: webapp_test
+    restart: always
+    ports:
+      - &quot;8000:8000&quot;
+    env_file:
+      - /app/.env
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./application:/app
+</code></pre>
+<p>Первая секция отвечает за веб-приложение, запуская его в контейнере webapp_test. При ошибках контейнер будет перезапускаться. Обращаться к серверу в контейнере можно через внешний порт 8000. Также здесь указана зависимость от контейнера с БД (пока не заработает БД, не запустится и приложение), настроен логический том, в котором будут храниться данные приложения.</p>
+<pre><code>  parser:
+    build:
+      context: .
+      dockerfile: parser.Dockerfile
+    container_name: parser_test
+    restart: always
+    ports:
+      - &quot;8001:8000&quot;
+    volumes:
+      - ./parser:/parser
+</code></pre>
+<p>Подобным образом создается контейнер для парсера, однако здесь не проверяется успешная работа контейнера postgres, поскольку парсер в данном случае будет только собирать и возвращать данные клиенту, но не вносить их в базу. Обращение к парсеру извне будет происходить через внешний порт 8001.</p>
+<pre><code>  db:
+    image: postgres
+    container_name: postgres_test
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: hackathon_db
+    ports:
+      - &quot;5432:5432&quot;
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [&quot;CMD-SHELL&quot;, &quot;pg_isready -U postgres&quot;]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+</code></pre>
+<p>Контейнер с БД задействует предустановленный образ postgres. В переменных окружения находятся данные для доступа к БД. Также реализован автоматический health_check, проверяющий работоспособность базы данных при каждом запуске контейнера.
+База данных hackathon_db внутри контейнера создана через командный интерфейс контейнера при помощи psql.</p>
+<p>При помощи команды <code>docker network inspect lab3_default</code> можно удостовериться, что все три контейнера объединены в одну автоматически созданную сеть lab3_default.</p>
+<pre><code> &quot;Containers&quot;: {
+            &quot;0baed4df798c1fe7fa5dec3038597483b6817b219c5f68a98d8f16ee7d97e607&quot;: {
+                &quot;Name&quot;: &quot;parser_test&quot;,
+                &quot;EndpointID&quot;: &quot;6e6c2085fa70abb022418e361508ecf72997487db86adb3555da539381b6e3bc&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:12:00:02&quot;,
+                &quot;IPv4Address&quot;: &quot;172.18.0.2/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            },
+            &quot;0fe0fc48d432f243ffe237409e21241cc3f34abcfe26a12317859240fbde494f&quot;: {
+                &quot;Name&quot;: &quot;webapp_test&quot;,
+                &quot;EndpointID&quot;: &quot;5b7fbefd4b0ac2b86e9f274c18e122224f83f1290bc16abb33fc06d55cb7aea3&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:12:00:04&quot;,
+                &quot;IPv4Address&quot;: &quot;172.18.0.4/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            },
+            &quot;f870e9793f323f27f99fcd9ce881338d74a940665f80afdf694e4c1e80ffff1d&quot;: {
+                &quot;Name&quot;: &quot;postgres_test&quot;,
+                &quot;EndpointID&quot;: &quot;bd5642ac9380a80dfd7efbba82475adc68b4359f94c109611f80cbe646135731&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:12:00:03&quot;,
+                &quot;IPv4Address&quot;: &quot;172.18.0.3/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            }
+</code></pre>
+<p>Контейнеры успешно пингуются между собой, что также свидетельствует о правильной конфигурации сети. 
+Через локалхост можно получить доступ к обоим приложениям и отправлять запросы через REST API, при этом все изменения в базе данных отразятся в контейнере postgresql.</p>
+<p>Запрос через API приложения в браузере локалхоста:</p>
+<pre><code>2024-10-22 14:01:01 INFO:     172.18.0.1:59446 - &quot;POST /team/ HTTP/1.1&quot; 200 OK
+</code></pre>
+<p>Изменения в контейнере БД:</p>
+<pre><code>hackathon_db=# select * from team;
+    name     | id 
+-------------+----
+ sample team |  2
+(1 row)
+</code></pre>
+<h2 id="_1">Эндпоинт для вызова парсера</h2>
+<p>В приложении FastAPI был создан следующий эндпоинт:</p>
+<pre><code>@app.get(&quot;/parser_call&quot;)
+def call_parser(url):
+    with requests.Session() as session:
+        response = session.get(f'http://parser_test:8000/parse?url={url}', headers={'User-Agent': 'Mozilla/129.0.2'})
+    return response.json()
+</code></pre>
+<p>Он отправляет на внутренний адрес парсера GET-запрос с введенным url, что задействует ранее описанный метод парсера.</p>
+<p>Удостоверимся в работоспособности метода.</p>
+<p>Запрос из приложения:</p>
+<pre><code>2024-10-22 14:08:27 INFO:     172.18.0.1:58336 - &quot;GET /parser_call?url=https%3A%2F%2Ffeeds.tildacdn.com%2Fapi%2Fgetfeed%2F%3Ffeeduid%3D131632209651-986950497851 HTTP/1.1&quot; 200 OK
+</code></pre>
+<p>Отклик в парсере:</p>
+<pre><code>2024-10-22 14:08:27 INFO:     172.18.0.4:40434 - &quot;GET /parse?url=https://feeds.tildacdn.com/api/getfeed/?feeduid=131632209651-986950497851 HTTP/1.1&quot; 200 OK
+</code></pre>
+<h2 id="_2">Выводы</h2>
+<p>Таким образом, в ходе данной лабораторной работы были получены практические навыки работы с Docker и создано мультиконтейнерное приложение на основе FastAPI и PostgreSQL.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../lab2/" class="btn btn-neutral float-left" title="Lab 2"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/kdflr/ITMO_ICT_WebDevelopment_tools_2023-2024" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../lab2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

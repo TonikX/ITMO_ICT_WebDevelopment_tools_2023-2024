@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Lab 2 - Документация Web Development Tools</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Lab 2";
+        var mkdocs_page_input_path = "lab2.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Документация Web Development Tools
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../lab1/">Lab 1</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Lab 2</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">Задача 1</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#asyncio">asyncio</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#threading">threading</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#multiprocessing">multiprocessing</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_1">Итоги выполнения</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2">Задача 2</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#asyncio_1">asyncio</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#threading_1">threading</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#multiprocessing_1">multiprocessing</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">Итоги выполнения</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">Выводы</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../lab3/">Lab 3</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Документация Web Development Tools</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Lab 2</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/kdflr/ITMO_ICT_WebDevelopment_tools_2023-2024/edit/master/docs/lab2.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="no-2">Лабораторная работа № 2</h1>
+<p>В данной лабораторной работе было предложено изучить и оценить различные подходы к асинхронному программированию в Python.</p>
+<h2 id="1">Задача 1</h2>
+<p>В первой задаче было необходимо разбить вычисление суммы чисел вплоть до 1000000 на подзадачи, используя три разных подхода, и сравнить время выполнения для каждого подхода.</p>
+<h3 id="asyncio">asyncio</h3>
+<pre><code>async def calc(offset, task_count):
+    sum = 0
+    for i in range(1 + offset, 1000001, task_count):
+        sum += i
+    return sum
+
+
+async def main():
+    task_count = 10
+    tasks = []
+
+    for i in range(task_count):
+        tasks.append(calc(offset=i, task_count=task_count))
+
+    results = await asyncio.gather(*tasks)
+    print(sum(results))
+
+
+if __name__ == &quot;__main__&quot;:
+    asyncio.run(main())
+</code></pre>
+<p>Ключевое слово async показывает, что функция может работать в асинхронном контексте. 
+Вычисление разбивается на 10 подзадач, затем результаты собираются в единый массив функцией asyncio.gather(). Ключевое слово await показывает, что во время выполнения каждой подзадачи можно не дожидаться его окончания для перехода к следующей подзадаче.</p>
+<h3 id="threading">threading</h3>
+<pre><code>def calc(offset, task_count, res, index):
+    sum = 0
+    for i in range(1 + offset, 1000001, task_count):
+        sum += i
+    res[index] = sum
+
+
+def main():
+    thread_count = 10
+    threads = []
+    results = [0] * thread_count
+
+    for i in range(thread_count):
+        t = threading.Thread(target=calc, args=(i, thread_count, results, i))
+        threads.append(t)
+        t.start()
+
+    for thr in threads:
+        thr.join()
+
+    print(sum(results))
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<p>В связи с существованием Global Interpreter Lock в Python, истинная многопоточность нам недоступна, в связи с чем данный подход не сильно отличается от asyncio. По сути, реализуется то же самое конкурентное выполнение, так как выполнением всех задач может быть занят только один поток. 
+Принцип выполнения аналогичный - задача разбивается на подзадачи, и каждая из них поручается отдельному потоку, каждый из которых добавляет результат выполнения в общий массив, после чего считается итоговая сумма.</p>
+<h3 id="multiprocessing">multiprocessing</h3>
+<pre><code>def calc(offset, task_count, queue):
+    sum = 0
+    for i in range(1 + offset, 1000001, task_count):
+        sum += i
+    queue.put(sum)
+
+
+def main():
+    process_count = 10
+    processes = []
+    results = Queue()
+
+    for i in range(process_count):
+        p = Process(target=calc, args=(i, process_count, results))
+        processes.append(p)
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    total = 0
+    while not results.empty():
+        total += results.get()
+
+    print(total)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<p>Данный подход кардинально отличается от двух предыдущих по своей сути, и более эффективен он при работе с задачами, нагружающими CPU. Он разбивает задачу на несколько системных процессов, что позволяет использовать многоядерность процессора для параллельного выполнения подзадач. Сам алгоритм при этом схож с предыдущими подходами.</p>
+<h2 id="_1">Итоги выполнения</h2>
+<ul>
+<li>multiprocessing - 0.32s</li>
+<li>threading - 0.05s</li>
+<li>asyncio - 0.04s</li>
+</ul>
+<p>Ожидаемо, threading и asyncio показали лучшие, примерно одинаковые результаты. Перейдем ко второй задаче, где задействован чуть более сложный процесс, чем выполнение суммы.</p>
+<h2 id="2">Задача 2</h2>
+<p>Во второй задаче было необходимо спарсить актуальные для предметной области первой лабораторной данные с нескольких сайтов, разделив парсинг при помощи вышеупомянутых подходов.
+Было найдено 2 подходящих для парсинга сайта, с которых собирались названия и описания хакатонов. Так как известный скрапер bs4 отказался работать с multprocessing'ом, а вебдрайвер selenium не поддержал asyncio, было принято решение обращаться непосредственно к ресурсам, откуда берут данные сайты (они динамические и созданы при помощи Тильды). </p>
+<h3 id="asyncio_1">asyncio</h3>
+<pre><code>async def parse_url(url, session):
+    async with session.get(url) as resp:
+        with psycopg2.connect(host='localhost', database='hackathon_db', user='postgres', password=123, port=5432) as conn:
+            with conn.cursor() as cur:
+                conn.autocommit = True
+
+                response = await resp.json()
+
+                for post in response['posts']:
+                    title = post['title']
+                    descr = post['descr'].replace(&quot;&lt;br /&gt;&quot;, &quot;&quot;).replace(&quot;&amp;nbsp;&quot;, &quot; &quot;)
+
+                    try:
+                        data = title, descr
+                        cur.execute(&quot;INSERT INTO competition (name, description) VALUES ('%s', '%s')&quot; % data)
+
+                    except Exception as e:
+                        conn.rollback()
+                        print(e)
+
+
+async def main():
+    urls = [&quot;https://feeds.tildacdn.com/api/getfeed/?feeduid=131632209651-986950497851&quot;,
+        &quot;https://feeds.tildacdn.com/api/getfeed/?feeduid=617755803461&quot;]
+
+    async with aiohttp.ClientSession() as session:
+        tasks = [parse_url(url, session) for url in urls]
+        await asyncio.gather(*tasks)
+
+
+if __name__==&quot;__main__&quot;:
+    asyncio.run(main())
+</code></pre>
+<p>Разбиение на подзадачи происходит аналогично задаче 1. При этом для асинхронных запросов к сайтам используется сеанс aiohttp.
+Первоначально производится подключение к базе данных и инициализация курсора. Производится запрос к сайту, возвращается ответ в формате json, откуда с легкостью вычленяется название и описание. Затем при помощи курсора выполняется SQL-запрос, вставляющий в базу данных собранные значения.</p>
+<h3 id="threading_1">threading</h3>
+<pre><code>def parse_url(url, session):
+    with psycopg2.connect(host='localhost', database='hackathon_db', user='postgres', password=123, port=5432) as conn:
+         with conn.cursor() as cur:
+            conn.autocommit = True
+
+            response = session.get(url=url, headers={'User-Agent': 'Mozilla/129.0.2'}).json()
+
+            for post in response['posts']:
+                title = post['title']
+                descr = post['descr'].replace(&quot;&lt;br /&gt;&quot;, &quot;&quot;).replace(&quot;&amp;nbsp;&quot;, &quot; &quot;)
+
+                try:
+                    data = title, descr
+                    cur.execute(&quot;INSERT INTO competition (name, description) VALUES ('%s', '%s')&quot; % data)
+
+                except Exception as e:
+                    conn.rollback()
+                    print(e)
+
+
+def main():
+    urls = [&quot;https://feeds.tildacdn.com/api/getfeed/?feeduid=131632209651-986950497851&quot;,
+        &quot;https://feeds.tildacdn.com/api/getfeed/?feeduid=617755803461&quot;]
+
+    thread_count = len(urls)
+    threads = []
+    with requests.Session() as session:
+        for i in range(thread_count):
+            t = threading.Thread(target=parse_url, args=(urls[i], session))
+            threads.append(t)
+            t.start()
+
+        for t in threads:
+            t.join()
+
+
+if __name__==&quot;__main__&quot;:
+    main()
+</code></pre>
+<p>Threading также функционирует аналогично предыдущей задаче, однако здесь уже используется стандартный объект Session из библиотеки requests. Функция парсинга остается неизменной.</p>
+<h3 id="multiprocessing_1">multiprocessing</h3>
+<pre><code>def parse_url(url, session):
+    with psycopg2.connect(host='localhost', database='hackathon_db', user='postgres', password=123, port=5432) as conn:
+        with conn.cursor() as cur:
+            conn.autocommit = True
+
+            response = session.get(url=url, headers={'User-Agent': 'Mozilla/129.0.2'}).json()
+
+            for post in response['posts']:
+                title = post['title']
+                descr = post['descr'].replace(&quot;&lt;br /&gt;&quot;, &quot;&quot;).replace(&quot;&amp;nbsp;&quot;, &quot; &quot;)
+
+                try:
+                    data = title, descr
+                    cur.execute(&quot;INSERT INTO competition (name, description) VALUES ('%s', '%s')&quot; % data)
+
+                except Exception as e:
+                    conn.rollback()
+                    print(e)
+
+
+def main():
+    urls = [&quot;https://feeds.tildacdn.com/api/getfeed/?feeduid=131632209651-986950497851&quot;,
+        &quot;https://feeds.tildacdn.com/api/getfeed/?feeduid=617755803461&quot;]
+
+    process_count = len(urls)
+    processes = []
+
+    with requests.Session() as session:
+        for i in range(process_count):
+            p = Process(target=parse_url, args=(urls[i], session))
+            processes.append(p)
+            p.start()
+
+        for p in processes:
+            p.join()
+
+
+if __name__==&quot;__main__&quot;:
+    main()
+</code></pre>
+<p>Та же история и с мультипроцессингом.</p>
+<h2 id="_2">Итоги выполнения</h2>
+<p>Была осуществлена проверка корректности вставки данных через pgAdmin. Временные результаты оказались следующими:</p>
+<ul>
+<li>multiprocessing - 1.4s</li>
+<li>threading - 0.24s</li>
+<li>asyncio - 0.34s</li>
+</ul>
+<p>В данном случае threading оказался чуть быстрее, чем asyncio. Multiprocessing же остался сильно позади, поскольку плохо подходит для I/O-bound задач, то есть тех, в которых идет большое количество операций ввода-вывода.</p>
+<h2 id="_3">Выводы</h2>
+<p>Таким образом, в ходе данной работы были протестированы 3 подхода к конкурентному и параллельному исполнению кода. На основании временных измерений и особенностей каждого подхода для Web-разработки оказался наиболее подходящим метод, задействующий библиотеку asyncio, к тому же, его поддерживает и фреймворк FastAPI.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../lab1/" class="btn btn-neutral float-left" title="Lab 1"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../lab3/" class="btn btn-neutral float-right" title="Lab 3">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/kdflr/ITMO_ICT_WebDevelopment_tools_2023-2024" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../lab1/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../lab3/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

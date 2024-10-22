@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Lab 1 - Документация Web Development Tools</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Lab 1";
+        var mkdocs_page_input_path = "lab1.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Документация Web Development Tools
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Lab 1</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">Модели</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">Подключение к базе данных</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">Запросы к базе данных</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">Миграции</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">Выводы</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../lab2/">Lab 2</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../lab3/">Lab 3</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Документация Web Development Tools</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Lab 1</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/kdflr/ITMO_ICT_WebDevelopment_tools_2023-2024/edit/master/docs/lab1.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="no1">Лабораторная работа №1</h1>
+<p>В ходе данной лабораторной работы была создана простая система для проведения хакатонов средствами FastAPI и SQLModel.</p>
+<h2 id="_1">Модели</h2>
+<p>База данных представлена следующими таблицами: </p>
+<ul>
+<li>Пользователь (User)</li>
+<li>Команда (Team)</li>
+<li>Соревнование (Competition)</li>
+<li>Задача (Task)</li>
+<li>Проект (Project)</li>
+</ul>
+<pre><code>#user-team link
+class UserTeamLink(SQLModel, table=True):
+    team_id: int = Field(foreign_key=&quot;team.id&quot;, primary_key=True)
+    user_id: int = Field(foreign_key=&quot;user.id&quot;, primary_key=True)
+</code></pre>
+<p>Модель UserTeamLink предназначена для реализации связи Many-to-Many между участниками соревнований и командами. 
+В нее входит 2 поля - первичных ключа. Один из них относится к участнику, второй - к команде.</p>
+<pre><code>#user
+class User(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    name: str
+    teams: Optional[List[&quot;Team&quot;]] = Relationship(back_populates=&quot;members&quot;, link_model=UserTeamLink)
+</code></pre>
+<p>Модель User описывает пользователя - участника соревнований. Он описывается id, именем и списком команд, членом которых он является.</p>
+<pre><code>#team
+class TeamDefault(SQLModel):
+    name: str
+
+class Team(TeamDefault, table=True):
+    id: int = Field(primary_key=True)
+    members: List[&quot;User&quot;] = Relationship(back_populates=&quot;teams&quot;, link_model=UserTeamLink)
+    projects: Optional[List[&quot;Project&quot;]] = Relationship(back_populates=&quot;team&quot;)
+
+class TeamResponse(TeamDefault):
+    id: int
+    members: List[&quot;User&quot;] = []
+    projects: List[&quot;Project&quot;] = []
+</code></pre>
+<p>Подобный синтаксис для модели Team предназначен для реализации вложенного отображения полей. Так, в соответствующую модель Default входят только поля, вносимые при отправке POST-запроса, а в модель Response - поля, отображаемые при отправке связанного с моделью GET-запроса.</p>
+<pre><code>#competition
+class CompetitionDefault(SQLModel):
+    name: str
+    description: str
+
+class Competition(CompetitionDefault, table=True):
+    id: int = Field(primary_key=True)
+    tasks: Optional[List[&quot;Task&quot;]] = Relationship(back_populates=&quot;comp&quot;)
+
+class CompetitionResponse(CompetitionDefault):
+    id: int
+    tasks: List[&quot;Task&quot;] = []
+</code></pre>
+<p>Аналогичным образом устроена модель Competition, в ней реализовано вложенное отображение задач, поставленных на том или ином хакатоне.</p>
+<pre><code>#task 
+class TaskDefault(SQLModel):
+    name: str
+    description: str
+    deadline: datetime
+    comp_id: int = Field(foreign_key=&quot;competition.id&quot;)
+
+
+class Task(TaskDefault, table=True):
+    id: int = Field(primary_key=True)
+    comp: Competition = Relationship(back_populates=&quot;tasks&quot;)
+    solutions: Optional[List[&quot;Project&quot;]] = Relationship(back_populates=&quot;task&quot;)
+
+
+class TaskResponse(TaskDefault):
+    id: int
+    comp: Competition = None
+    solutions: List[&quot;Project&quot;] = []
+</code></pre>
+<p>Так же и для модели Task, здесь списком отображаются детали о предложенных решениях.</p>
+<pre><code># project
+class ProjectNomination(Enum):
+    first = &quot;first&quot;
+    second = &quot;second&quot;
+    third = &quot;third&quot;
+    participant = &quot;participant&quot;
+
+
+class ProjectDefault(SQLModel):
+    name: str
+    description: str
+    grade: Optional[int]
+    nomination: ProjectNomination
+    task_id: int = Field(foreign_key=&quot;task.id&quot;)
+    team_id: int = Field(foreign_key=&quot;team.id&quot;)
+
+
+class Project(ProjectDefault, table=True):
+    id: int = Field(primary_key=True)
+    task: Task = Relationship(back_populates=&quot;solutions&quot;)
+    team: Team = Relationship(back_populates=&quot;projects&quot;)
+
+
+class ProjectResponse(ProjectDefault):
+    id: int
+    task: Task = None
+    team: Team = None
+</code></pre>
+<p>В модели проекта используется поле типа Enum для назначения номинации тому или иному проекту.</p>
+<h2 id="_2">Подключение к базе данных</h2>
+<pre><code>load_dotenv()
+db_url = os.getenv('DB_ADMIN')
+engine = create_engine(db_url, echo=True)
+
+
+def init_db():
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+</code></pre>
+<p>В качестве СУБД используется PostgreSQL, связь с ней осуществляется при помощи драйвера psycopg2. 
+Из файла .env подгружается переменная окружения с адресом базы данных, SQLModel создает описанные в models.py таблицы, и в конце определяется функция для создания сеанса связи с базой данных.</p>
+<h2 id="_3">Запросы к базе данных</h2>
+<p>Для всех моделей реализованы типовые запросы (GET, POST, PATCH и DELETE), идентичные для каждой из них.
+Параметр response_model в декораторе отвечает за валидацию возвращаемых данных.
+Функции передается объект Depends, который не позволяет послать запрос до установления сеанса соединения с базой данных.
+Рассмотрим запросы на примере модели Team.</p>
+<pre><code># team-related CRUDs
+@app.post('/team/', response_model=Team)
+def create_team(team: Team, session=Depends(get_session)):
+    session.add(team)
+    session.commit()
+    session.refresh(team)
+    return team
+</code></pre>
+<p>POST-запрос вносит в базу данных информацию о команде. При этом на вход подается только ее название. Id генерируется автоматически, списки участников и проектов подгружаются благодаря информации из других таблиц.</p>
+<pre><code>@app.get('/teams', response_model=List[Team])
+def teams_list(session=Depends(get_session)):
+    teams = session.exec(select(Team)).all()
+    return teams
+</code></pre>
+<p>Первый GET-запрос выводит список всех команд, возвращая данные в соответствующем формате. Функция select из SQLAlchemy соответствует необходимому нам SQL-запросу.</p>
+<pre><code>@app.get('/teams/{team_id}', response_model=TeamResponse)
+def get_team(team_id: int, session=Depends(get_session)):
+    team = session.get(Team, team_id)
+    return team
+</code></pre>
+<p>Второй GET-запрос возвращает команду по ее id и использует созданную специально для вложенного отображения модель TeamResponse. Она предотвращает бесконечную рекурсию при вложенном отображении.</p>
+<pre><code>@app.patch('/teams/{team_id}', response_model=Team)
+def edit_team(team_id: int, team: Team, session=Depends(get_session)):
+    existing_team = session.get(Team, team_id)
+    if not existing_team:
+        raise HTTPException(status_code=404, detail=&quot;Team not found&quot;)
+    team_data = team.model_dump(exclude_unset=True)
+    for key, value in team_data.items():
+        setattr(existing_team, key, value)
+    session.add(existing_team)
+    session.commit()
+    session.refresh(existing_team)
+    return existing_team
+</code></pre>
+<p>PATCH-запрос предназначен для частичного обновления данных. Он собирает из базы данные о команде по ее id, затем для каждого поля модели обновляет их в соответствие с запросом пользователя.</p>
+<pre><code>@app.delete('/teams/{team_id}')
+def delete_team(team_id: int, session=Depends(get_session)):
+    team = session.get(Team, team_id)
+    if not team:
+        raise HTTPException(status_code=404, detail=&quot;Team not found&quot;)
+    session.delete(team)
+    session.commit()
+    return {&quot;ok&quot;: True}
+</code></pre>
+<p>DELETE-запрос, очевидно, удаляет данные о команде, сначала получая данные о ней, затем стирая из базы данных.</p>
+<p>Все изменения в базе данных реализованы при помощи объекта сеанса связи с базой данных, предоставленного SQLModel.</p>
+<p>Далее можно увидеть код остальных запросов к базе, реализованных абсолютно идентичными методами.</p>
+<pre><code># competition-related CRUDs
+@app.post('/competition/', response_model=Competition)
+def create_comp(comp: Competition, session=Depends(get_session)):
+    session.add(comp)
+    session.commit()
+    session.refresh(comp)
+    return comp
+
+
+@app.get('/competitions', response_model=List[Competition])
+def comps_list(session=Depends(get_session)):
+    comps = session.exec(select(Competition)).all()
+    return comps
+
+
+@app.get('/competitions/{competition_id}', response_model=CompetitionResponse)
+def get_comp(competition_id: int, session=Depends(get_session)):
+    comp = session.get(Competition, competition_id)
+    return comp
+
+
+@app.patch('/competitions/{competition_id}', response_model=Competition)
+def edit_comp(comp_id: int, comp: Competition, session=Depends(get_session)):
+    existing_comp = session.get(Competition, comp_id)
+    if not existing_comp:
+        raise HTTPException(status_code=404, detail=&quot;Competition not found&quot;)
+    comp_data = comp.model_dump(exclude_unset=True)
+    for key, value in comp_data.items():
+        setattr(existing_comp, key, value)
+    session.add(existing_comp)
+    session.commit()
+    session.refresh(existing_comp)
+    return existing_comp
+
+
+@app.delete('/competitions/{competition_id}')
+def delete_comp(comp_id: int, session=Depends(get_session)):
+    comp = session.get(Competition, comp_id)
+    if not comp:
+        raise HTTPException(status_code=404, detail=&quot;Team not found&quot;)
+    session.delete(comp)
+    session.commit()
+    return {&quot;ok&quot;: True}
+
+
+# task-related CRUDs
+@app.post('/task/', response_model=Task)
+def create_task(task: Task, session=Depends(get_session)):
+    session.add(task)
+    session.commit()
+    session.refresh(task)
+    return task
+
+
+@app.get('/tasks', response_model=List[Task])
+def tasks_list(session=Depends(get_session)):
+    tasks = session.exec(select(Task)).all()
+    return tasks
+
+
+@app.get('/tasks/{task_id}', response_model=TaskResponse)
+def get_task(task_id: int, session=Depends(get_session)):
+    task = session.get(Task, task_id)
+    return task
+
+
+@app.patch('/tasks/{task_id}', response_model=Task)
+def edit_task(task_id: int, task: Task, session=Depends(get_session)):
+    existing_task = session.get(Task, task_id)
+    if not existing_task:
+        raise HTTPException(status_code=404, detail=&quot;Task not found&quot;)
+    task_data = task.model_dump(exclude_unset=True)
+    for key, value in task_data.items():
+        setattr(existing_task, key, value)
+    session.add(existing_task)
+    session.commit()
+    session.refresh(existing_task)
+    return existing_task
+
+
+@app.delete('/tasks/{task_id}')
+def delete_task(task_id: int, session=Depends(get_session)):
+    task = session.get(Task, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail=&quot;Task not found&quot;)
+    session.delete(task)
+    session.commit()
+    return {&quot;ok&quot;: True}
+
+
+# project-related CRUDs
+@app.post('/project/', response_model=Project)
+def create_project(project: Project, session=Depends(get_session)):
+    session.add(project)
+    session.commit()
+    session.refresh(project)
+    return project
+
+
+@app.get('/projects', response_model=List[Project])
+def projects_list(session=Depends(get_session)):
+    projects = session.exec(select(Project)).all()
+    return projects
+
+
+@app.get('/projects/{project_id}', response_model=ProjectResponse)
+def get_project(project_id: int, session=Depends(get_session)):
+    project = session.get(Project, project_id)
+    return project
+
+
+@app.patch('/projects/{project_id}', response_model=Project)
+def edit_project(project_id: int, project: Project, session=Depends(get_session)):
+    existing_project = session.get(Project, project_id)
+    if not existing_project:
+        raise HTTPException(status_code=404, detail=&quot;Project not found&quot;)
+    project_data = project.model_dump(exclude_unset=True)
+    for key, value in project_data.items():
+        setattr(existing_project, key, value)
+    session.add(existing_project)
+    session.commit()
+    session.refresh(existing_project)
+    return existing_project
+
+
+@app.delete('/projects/{project_id}')
+def delete_project(project_id: int, session=Depends(get_session)):
+    project = session.get(Project, project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail=&quot;Project not found&quot;)
+    session.delete(project)
+    session.commit()
+    return {&quot;ok&quot;: True}
+
+
+# user-related CRUDs
+@app.post('/user/', response_model=User)
+def create_user(user: User, session=Depends(get_session)):
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user
+
+
+@app.get('/users', response_model=List[User])
+def users_list(session=Depends(get_session)):
+    users = session.exec(select(User)).all()
+    return users
+
+
+@app.get('/users/{user_id}', response_model=User)
+def get_user(user_id: int, session=Depends(get_session)):
+    user = session.get(User, user_id)
+    return user
+
+
+@app.patch('/users/{user_id}', response_model=User)
+def edit_user(user_id: int, user: User, session=Depends(get_session)):
+    existing_user = session.get(User, user_id)
+    if not existing_user:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+    user_data = user.model_dump(exclude_unset=True)
+    for key, value in user_data.items():
+        setattr(existing_user, key, value)
+    session.add(existing_user)
+    session.commit()
+    session.refresh(existing_user)
+    return existing_user
+
+
+@app.delete('/user/{user_id}')
+def delete_user(user_id: int, session=Depends(get_session)):
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+    session.delete(user)
+    session.commit()
+    return {&quot;ok&quot;: True}
+</code></pre>
+<h2 id="_4">Миграции</h2>
+<p>Миграции служат для обновления таблиц в базе данных в соответствии с изменениями в файле models.py. В данном проекте они реализованы при помощи библиотеки alembic и были активно использованы в ходе тестирования и отладки.</p>
+<h2 id="_5">Выводы</h2>
+<p>Таким образом, в ходе данной работы при помощи библиотек FastAPI и SQLModel был создан быстрый, легковесный и интуитивно понятный бэкенд для системы организации хакатонов. Все запросы протестированы через автоматически сгенерированную документацию в Swagger, а отражение их результатов в базе данных - через клиент pgAdmin.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../lab2/" class="btn btn-neutral float-right" title="Lab 2">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/kdflr/ITMO_ICT_WebDevelopment_tools_2023-2024" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../lab2/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
