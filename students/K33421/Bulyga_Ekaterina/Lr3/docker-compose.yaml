@@ -1,0 +1,51 @@
+x-envs: &envs
+  DB_HOST: database
+  DB_PORT: 5432
+  BK_HOST: broker
+  BK_PORT: 6379
+
+services:
+  database:
+    container_name: database
+    image: huecker.io/library/postgres:16-alpine
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DATABASE=${DB_DATABASE}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
+
+  broker:
+    container_name: broker
+    image: huecker.io/library/redis:latest
+    ports:
+      - "${BK_PORT}:6379"
+
+  application:
+    container_name: application
+    build: .
+    env_file:
+      - .env
+    environment: *envs
+    command: uvicorn main:app --host 0.0.0.0 --port ${AP_PORT}
+    volumes:
+      - .:/application
+    ports:
+      - "${AP_PORT}:${AP_PORT}"
+
+  queue:
+    container_name: queue
+    build: .
+    volumes:
+      - .:/application
+    env_file:
+      - .env
+    environment: *envs
+    command: celery -A worker:app worker
+
+volumes:
+  pgdata:
