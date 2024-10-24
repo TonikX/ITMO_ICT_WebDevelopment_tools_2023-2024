@@ -1,0 +1,9 @@
+site_name: FastAPI Docker Application
+nav:
+  - Home: index.md
+theme:
+  name: material
+
+plugins:
+  - search
+  - mkdocstrings

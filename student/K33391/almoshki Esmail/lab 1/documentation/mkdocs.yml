@@ -1,0 +1,11 @@
+site_name: Bookcrossing App Documentation
+nav:
+  - Home: index.md
+  - API Reference:
+      - Overview: api/overview.md
+      - Users: api/users.md
+      - Books: api/books.md
+      - Requests: api/requests.md
+      - Models: api/models.md
+      - Database Connection: api/connection.md
+theme: readthedocs

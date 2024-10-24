@@ -1,0 +1,5 @@
+fastapi==0.95.0 
+uvicorn==0.21.1  
+requests==2.31.0
+requests-async==0.6.2
+http3

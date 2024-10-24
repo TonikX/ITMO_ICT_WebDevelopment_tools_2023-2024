@@ -1,0 +1,7 @@
+site_name: Lab 2 
+nav: 
+  - Home: index.md
+  - Excersices:
+    - First Excersice: file/first.md
+    - Second Excersice: file/second.md
+theme: readthedocs
