@@ -1,0 +1,32 @@
+site_name: Работы по "Средствам Web-программирования"
+nav:
+  - Главная: index.md
+  - ЛР 1:
+    - Практические работы: lab1/practice_for_lab1.md
+    - Задание на ЛР1: lab1/task_for_lab1.md
+    - Модели: lab1/models_for_lab1.md
+    - Эндпоинты: lab1/main_for_lab1.md
+    - Соединение с БД: lab1/connection_for_lab1.md
+    - Функционал пользователя: lab1/auth_for_lab1.md
+  - ЛР 2:
+    - Цель работы: lab2/lab2.md
+    - Задача 1: lab2/task1.md
+    - Задача 2: lab2/task2.md
+  - ЛР 3:
+    - Цель работы: lab3/lab3.md
+    - Задача 1: lab3/task1.md
+    - Задача 2: lab3/task2.md
+    - Задача 3: lab3/task3.md
+  - Решение задач с Leetcode: leetcode.md
+
+theme:
+  name: material
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

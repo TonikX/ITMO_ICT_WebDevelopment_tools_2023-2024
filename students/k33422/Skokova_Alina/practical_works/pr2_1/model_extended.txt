@@ -1,0 +1,47 @@
+temp_bd = [{
+    "book_id": 1,
+    "book_name": "Собака Баскервилей",
+    "book_author": "Артур Конан Дойл",
+    "book_condition": "отличное",
+    "library": {
+        "library_id": 1,
+        "user_id": 1,
+        "library_name": "Библиотека классики"
+        },
+    "requests":[{
+        "request_id": 1,
+        "user_id": 2,
+        "request_date": "2024-09-13 10:00",
+        "request_status": "ожидание"
+        },
+        {
+        "request_id": 2,
+        "user_id": 3,
+        "request_date": "2024-09-13 08:00"
+        "request_status": "ожидание"
+        }]
+    },
+    {
+    "book_id": 2,
+    "book_name": "Мрачный Жнец",
+    "book_author": "Терри Пратчетт",
+    "book_condition": "хорошее",
+    "library": {
+        "library_id": 2,
+        "user_id": 2,
+        "library_name": "Моя библиотека"
+        },
+    "requests":[{
+        "request_id": 3,
+        "user_id": 1,
+        "request_date": "2024-09-13 11:00:00",
+        "request_status": "одобрено"
+        },
+        {
+        "request_id": 4,
+        "user_id": 3,
+        "request_date": "2024-09-13 18:00:00"
+        "request_status": "отклонено"
+        }]
+    }
+]
