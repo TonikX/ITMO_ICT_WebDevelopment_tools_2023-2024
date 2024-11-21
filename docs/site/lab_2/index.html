@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Лабораторная 2 - Cherkes Arthur K33391</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Cherkes Arthur K33391</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../lab_1.md" class="nav-link">Лабораторная 1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">Лабораторная 2</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">Задание</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-async" class="nav-link">Задание 1. Async</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-multiprocessing" class="nav-link">Задание 1. Multiprocessing</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-threading" class="nav-link">Задание 1. Threading</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-config" class="nav-link">Задание 2. Config</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-databaseconnection" class="nav-link">Задание 2. DataBaseConnection</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-async" class="nav-link">Задание 2. Async</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-multiprocessing" class="nav-link">Задание 2. Multiprocessing</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-threading" class="nav-link">Задание 2. Threading</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_18" class="nav-link">Результаты</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#no-2" class="nav-link">Вывод по заданию № 2</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">Задание</h1>
+<h3 id="_2">Цель работы</h3>
+<p>Понять отличия между потоками и процессами и понять, 
+что такое ассинхронность в Python.</p>
+<h3 id="_3">Задачи работы</h3>
+<ol>
+<li>Написать три различных программы на Python, 
+использующие каждый из подходов: threading, multiprocessing и async. 
+Каждая программа должна решать считать сумму всех чисел от 1 до 1000000. 
+Разделить вычисления на несколько параллельных задач для ускорения выполнения.</li>
+<li>Написать программу на Python для параллельного парсинга нескольких 
+веб-страниц с сохранением данных в базу данных с использованием подходов 
+threading, multiprocessing и async. Каждая программа должна парсить 
+информацию с нескольких веб-сайтов, сохранять их в базу данных.</li>
+</ol>
+<h1 id="1-async">Задание 1. Async</h1>
+<h3 id="_4">Код</h3>
+<pre><code>import asyncio
+import time
+
+
+async def calculate_sum(start, end):
+    total = sum(range(start, end + 1))
+    return total
+
+
+async def main():
+    n_tasks = 4
+    tasks = []
+    chunk_size = 1000000 // n_tasks
+
+    for i in range(n_tasks):
+        start = i * chunk_size + 1
+        end = (i + 1) * chunk_size if i != n_tasks - 1 else 1000000
+        tasks.append(calculate_sum(start, end))
+
+    results = await asyncio.gather(*tasks)
+    total_sum = sum(results)
+    print(f"Total sum: {total_sum}")
+
+if __name__ == '__main__':
+    start_time = time.time()
+    asyncio.run(main())
+    end_time = time.time()
+    print(f"Execution time: {end_time - start_time:.2f} seconds")
+</code></pre>
+<h3 id="_5">Описание реализации</h3>
+<p>В программе используется модуль asyncio для для управления асинхронными 
+операциями и time для измерения времени выполнения.</p>
+<p>Функция calculate_sum является асинхронной, ключевое слово async указывает, 
+что её выполнение может быть приостановлено и возобновлено. Функция 
+вычисляет сумму всех целых чисел от начального значения start 
+до конечного значения end.</p>
+<p>В главной функции main определены следующие переменные:</p>
+<ul>
+<li>
+<p>n_tasks — количество создаваемых асинхронных задач;</p>
+</li>
+<li>
+<p>tasks — список, в который будут сохраняться объекты задач;</p>
+</li>
+<li>
+<p>chunk_size — диапазон чисел для каждой задачи, т.е. общий диапазон чисел разделяется между потоками и сохраняется в эту переменную.  </p>
+</li>
+</ul>
+<p>Далее в цикле создается каждая задача вызовом calculate_sum с правильными значениями начала и конца. Эти задачи добавляются в список tasks.
+asyncio.gather используется для одновременного выполнения всех задач и ожидания их завершения. Он собирает их результаты в results.
+Вычисляется и выводится общая сумма всех результатов из задач.</p>
+<p>Скрипт фиксирует время начала, выполняет рутину main с помощью asyncio.run() и фиксирует время окончания после завершения.
+В результате рассчитывается и выводится общее время выполнения.</p>
+<h3 id="async">Async</h3>
+<p>Async использует один поток для управления выполнением задач, 
+переключаясь между ними в точках, где одна задача ожидает ввода-вывода 
+или другого события. Этот подход эффективен для задач, связанных с 
+множеством операций ввода-вывода, позволяя обрабатывать тысячи соединений одновременно.</p>
+<p>Ключевое слово async позволяет функциям приостанавливаться 
+(с использованием await в более сложных сценариях), 
+освобождая цикл событий для выполнения других задач. 
+Здесь await используется с asyncio.gather для приостановки функции 
+main до завершения всех задач.</p>
+<h1 id="1-multiprocessing">Задание 1. Multiprocessing</h1>
+<h3 id="_6">Код</h3>
+<pre><code>import multiprocessing
+import time
+
+
+def calculate_sum(start, end, result_queue):
+    total = sum(range(start, end + 1))
+    result_queue.put(total)
+
+
+def main():
+    n_processes = 4
+    result_queue = multiprocessing.Queue()
+    processes = []
+    chunk_size = 1000000 // n_processes
+
+    for i in range(n_processes):
+        start = i * chunk_size + 1
+        end = (i + 1) * chunk_size if i != n_processes - 1 else 1000000
+        process = multiprocessing.Process(target=calculate_sum, args=(start, end, result_queue))
+        processes.append(process)
+        process.start()
+
+    for process in processes:
+        process.join()
+
+    total_sum = 0
+    while not result_queue.empty():
+        total_sum += result_queue.get()
+
+    print(f"Total sum: {total_sum}")
+
+
+if __name__ == '__main__':
+    start_time = time.time()
+    main()
+    end_time = time.time()
+    print(f"Execution time: {end_time - start_time:.2f} seconds")
+</code></pre>
+<h3 id="_7">Описание реализации</h3>
+<p>В программе используется модуль multiprocessing для параллельных 
+вычислений с использованием нескольких процессов. Программа вычисляет 
+сумму чисел от 1 до 1 000 000, разделяя задачу на четыре независимых 
+процесса.</p>
+<p>Реализация функции calculate_sum аналогчна предыдущей программе, кроме 
+того, что есть очередь result_queue для сохранения результатов.</p>
+<p>Здесь:</p>
+<ul>
+<li>
+<p>n_processes — количество процессов.</p>
+</li>
+<li>
+<p>result_queue — очередь для сбора результатов от различных процессов.</p>
+</li>
+<li>
+<p>processes — список с процессами.</p>
+</li>
+</ul>
+<p>Для каждого процесса создается объект multiprocessing.Process, которому передаются calculate_sum, начальные и конечные значения диапазона, а также очередь результатов. Затем процесс запускается.
+После запуска всех процессов они синхронизируются с помощью метода join(), который гарантирует, что основной процесс main будет ожидать завершения всех дочерних процессов.
+После завершения всех процессов суммируются результаты из result_queue.</p>
+<h3 id="multiprocessing">Multiprocessing</h3>
+<p>В multiprocessing каждый процесс работает в собственном адресном 
+пространстве памяти. Такая программа может использовать несколько процессоров или 
+ядер процессора, так как каждый процесс имеет свой собственный экземпляр 
+интерпретатора Python. Для обмена данными между процессами используются 
+межпроцессные коммуникации (например, очереди), что является более затратным по сравнению с 
+потоками из-за необходимости сериализации и десериализации данных.</p>
+<h1 id="1-threading">Задание 1. Threading</h1>
+<h3 id="_8">Код</h3>
+<pre><code>import threading
+import time
+
+
+def calculate_sum(start, end, result, index):
+    total = sum(range(start, end + 1))
+    result[index] = total
+
+
+def main():
+    n_threads = 4
+    results = [0] * n_threads
+    threads = []
+    chunk_size = 1000000 // n_threads
+
+    for i in range(n_threads):
+        start = i * chunk_size + 1
+        end = (i + 1) * chunk_size if i != n_threads - 1 else 1000000
+        thread = threading.Thread(target=calculate_sum, args=(start, end, results, i))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    total_sum = sum(results)
+    print(f"Total sum: {total_sum}")
+
+
+if __name__ == '__main__':
+    start_time = time.time()
+    main()
+    end_time = time.time()
+    print(f"Execution time: {end_time - start_time:.2f} seconds")
+</code></pre>
+<h3 id="_9">Описание реализации</h3>
+<p>Программа использует модуль threading для выполнения многопоточной 
+обработки с целью распараллеливания вычисления суммы чисел от 1 до 
+1 000 000.</p>
+<p>Реализация функции calculate_sum аналогчна предыдущей программе, кроме 
+того, что результаты вычислений записываются в result.</p>
+<p>Здесь:</p>
+<ul>
+<li>
+<p>n_threads — количество потоков. </p>
+</li>
+<li>
+<p>results — массив для хранения результатов от каждого потока. </p>
+</li>
+<li>
+<p>threads — список, который будет хранить объекты потоков. </p>
+</li>
+</ul>
+<p>В цикле для каждого потока создаётся и запускается объект threading.Thread, 
+которому передаются функция calculate_sum и необходимые аргументы.
+Метод join() используется для ожидания завершения всех потоков, что гарантирует, 
+что основной поток будет ждать окончания работы всех дочерних потоков.
+После завершения всех потоков суммируются результаты, хранящиеся в массиве results.</p>
+<h3 id="threading">Threading</h3>
+<p>В threading потоки разделяют одно и то же пространство памяти процесса, 
+что упрощает передачу данных между потоками. Такой же принцип есть у multiprocessing.
+Этот подход эффективен для операций ввода/вывода, 
+потому что из-за GIL может одновременно выполняться только один поток, поэтому
+в таких задачах это не приводит к увеличению производительности.</p>
+<h1 id="2-config">Задание 2. Config</h1>
+<p>В этом файле хранятся константы с числом процессов, классы и теги для обработки содержания веб-страниц и
+URL-адреса для парсинга. </p>
+<h3 id="_10">Код</h3>
+<pre><code>URLS = [
+'https://skillbox.ru/media/management/kak-stat-prodaktmenedzherom-i-nuzhno-li-dlya-etogo-obrazovanie/',
+'https://skillbox.ru/media/management/produktovyy-analitik-chem-on-zanimaetsya-skolko-zarabatyvaet-i-kak-im-stat/',
+'https://skillbox.ru/media/code/qainzhener-kto-eto-chem-on-zanimaetsya-i-kak-im-stat/',
+'https://skillbox.ru/media/management/kto-takoy-restorator-skolko-on-zarabatyvaet-i-kak-im-stat/',
+]
+
+NUM_THREADS = 4
+HTML_CLASS = 'stk-reset stk-theme_26309__style_large_header'
+HTML_TAG = 'h2'
+</code></pre>
+<h1 id="2-databaseconnection">Задание 2. DataBaseConnection</h1>
+<p>В этом файле реализовано подключение к базе данных.</p>
+<h3 id="_11">Код</h3>
+<pre><code>import psycopg2
+
+
+class DataBaseConnection:
+    INSERT_SQL = """INSERT INTO public.task(title, description, deadline, 
+                                            created_date, priority, status, 
+                                            category_id, user_id)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+
+    @staticmethod
+    def connect_to_database():
+        conn = psycopg2.connect(
+            dbname="tasks_db",
+            user="postgres",
+            password="12345",
+            host="localhost",
+            port="5433"
+        )
+        return conn
+</code></pre>
+<h1 id="2-async">Задание 2. Async</h1>
+<h3 id="_12">Код</h3>
+<pre><code>import asyncio
+import aiohttp
+import time
+import config
+
+from connection import DataBaseConnection
+from bs4 import BeautifulSoup
+from datetime import date, timedelta
+
+
+async def parse_and_save(url, db_conn):
+    try:
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
+            async with session.get(url) as response:
+                html = await response.text()
+                soup = BeautifulSoup(html, 'html.parser')
+                tasks = soup.find_all(config.HTML_TAG, class_=config.HTML_CLASS)
+                tasks = [task.text.strip().replace('\xa0', ' ') for task in tasks]
+
+                with db_conn.cursor() as cursor:
+                    for task in tasks:
+                        cursor.execute(DataBaseConnection.INSERT_SQL,
+                                       (task, '', str(date.today()), str(date.today() + timedelta(7)),
+                                        'high', 'to_do', 2, 3))
+
+                db_conn.commit()
+    except Exception as e:
+        print("Error:", e)
+
+
+async def process_url_list(url_list, conn):
+    tasks = []
+    for url in url_list:
+        task = asyncio.create_task(parse_and_save(url, conn))
+        tasks.append(task)
+    await asyncio.gather(*tasks)
+
+
+async def main():
+    urls = config.URLS
+    num_threads = config.NUM_THREADS
+    chunk_size = len(urls) // num_threads
+    url_chunks = [urls[i:i + chunk_size] for i in range(0, len(urls), chunk_size)]
+
+    db_conn = DataBaseConnection.connect_to_database()
+    start_time = time.time()
+
+    await asyncio.gather(*(process_url_list(chunk, db_conn) for chunk in url_chunks))
+
+    db_conn.close()
+    end_time = time.time()
+
+    print(f"Execution time: {end_time - start_time:.2f} seconds")
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+</code></pre>
+<h3 id="_13">Описание</h3>
+<p>В программе используются асинхронные библиотеки asyncio и aiohttp. Программа 
+параллельно парсит веб-страницы и записывает результат в базу данных. </p>
+<p>Асинхронная функция parse_and_save принимает URL-адрес для парсинга и объект соединения с базой данных. 
+Она использует aiohttp для асинхронного получения HTML-страницы по указанному URL.
+Далее содержимое страницы обрабатывается с помощью библиотеки BeautifulSoup для извлечения данных. 
+Данные сохраняются в базу данных с помощью запроса.</p>
+<p>Асинхронная функция process_url_list также принимает список URL-адресов и соединение с базой данных.
+Для каждого URL создаётся асинхронная задача, которая вызывает parse_and_save.
+asyncio.gather используется для одновременного выполнения всех задач.</p>
+<p>В main загружается список URL-адресов из конфигурационного файла. 
+Список делится на части для каждой задачи, далее устанавливается соединение с базой данных через DataBaseConnection.
+Запускается параллельная обработка каждого чанка URL-адресов, используя asyncio.gather. 
+Также Измеряется и выводится время выполнения программы от начала до окончания всех операций.</p>
+<p>Программа максимально использует асинхронные операции для парсинга и обработки данных. 
+Использование aiohttp для сетевых запросов и asyncio для управления асинхронными задачами минимизирует задержки и повышает производительность за счёт неблокирующего выполнения кода.
+Асинхронное взаимодействие с базой данных обеспечивает быстрое сохранение результатов без замедления общего процесса выполнения.</p>
+<h1 id="2-multiprocessing">Задание 2. Multiprocessing</h1>
+<h3 id="_14">Код</h3>
+<pre><code>import multiprocessing
+import time
+import config
+import requests
+
+from bs4 import BeautifulSoup
+from datetime import date, timedelta
+from connection import DataBaseConnection
+
+
+def parse_and_save(url):
+    try:
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            html = response.text
+            soup = BeautifulSoup(html, 'html.parser')
+            tasks = soup.find_all(config.HTML_TAG, class_=config.HTML_CLASS)
+            tasks = [task.text.strip().replace('\xa0', ' ') for task in tasks]
+        else:
+            tasks = []
+
+        with DataBaseConnection.connect_to_database() as db_conn:
+            with db_conn.cursor() as cursor:
+                for task in tasks:
+                    cursor.execute(DataBaseConnection.INSERT_SQL,
+                                   (task, '', str(date.today()), str(date.today() + timedelta(7)),
+                                    'high', 'to_do', 2, 3))
+
+        db_conn.commit()
+    except Exception as e:
+        print("Error:", e)
+
+
+def process_url_list(url_queue):
+    for url in url_queue:
+        parse_and_save(url)
+
+
+def main():
+    urls = config.URLS
+    num_threads = config.NUM_THREADS
+    chunk_size = len(urls) // num_threads
+    url_chunks = [urls[i:i + chunk_size] for i in range(0, len(urls), chunk_size)]
+
+    start_time = time.time()
+    processes = []
+
+    for chunk in url_chunks:
+        process = multiprocessing.Process(target=process_url_list, args=(chunk,))
+        process.start()
+        processes.append(process)
+
+    for process in processes:
+        process.join()
+
+    end_time = time.time()
+
+    print(f"Execution time: {end_time - start_time:.2f} seconds")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+<h3 id="_15">Описание</h3>
+<p>Программа использует многопроцессорный подход для параллельного парсинга веб-страниц 
+и сохранения извлечённых данных в базу данных. </p>
+<p>Функция parse_and_save принимает URL для парсинга и использует библиотеку requests для получения HTML-кода страницы.
+Если HTTP-запрос успешен, ответ обрабатывается с помощью библиотеки BeautifulSoup. Извлеченные данные записываются в базу данных.</p>
+<p>Функция process_url_list принимает очередь URL-адресов и последовательно обрабатывает каждый URL с помощью функции parse_and_save.</p>
+<p>Функция main загружает список URL-адресов из конфигурационного файла и количество процессов. 
+Далее делит список URL-адресов на равные части, размер которых зависит от указанного количества процессов.
+Создаёт множество процессов, каждый из которых получает свою часть URL-адресов для обработки.
+Запускает все процессы и ожидает их завершения. А также измеряет и выводит общее время выполнения операций.</p>
+<p>В целом с помощью multiprocessing запросы выполяются параллельно, что ускоряет выполнение программы. </p>
+<h1 id="2-threading">Задание 2. Threading</h1>
+<h3 id="_16">Код</h3>
+<pre><code>import threading
+import time
+import config
+import requests
+
+from connection import DataBaseConnection
+from bs4 import BeautifulSoup
+from datetime import date, timedelta
+
+
+def parse_and_save(url, db_conn):
+    try:
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            html = response.text
+            soup = BeautifulSoup(html, 'html.parser')
+            tasks = soup.find_all(config.HTML_TAG, class_=config.HTML_CLASS)
+            tasks = [task.text.strip().replace('\xa0', ' ') for task in tasks]
+        else:
+            tasks = []
+
+        with db_conn.cursor() as cursor:
+            for task in tasks:
+                cursor.execute(DataBaseConnection.INSERT_SQL,
+                               (task, '', str(date.today()), str(date.today() + timedelta(7)),
+                                'high', 'to_do', 2, 3))
+        db_conn.commit()
+    except Exception as e:
+        print("Error:", e)
+
+
+def process_url_list(url_queue, db_conn):
+    for url in url_queue:
+        parse_and_save(url, db_conn)
+
+
+def main():
+    urls = config.URLS
+    num_threads = config.NUM_THREADS
+    chunk_size = len(urls) // num_threads
+    url_chunks = [urls[i:i + chunk_size] for i in range(0, len(urls), chunk_size)]
+
+    db_conn = DataBaseConnection.connect_to_database()
+    start_time = time.time()
+    threads = []
+
+    for chunk in url_chunks:
+        thread = threading.Thread(target=process_url_list, args=(chunk, db_conn))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    end_time = time.time()
+    db_conn.close()
+
+    print(f"Execution time: {end_time - start_time:.2f} seconds")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+<h3 id="_17">Описание</h3>
+<p>Программа на Python использует многопоточность через модуль threading для параллельного парсинга 
+веб-страниц и сохранения данных в базу данных.</p>
+<p>Реализация программы аналогична программе с использованием multiprocessing, за исключением того, что
+для каждого чанка URL-адресов создаётся поток, используя threading.Thread, с целью параллельной обработки.</p>
+<h1 id="_18">Результаты</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Threading</th>
+<th>Multiprocessing</th>
+<th>Asyncio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task 1</td>
+<td>0.01 sec</td>
+<td>0.08 sec</td>
+<td>0.01 sec</td>
+</tr>
+<tr>
+<td>Task 2</td>
+<td>1.05 sec</td>
+<td>1.00 sec</td>
+<td>0.54 sec</td>
+</tr>
+</tbody>
+</table>
+<h3 id="no-1">Вывод по заданию № 1</h3>
+<p>В реализации с threading потоки ограничиваются GIL. Но тут, возможно, за счет того, что вычисления простые GIL может не оказывать сильного влияния, поэтому получаем быстрое выполнение программы. Тут подход с Multiprocessing должен работать лучше, но при этом создание процессов, их управление, затраты на передачу данных между процессами через сериализацию и десериализацию могут приводить к дополнительным накладным расходам, возможно, из-за это время так увеличилось. Подход с asyncio тоже показывает хороший результат, тут у нас нет блокирующих операций и переключения контекста. </p>
+<h2 id="no-2">Вывод по заданию № 2</h2>
+<p>В целом в подходе с threading какое-то время может тратиться на управление потоками и переключение контекста, хотя ограничения GIL не так критичны для задач парсинга и записи в базу. Подход с multiprocessing позволяет полностью избежать проблем с GIL и процессы не зависят друг от друга. Асинхронное программирование с помощью asyncio идеально подходит для I/O-задач, таких как парсинг веб-страниц и взаимодействие с базами данных. Поскольку asyncio позволяет выполнять множество I/O операций, не блокируя основной поток выполнения.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
