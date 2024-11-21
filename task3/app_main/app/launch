@@ -1,0 +1,1 @@
+uvicorn endpoints.endpoints:app --reload --port 13213

@@ -1,0 +1,36 @@
+services:
+  postgres:
+    build: postgres/
+    ports:
+      - 5100:5432
+
+  app_main:
+    build: app_main/
+    ports:
+      - 8100:8100
+    depends_on:
+      - postgres
+
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - 6379:6379
+
+  celery:
+    build: app_parser/
+    command: "celery -A tasks:celery worker -l info"
+    depends_on:
+      - redis
+
+  app_parser:
+    build: app_parser/
+    ports:
+      - 8200:8200
+    depends_on:
+      - app_main
+      - celery
+      - redis
+    command: "fastapi run main.py --proxy-headers --port 8200"    
+
+
+  

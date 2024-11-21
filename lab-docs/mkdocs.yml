@@ -1,0 +1,36 @@
+site_name: Kozlov-docs
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+
+nav:
+  - "Backend для планировщика на FastAPI":
+    - lab1/main.md
+    - "Код":
+      - lab1/practice.md
+      - lab1/models.md
+      - lab1/db.md
+      - lab1/endpoints.md
+      - lab1/auth.md
+  - "Асинхронный парсер данных с notion":
+    - lab2/main.md
+    - "Код":
+      - lab2/task2_auxilary.md
+      - lab2/task2_threading.md
+      - lab2/task2_multiprocessing.md
+      - lab2/task2_asyncio.md
+      - lab2/task2_conclusion.md
+  - "Разбиение на сервисы и контейнеризация":
+    - lab3/main.md
+    - lab3/implementation.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
