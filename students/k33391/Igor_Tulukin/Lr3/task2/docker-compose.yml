@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: finances
+    ports:
+      - "5438:5432"  # Maps host port 5438 to container port 5432
+    networks:
+      - my-network
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Ensure you have a Dockerfile for the FastAPI app
+    ports:
+      - "8000:8000"  # Expose FastAPI on port 8000
+    depends_on:
+      - postgres
+    environment:
+      DB_ADMIN: "postgresql://postgres:12345@postgres:5432/finances"  # Corrected service name
+    networks:
+      - my-network
+
+  parser:
+    build:
+      context: ./parser  # Path to the parser service directory
+      dockerfile: Dockerfile  # Ensure you have a Dockerfile for the parser
+    depends_on:
+      - postgres
+    environment:
+      DB_ADMIN: "postgresql://postgres:12345@postgres:5432/finances"  # Use the same connection string
+    networks:
+      - my-network
+
+networks:
+  my-network:
