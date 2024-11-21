@@ -1,0 +1,14 @@
+fastapi~=0.110.1
+sqlmodel~=0.0.16
+uvicorn
+psycopg2
+alembic~=1.13.1
+python-dotenv~=1.0.1
+datetime~=5.5
+pydantic~=2.6.4
+PyJWT
+SQLAlchemy~=2.0.29
+passlib~=1.7.4
+jose~=1.0.0
+python-multipart
+bcrypt
