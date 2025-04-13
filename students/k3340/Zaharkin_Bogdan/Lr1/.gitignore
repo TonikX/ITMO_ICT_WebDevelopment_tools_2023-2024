@@ -1,0 +1,5 @@
+/myenv
+**/__pycache__/
+/site
+.env
+/migrations/versions
