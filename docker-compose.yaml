@@ -1,0 +1,92 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_container_lab
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+      POSTGRES_DB: ${DB_NAME:-app_db}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5436:5432"
+    networks:
+      - backend
+
+  redis:
+    image: redis:7
+    container_name: rediska
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  fastapi_app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: fastapi_app
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+
+  parser_app:
+    build:
+      context: ./parser
+      dockerfile: Dockerfile
+    container_name: parser_app
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+    ports:
+      - "8001:8001"
+    networks:
+      - backend
+
+  celery_worker:
+    build:
+      context: ./app
+    command: celery -A app.celery_app worker --loglevel=info
+    container_name: celery_worker
+    working_dir: /app
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      - redis
+      - postgres
+    env_file:
+      - .env
+    networks:
+      - backend
+
+  celery_beat:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: celery_beat
+    command: celery -A app.celery_app beat --loglevel=info
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    networks:
+      - backend
+
+
+volumes:
+  postgres:
+
+networks:
+  backend:
