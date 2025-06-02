@@ -1,0 +1,111 @@
+services:
+  # --- Redis (брокер очередей) ------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "PING"]
+      interval: 5s
+      retries: 5
+    networks:
+      - backend
+
+  # --- Parser microservice ---------------------------------------
+  parser:
+    build:
+      context: ./parser_service
+    container_name: parser_service
+    environment:
+      REDIS_URL: "redis://redis:6379/0"
+      TASK_QUEUE: "parser:tasks"
+      RESULT_PREFIX: "parser:results:"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - backend
+
+  # --- PostgreSQL (база данных) ----------------------------------
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "pass"
+      POSTGRES_DB: "app_db"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # --- API (FastAPI HTTP-сервер) ---------------------------------
+  api:
+    build:
+      context: ./api_service
+    container_name: api_service
+    command: >
+      uvicorn main:app --host 0.0.0.0 --port 8000
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://user:pass@db:5432/app_db"
+      REDIS_URL: "redis://redis:6379/0"
+      TASK_QUEUE: "parser:tasks"
+      RESULT_PREFIX: "parser:results:"
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_started
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      parser:
+        condition: service_started
+    networks:
+      - backend
+
+  # --- Celery worker (API-воркер) ---------------------------------
+  api_worker:
+    build:
+      context: ./api_service
+    container_name: api_worker
+    command: >
+      celery -A celery_app worker --loglevel=info --concurrency=4 -Q api
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://user:pass@db:5432/app_db"
+      REDIS_URL: "redis://redis:6379/0"
+      TASK_QUEUE: "parser:tasks"
+      RESULT_PREFIX: "parser:results:"
+    depends_on:
+      db:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      parser:
+        condition: service_started
+    networks:
+      - backend
+
+  # --- Alembic migrations (одноразовый запуск) -------------------
+  migrate:
+    build:
+      context: ./api_service
+    container_name: migrate
+    command: alembic upgrade head
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://user:pass@db:5432/app_db"
+    depends_on:
+      db:
+        condition: service_started
+    restart: "no"
+    networks:
+      - backend
+
+volumes:
+  dbdata:
+
+networks:
+  backend:
+    driver: bridge

@@ -1,0 +1,7 @@
+site_name: My Docs
+nav:
+  - Home: index.md
+  - Lab 1: lab1/index.md
+  - Lab 2: lab2/index.md
+theme:
+  name: dracula

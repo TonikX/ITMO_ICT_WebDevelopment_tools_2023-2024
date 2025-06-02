@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+        <title>Lab 1 - My Docs</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        
+        
+        
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="../assets/css/darcula-highlight.min.css">
+
+        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../assets/css/dracula-ui.min.css">
+        <link rel="stylesheet" href="../assets/css/mkdocs.min.css">
+
+        
+            <link  rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+                <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+
+<body class="drac-bg-black-secondary drac-text-grey-ternary drac-text drac-scrollbar-purple">
+
+    <main class="d-flex">
+
+        <!-- block sidebar -->
+            <nav id="sidebar" class="sidebar drac-bg-black">
+    <div class="custom-menu">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+            <i class="fa fa-bars"></i>
+            <span class="sr-only">Menu</span>
+        </button>
+    </div>
+
+    <div class="p-4">
+        
+
+        <div class="drac-text-center">
+            
+                <span class="drac-text drac-line-height drac-text-white">My Docs</span>
+            
+        </div>
+
+        <div class="drac-box flex-column">
+            <ul class="dot-ul">
+                <li><div class="dot-li drac-bg-cyan"></div></li>
+                <li><div class="dot-li drac-bg-green"></div></li>
+                <li><div class="dot-li drac-bg-orange"></div></li>
+                <li><div class="dot-li drac-bg-pink"></div></li>
+                <li><div class="dot-li drac-bg-purple"></div></li>
+                <li><div class="dot-li drac-bg-red"></div></li>
+                <li><div class="dot-li drac-bg-yellow"></div></li>
+            </ul>
+        </div>
+
+        <hr class="drac-divider" />
+
+        <!-- block menu -->
+        <ul class="mb-5 drac-list drac-list-none">
+            
+            <li class="drac-box">
+                <a href=".."
+                    class="
+                    drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+                    Home
+                </a>
+            </li>
+            <li class="drac-box">
+                <a href="./"
+                    class=" active 
+                    drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+                    Lab 1
+                </a>
+            </li>
+            <li class="drac-box">
+                <a href="../lab2/"
+                    class="
+                    drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+                    Lab 2
+                </a>
+            </li>
+        </ul>
+        <!-- endblock -->
+    </div>
+</nav>
+        <!-- endblock -->
+
+        <nav class="divider drac-bg-purple-cyan"></nav>
+
+        <div class="content">
+            <!-- block header -->
+                <header>
+    <nav class="navbar navbar-expand-xl drac-bg-purple">
+        <div class="container-fluid">
+            
+            <button class="navbar-toggler w-100 text-center" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsMenu"
+                aria-controls="navbarsMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse flex-column ml-auto" id="navbarsMenu">
+                <ul class="navbar-nav text-md-center">
+
+                    <!-- block preview -->
+                    <li class="nav-item">
+                            
+        <div class="container">
+            <div class="row row-preview">
+                <div class="col">
+                    <a href=".."
+                        class="btn-preview drac-btn drac-btn-outline drac-text-white drac-text-cyan-green--hover">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="../lab2/"
+                        class="btn-preview drac-btn drac-btn-outline drac-text-white drac-text-cyan-green--hover" style="padding-left: 3%;">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+                    </li>
+                    <!--  endblock -->
+
+                    <!-- block search -->
+                    <li class="nav-item"><div role="search" class="search-box">
+	<form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+		<input type="text" name="q" class="drac-input drac-input-search drac-input-white drac-text-white drac-bg-black-secondary"
+		placeholder="Search docs" title="Type search term here" />
+	</form>
+</div>
+                    </li>
+                    <!--  endblock -->
+
+                    <!-- block source -->
+                    <li class="nav-item">
+                        
+                    </li>
+                    <!--  endblock -->
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+</header>
+            <!-- endblock -->
+
+            <!-- block content -->
+                <section class="p-md-5 section-content">
+    <article>
+        <p><h1 id="1-fastapi">Лабораторная работа 1. Реализация серверного приложения FastAPI</h1>
+<h2 id="_1">Проект и архитектура</h2>
+<p>Сервис рассылок позволяет организовать отправку электронных писем группам пользователей, объединённых по 
+тегам: вы создаёте рассылку с текстом и списком тегов, а система автоматически находит всех подписанных на 
+эти теги пользователей и ставит задачи на отправку писем в фоновом режиме через Celery с возможностью 
+отложенной доставки. </p>
+<p>В проекте реализована микросервисная архитектура на базе FastAPI и Celery, где каждый компонент развёрнут в своём контейнере:</p>
+<ul>
+<li><strong>db (PostgreSQL)</strong> — хранит основную бизнес-логическую информацию (пользователи, теги, рассылки).</li>
+<li><strong>redis</strong> — брокер задач для Celery.</li>
+<li><strong>backend</strong> — основной API-сервис: управление пользователями, тегами и рассылками.</li>
+<li><strong>celery</strong> — воркер Celery, обрабатывающий отправку отложенных писем.</li>
+<li><strong>admin</strong> — отдельный веб-интерфейс для администрирования (FastAPI + Jinja2).</li>
+</ul>
+<p><code>docker-compose.yml</code>:</p>
+<pre><code class="language-yaml">services:
+  db:
+    image: postgres:15
+    container_name: db_newsletter
+    env_file: backend/.env
+    ports:
+      - &quot;5432:5432&quot;
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+  redis:
+    image: redis:7
+    container_name: redis_app
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file: backend/.env
+    container_name: mailer_app
+    command: [ &quot;uvicorn&quot;, &quot;main:app&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8000&quot; ]
+    ports:
+      - &quot;9999:8000&quot;
+    depends_on:
+      - db
+      - celery
+    restart: unless-stopped
+
+  celery:
+    build:
+      context: ./backend
+    env_file: backend/.env
+    container_name: celery_app
+    command: celery -A celery_tasks.setup_celery worker --loglevel=info
+    depends_on:
+      - redis
+
+  admin:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    env_file: admin/.env
+    container_name: mailer_web_app
+    command: [ &quot;uvicorn&quot;, &quot;main:app&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8000&quot; ]
+    ports:
+      - &quot;9998:8000&quot;
+    depends_on:
+      - db
+    restart: unless-stopped
+volumes:
+  postgres_data:
+</code></pre>
+<h2 id="orm-sqlalchemy">ORM-модели (SQLAlchemy)</h2>
+<p>Используется SQLAlchemy + <code>relationship</code> для связей <code>many-to-many</code> между пользователями и тегами. Пример модели <strong>User</strong>:</p>
+<pre><code class="language-python">from sqlalchemy import Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from db.database import Base
+from tags.models import Tag
+
+class User(Base):
+    __tablename__ = &quot;user&quot;
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    email: Mapped[str] = mapped_column(unique=True)
+    hash_password: Mapped[str]
+    tags: Mapped[list[Tag]] = relationship(
+        'Tag',
+        secondary='user_tag',
+        back_populates='users',
+        lazy='selectin'
+    )
+</code></pre>
+<h3 id="get_all_users">Вложенные сущности в ответе get_all_users</h3>
+<p><img alt="img_1.png" src="img_1.png" /></p>
+<h2 id="crud-api">CRUD API</h2>
+<p>Для каждой сущности реализован набор CRUD-эндпоинтов с аннотацией типов:</p>
+<ul>
+<li><strong>Пользователи</strong> (<code>/user</code>): создание, фильтрация, получение по ID и email, обновление, удаление, привязка тега.</li>
+<li><strong>Теги</strong> (<code>/tag</code>): создание, список всех.</li>
+<li><strong>Рассылки</strong> (<code>/newsletter</code>): создание с отложенной отправкой, получение, обновление, удаление.</li>
+</ul>
+<h3 id="_2">Пример эндпоинта и сервисного слоя для создания рассылки</h3>
+<p>Роутер вызывает метод сервиса NewsletterService, в котором сначала Pydantic-модель NewsletterCreateRequest
+переводится в DTO через model_validate и сохраняется в БД, затем для каждого tag_id создаётся связь в 
+таблице newsletter_tag. После этого по тегам рассылки вызывается user_tags_service.get_users_by_tag, чтобы получить список 
+email-получателей, и для каждого из них через send_letter.apply_async(..., eta=newsletter.target_time) 
+ставится отложенная задача в Celery.</p>
+<h3 id="_3">Код роутера и соответствующего сервисного метода,</h3>
+<p>отвечающих за создание новой рассылки, привязку тегов и постановку отложенных задач на отправку писем через Celery.</p>
+<pre><code class="language-python">@router.post(&quot;&quot;)
+async def create_newsletter(
+    newsletter: NewsletterCreateRequest,
+    service=Depends(get_newsletter_service),
+) -&gt; NewsletterResponse:
+    created = await service.create_newsletter(newsletter)
+    return created
+</code></pre>
+<pre><code class="language-python">
+@dataclass
+class NewsletterService:
+    newsletters: NewsletterRepo
+    tags: TagRepo
+    newsletter_tags: NewsletterTagRepo
+
+    async def create_newsletter(
+            self,
+            newsletter: NewsletterCreateRequest,
+    ) -&gt; NewsletterResponse:
+        create_dto = NewsletterCreate.model_validate(newsletter)
+
+        created = await self.newsletters.create(create_dto)
+
+        logger.info(created.model_dump())
+
+        for tag_id in newsletter.tags:
+            dto = NewsletterTagCreate(
+                tag=tag_id,
+                newsletter=created.id,
+            )
+
+            await self.newsletter_tags.create(dto)
+
+        created = await self.newsletters.get(created.id)
+
+        # Получаем пользователей по тегам и сразу ставим задачи отправки
+        user_tags_service = get_user_tag_service()
+        recipients = await user_tags_service.get_users_by_tag(
+            tags=[tag.text for tag in created.tags]
+        )
+
+        for recipient in recipients:
+            message = MessageSchema(
+                subject=created.subject,
+                recipients=[recipient],  # noqa
+                body=created.text,
+                subtype=MessageType.html
+            )
+            send_letter.apply_async(
+                args=(json_utils.dumps(message, cls=MessageSchemaEncoder),),
+                eta=newsletter.target_time
+            )
+            logging.getLogger(__name__).info(f&quot;Queued email to {recipient}&quot;)
+
+        return created
+
+</code></pre>
+<h2 id="alembic">Система миграций (Alembic)</h2>
+<p>Проект настроен на автоматические миграции через Alembic. </p>
+<h2 id="_4">Аннотация типов</h2>
+<p>Во всех роутерах, сервисах и репозиториях используются аннотации и <code>ConfigDict(from_attributes=True)</code> для чтения из ORM:</p>
+<pre><code class="language-python">@router.get(&quot;&quot;)
+async def get_all_newsletter(
+        newsletter_service = Depends(get_newsletter_service)
+) -&gt; list[NewsletterResponse]:
+    res = await newsletter_service.get_all_newsletter()
+    return res
+</code></pre>
+<pre><code class="language-python">class NewsletterUpdate(BaseModel):
+    text: str
+    subject: str
+    target_time: Optional[datetime] = None
+
+    model_config = ConfigDict(from_attributes=True)
+</code></pre>
+<h2 id="_5">Структура проекта</h2>
+<pre><code>├── admin
+│   ├── Dockerfile
+│   ├── auth
+│   │   ├── auth_form.py
+│   │   ├── auth_helper.py
+│   │   ├── auth_service_interface.py
+│   │   ├── dependencies
+│   │   │   └── services.py
+│   │   ├── exceptions.py
+│   │   └── schemas.py
+│   ├── config.py
+│   ├── main.py
+│   ├── midlewares
+│   │   └── auth_midleware.py
+│   ├── requirements.txt
+│   ├── routes
+│   │   ├── __init__.py
+│   │   ├── auth_routes.py
+│   │   ├── dependencies
+│   │   │   └── services.py
+│   │   ├── newsletter_router.py
+│   │   ├── tag_router.py
+│   │   └── user_router.py
+│   ├── services
+│   │   ├── auth_service.py
+│   │   ├── dependencies
+│   │   │   └── services.py
+│   │   ├── newsletter_service.py
+│   │   ├── schemas.py
+│   │   ├── tag_service.py
+│   │   └── user_service.py
+│   ├── static
+│   │   ├── css
+│   │   │   ├── auth.css
+│   │   │   ├── base.css
+│   │   │   ├── newsletter.css
+│   │   │   ├── newsletter_all.css
+│   │   │   ├── newsletter_details.css
+│   │   │   ├── tag.css
+│   │   │   ├── tags.css
+│   │   │   ├── user.css
+│   │   │   ├── user_newsletters.css
+│   │   │   └── users.css
+│   │   └── images
+│   │       └── китти.jpeg
+│   └── templates
+│       ├── __init__.py
+│       ├── auth.html
+│       ├── base.html
+│       ├── newsletter.html
+│       ├── newsletter_all.html
+│       ├── newsletter_details.html
+│       ├── signup.html
+│       ├── tag.html
+│       ├── tag_all.html
+│       ├── user.html
+│       ├── user_all.html
+│       └── user_newsletters.html
+├── backend
+│   ├── Dockerfile
+│   ├── __init__.py
+│   ├── abstractions
+│   │   ├── AbstractRepoInterface.py
+│   │   ├── AbstractRepository.py
+│   │   └── __init__.py
+│   ├── alembic.ini
+│   ├── celery_tasks
+│   │   ├── __init__.py
+│   │   ├── setup_celery.py
+│   │   └── tasks.py
+│   ├── config.py
+│   ├── db
+│   │   ├── __init__.py
+│   │   └── database.py
+│   ├── decoder.py
+│   ├── docker
+│   │   └── start_only_db.bat
+│   ├── mail.env
+│   ├── mail.env.example
+│   ├── main.py
+│   ├── migrations
+│   │   ├── README
+│   │   ├── __init__.py
+│   │   ├── env.py
+│   │   ├── script.py.mako
+│   │   └── versions
+│   │       ├── 0db08c43dc72_add_timestamp_with_timezone.py
+│   │       ├── 556eade48481_newsletter_target_time.py
+│   │       ├── 5e3728acfa88_first.py
+│   │       ├── 864ebd0009a9_third.py
+│   │       ├── 98b03d0a93c1_second.py
+│   │       ├── __init__.py
+│   │       ├── cf77bb0027a1_add_userlogin.py
+│   │       └── d65fdbfa9353_add_unique_to_emails.py
+│   ├── newsletter
+│   │   ├── __init__.py
+│   │   ├── delayed_letter_service.py
+│   │   ├── dependencies
+│   │   │   ├── __init__.py
+│   │   │   ├── repositories.py
+│   │   │   └── services.py
+│   │   ├── models.py
+│   │   ├── newsletter_service.py
+│   │   ├── repository.py
+│   │   ├── router.py
+│   │   └── schemas.py
+│   ├── newsletter_tag
+│   │   ├── __init__.py
+│   │   ├── dependencies
+│   │   │   ├── __init__.py
+│   │   │   └── repositories.py
+│   │   ├── models.py
+│   │   ├── repository.py
+│   │   └── schemas.py
+│   ├── requirements.txt
+│   ├── tags
+│   │   ├── __init__.py
+│   │   ├── dependencies
+│   │   │   ├── __init__.py
+│   │   │   ├── repositories.py
+│   │   │   └── services.py
+│   │   ├── models.py
+│   │   ├── repository.py
+│   │   ├── router.py
+│   │   ├── schemas.py
+│   │   └── tag_service.py
+│   ├── user
+│   │   ├── __init__.py
+│   │   ├── dependencies
+│   │   │   ├── __init__.py
+│   │   │   ├── repositories.py
+│   │   │   └── services.py
+│   │   ├── models.py
+│   │   ├── repository.py
+│   │   ├── router.py
+│   │   ├── schemas.py
+│   │   └── user_service.py
+│   ├── user_newsletter
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   ├── repository.py
+│   │   └── schemas.py
+│   └── user_tag
+│       ├── __init__.py
+│       ├── dependencies
+│       │   ├── __init__.py
+│       │   ├── repositories.py
+│       │   └── services.py
+│       ├── models.py
+│       ├── repository.py
+│       ├── schemas.py
+│       └── user_tag_service.py
+└── docker-compose.yml
+</code></pre>
+<h2 id="_6">Аутентификация и безопасность</h2>
+<p>Реализована JWT-аутентификация и хэширование паролей через <code>bcrypt</code>.
+Пример методов в <code>AuthService</code>:</p>
+<pre><code class="language-python">def hash_password(password: str) -&gt; str:
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+def check_password(password: str, hashed: str) -&gt; bool:
+    return bcrypt.checkpw(password.encode(), hashed.encode())
+
+def _generate_tokens(self, user_id: int) -&gt; Tokens:
+    now = datetime.now(tz=timezone.utc)
+    exp = now + timedelta(seconds=self.auth_settings.access_token_lifetime_seconds)
+    token = jwt.encode({'exp': exp, 'user_id': user_id},
+                       key=self.auth_settings.secret_key.get_secret_value(),
+                       algorithm='HS256')
+    return Tokens(access_token=token)
+</code></pre>
+<p>Промежуточное midleware проверяет наличие и валидность JWT в cookie и перенаправляет на страницу логина при отсутствии:</p>
+<pre><code class="language-python">async def check_for_auth(request: Request, call_next):
+    tokens = Tokens(access_token=request.cookies.get(&quot;access_token&quot;, &quot;&quot;))
+    valid = await auth_service.check_tokens(tokens)
+    if not valid[&quot;is_valid&quot;]:
+        return RedirectResponse(f&quot;/auth?destination={request.url.path}&quot;, status_code=303)
+    request.state.user_id = valid[&quot;user_id&quot;]
+    return await call_next(request)
+</code></pre>
+<hr />
+<p>Реализован фронтенд на основе FastAPI + Jinja2: все страницы оформлены через HTML-шаблоны и подключаемые файлы CSS. </p>
+<p>Пример страницы входа:</p>
+<p><img alt="img_2.png" src="img_2.png" /></p>
+<p>Пример страницы  создания рассылки</p>
+<p><img alt="img.png" src="img.png" /></p>
+<p>Пример страницы моих рассылок</p>
+<p><img alt="img_5.png" src="img_5.png" /></p></p>
+    </article>
+</section>
+            <!-- endblock -->
+
+            <!-- block footer -->
+                <footer>
+    <div class="d-flex flex-sm-row justify-content-between py-2 border-top drac-text-black drac-bg-cyan-green">
+        <a href="https://github.com/dracula/mkdocs" target="_blank" style="padding-left: 1%;"
+            class="footer-text drac-anchor drac-text-black drac-text-purple--hover">
+            Made with Dracula Theme for MkDocs
+        </a>
+    </div>
+</footer>
+            <!-- endblock -->
+        </div>
+
+    </main>
+
+        <script>var base_url = '..';</script>
+        <script src="../assets/js/jquery-3.3.1.slim.min.js"></script>
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/js/mkdocs.js"></script>
+			<script src="../search/main.js" defer></script>
+
+</body>
+
+</html>
