@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+sqlmodel
+python-dotenv
+python-multipart
+psycopg2-binary
+bs4
+aiohttp
+requests
+asyncio
+
