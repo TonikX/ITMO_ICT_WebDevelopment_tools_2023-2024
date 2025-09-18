@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlmodel
+python-dotenv
+pydantic
+psycopg2-binary
+jwt
+pydantic[email]
+passlib
