@@ -1,4 +1,5 @@
 from app.models.notification import Notification
+from app.models.parsed_page import ParsedPage
 from app.models.priority import Priority
 from app.models.schedule import Schedule, ScheduleTaskLink
 from app.models.task import Task, TaskStatus, TimeTrack
@@ -13,4 +14,5 @@ __all__ = [
     "Schedule",
     "ScheduleTaskLink",
     "Notification",
+    "ParsedPage",
 ]

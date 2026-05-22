@@ -1,0 +1,23 @@
+{
+  "task": "sum_1_to_1000000",
+  "results": [
+    {
+      "mode": "threading",
+      "workers": 4,
+      "result": 500000500000,
+      "elapsed_sec": 0.004477249924093485
+    },
+    {
+      "mode": "multiprocessing",
+      "workers": 4,
+      "result": 500000500000,
+      "elapsed_sec": 0.06174908403772861
+    },
+    {
+      "mode": "async",
+      "workers": 4,
+      "result": 500000500000,
+      "elapsed_sec": 0.004908125032670796
+    }
+  ]
+}
