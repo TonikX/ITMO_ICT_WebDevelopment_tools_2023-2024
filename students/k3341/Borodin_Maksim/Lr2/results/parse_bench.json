@@ -1,0 +1,23 @@
+{
+  "task": "parse_and_save",
+  "results": [
+    {
+      "mode": "threading",
+      "elapsed_sec": 0.6938901250250638,
+      "success_count": 5,
+      "total_count": 6
+    },
+    {
+      "mode": "multiprocessing",
+      "elapsed_sec": 3.4465294160181656,
+      "success_count": 5,
+      "total_count": 6
+    },
+    {
+      "mode": "async",
+      "elapsed_sec": 1.176160707953386,
+      "success_count": 5,
+      "total_count": 6
+    }
+  ]
+}
